@@ -1,15 +1,15 @@
 <template>
-  <div class="md_header">
+  <div :class="['md_header', { active: isFocus }]">
     <div class="header_tabs">
       <div
         :class="['tab_item', { active: !showPreview }]"
-        @click="toggleTab('edit')"
+        @click="setShowPreview(false)"
       >
         编辑
       </div>
       <div
         :class="['tab_item', { active: showPreview }]"
-        @click="toggleTab('preview')"
+        @click="setShowPreview(true)"
       >
         预览
       </div>
@@ -25,55 +25,14 @@
 </template>
 <script>
 import toolButton from "./tool-button";
+import { mapState, mapMutations } from "vuex";
 export default {
   components: { toolButton },
-  props: {
-    showPreview: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      toolButtonList: [
-        {
-          name: "bold",
-          format: "**"
-        },
-        {
-          name: "italic"
-        },
-        {
-          name: "baojiaquotation"
-        },
-        {
-          name: "code"
-        },
-        {
-          name: "lianjie"
-        },
-        {
-          name: "unorderedList"
-        },
-        {
-          name: "youxuliebiao"
-        },
-        {
-          name: "renwu"
-        },
-        {
-          name: "biaoge"
-        },
-        {
-          name: "fullScreen"
-        }
-      ]
-    };
+  computed: {
+    ...mapState(["toolButtonList", "isFocus", "showPreview"])
   },
   methods: {
-    toggleTab(type) {
-      this.$emit("update:showPreview", type === "preview");
-    }
+    ...mapMutations(["setShowPreview"])
   }
 };
 </script>
@@ -83,7 +42,11 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 32px;
+  transition: border-bottom 0.3s;
   border-bottom: 1px solid var(--md-editor-theme-color);
+  &.active {
+    border-bottom: 1px solid var(--md-editor-theme-color-active);
+  }
   .header_tabs {
     display: flex;
     justify-content: space-between;
@@ -91,7 +54,7 @@ export default {
     padding-bottom: 10px;
     box-sizing: border-box;
     .tab_item {
-      color: #666;
+      color: var(--md-editor-text-color);
       cursor: pointer;
       position: relative;
       padding: 0 6px;
@@ -110,14 +73,14 @@ export default {
       }
 
       &:hover {
-        color: #000;
+        color: var(--md-editor-text-color-active);
         &::after {
           width: 100%;
-          background: #666;
+          background: var(--md-editor-theme-color);
         }
       }
       &.active {
-        color: #000;
+        color: var(--md-editor-text-color-active);
         font-weight: 700;
         &::after {
           width: 100%;

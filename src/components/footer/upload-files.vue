@@ -1,6 +1,6 @@
 <template>
   <div class="upload_files" @click="upload">
-    <span :class="['icon iconfont', 'icon-tupian']"></span>
+    <span class="icon iconfont icon-tupian"></span>
     <span>添加附件</span>
   </div>
 </template>
@@ -19,12 +19,12 @@ export default {
   cursor: pointer;
   .icon {
     font-size: 20px;
-    color: #666;
+    color: var(--md-editor-text-color);
     cursor: pointer;
     display: inline-block;
     vertical-align: bottom;
     &:hover {
-      color: #000;
+      color: var(--md-editor-text-color-active);
     }
   }
 }

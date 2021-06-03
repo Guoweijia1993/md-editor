@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "webpack serve --mode=development",
-    "build": "webpack"
+    "build": "webpack --mode=production"
   },
   "devDependencies": {
     "css-loader": "^5.2.6",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "marked": "^2.0.6",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vuex": "^3.6.2"
   }
 }

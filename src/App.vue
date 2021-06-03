@@ -1,40 +1,26 @@
 <template>
-  <div class="md_container">
-    <markdown-header :showPreview.sync="showPreview" />
-    <markdownPreview v-if="showPreview" :content="html" />
-    <textarea
-      v-else
-      @change="changeText"
-      @focus="isFocus = true"
-      @blur="isFocus = false"
-      v-model="text"
-      rows="10"
-    ></textarea>
-
+  <div :class="['md_container', { active: isFocus }]">
+    <markdown-header />
+    <markdownPreview v-if="showPreview" />
+    <markdown-editor v-else />
     <markdown-footer v-if="!showPreview" />
   </div>
 </template>
 <script>
-import markdownHeader from "./components/md-header";
-import markdownFooter from "./components/md-footer";
-import markdownPreview from "./components/md-preview";
-import marked from "marked";
+import markdownHeader from "./components/header/md-header";
+import markdownFooter from "./components/footer/md-footer";
+import markdownEditor from "./components/content/md-textarea";
+import markdownPreview from "./components/content/md-preview";
+import { mapState } from "vuex";
 export default {
-  components: { markdownHeader, markdownFooter, markdownPreview },
-  data() {
-    return {
-      text: "",
-      html: "",
-      showPreview: false,
-      isFocus: false
-    };
+  components: {
+    markdownHeader,
+    markdownFooter,
+    markdownEditor,
+    markdownPreview
   },
-  methods: {
-    changeText() {
-      const text = this.text;
-      this.html = marked(text);
-      this.$emit("change", { text, html: this.html });
-    }
+  computed: {
+    ...mapState(["showPreview", "isFocus"])
   }
 };
 </script>
@@ -46,15 +32,9 @@ export default {
   border-radius: 4px;
   padding: 10px 16px;
   box-sizing: border-box;
-  textarea {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    box-sizing: border-box;
-    color: #303030;
-    resize: none;
-    font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas",
-      "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+  transition: border 0.3s;
+  &.active {
+    border: 1px solid var(--md-editor-theme-color-active);
   }
 }
 </style>
