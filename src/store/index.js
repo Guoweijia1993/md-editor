@@ -80,8 +80,47 @@ export default new Vuex.Store({
       }
     ],
     ulNum: 1,
-    text:
-      "# 456456456\n## 4657567\n3456`456`4\n```js\nfunction fn() {\n  return null;\n}\n```\n56456",
+    text: `
+# 标题一标题一标题一
+## 标题二标题二
+666\`行内代码\`666
+\`\`\`js
+// 是注释呀
+/**
+* @params x
+*/
+function fn() {
+  return null;
+}
+\`\`\`
+**粗体文字**
+
+_斜体文字_
+
+> 这段是引用的内容\n
+> 这段是引用的内容
+> 这段是引用的内容
+
+[链接](url)
+
+
+- 无序列表
+- 无序列表
+- 无序列表
+
+
+1. 有序列表
+2. 有序列表
+3. 有序列表
+
+- [ ] 任务列表
+- [x] 任务列表
+- [ ] 任务列表
+
+| header | header |
+| ------ | ------ |
+| cell | cell |
+| cell | cell |`,
     selectionInfo: "",
     html: "",
     canAttachFile: true
