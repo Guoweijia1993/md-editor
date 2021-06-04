@@ -1,8 +1,12 @@
 import Vue from "vue";
 import App from "./App";
 import store from "./store";
+import Vtip from "vtip";
+import "vtip/lib/index.min.css";
 import { initStyle, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
+
+Vue.use(Vtip.directive);
 
 function initMdEditor(obj) {
   const { el, onChange, canAttachFile, themeOptions } = obj;

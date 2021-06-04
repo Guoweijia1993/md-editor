@@ -6,6 +6,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import marked from "marked";
+import "highlight.js/styles/github.css";
 export default {
   data() {
     return {};
@@ -16,6 +17,12 @@ export default {
   methods: {
     ...mapMutations(["setHtml"]),
     transferMarkdown(val) {
+      marked.setOptions({
+        highlight: function(code, lang, callback) {
+          const html = require("highlight.js").highlightAuto(code).value;
+          return html;
+        }
+      });
       if (!val.trim()) return;
       const html = marked(val);
       this.setHtml(html);

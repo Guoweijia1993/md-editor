@@ -1,5 +1,9 @@
 <template>
-  <div @click="handleTool(info.name)" class="tool_button">
+  <div
+    v-tip.top="info.tip"
+    @click="handleTool(info.name, info.startStr, info.endStr)"
+    class="tool_button"
+  >
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
 </template>
@@ -18,44 +22,26 @@ export default {
   },
   methods: {
     ...mapMutations(["setFullScreen", "setText", "setUlNum"]),
-    handleTool(type) {
+    handleTool(type, startStr, endStr) {
       switch (type) {
         case "bold":
-          this.updateText("**", "**");
-          break;
         case "italic":
-          this.updateText("_", "_");
-          break;
         case "quote":
-          this.updateText("\n> ", "");
-          break;
         case "code":
-          this.updateText("`", "`");
-          break;
         case "link":
-          this.updateText("[", "](url)");
-          break;
         case "ul":
-          this.updateText("\n- ", "");
+        case "task":
+        case "table":
+          this.updateText(startStr, endStr);
           break;
         case "ol":
           let ulNum = this.ulNum;
           this.updateText(`\n${ulNum++}. `, "");
           this.setUlNum(ulNum);
           break;
-        case "task":
-          this.updateText("\n- [ ] ", "");
-          break;
-        case "table":
-          this.updateText(
-            `\n\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n`,
-            ""
-          );
-          break;
         case "fullScreen":
           this.setFullScreen(true);
           break;
-
         default:
           break;
       }

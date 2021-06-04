@@ -16,7 +16,9 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "highlight.js": "^11.0.1",
     "marked": "^2.0.6",
+    "vtip": "^1.0.6",
     "vue": "^2.6.12",
     "vuex": "^3.6.2"
   }

@@ -12,47 +12,76 @@ export default new Vuex.Store({
       {
         name: "bold",
         icon: "bold",
-        format: "**"
+        tip: "粗体",
+        startStr: "**",
+        endStr: "**"
       },
       {
         name: "italic",
-        icon: "italic"
+        icon: "italic",
+        tip: "斜体",
+        startStr: "_",
+        endStr: "_"
       },
       {
         name: "quote",
-        icon: "baojiaquotation"
+        icon: "baojiaquotation",
+        tip: "插入引用",
+        startStr: "\n> ",
+        endStr: ""
       },
       {
         name: "code",
-        icon: "code"
+        icon: "code",
+        tip: "插入代码",
+        startStr: "`",
+        endStr: "`"
       },
       {
         name: "link",
-        icon: "lianjie"
+        icon: "lianjie",
+        tip: "添加链接",
+        startStr: "[",
+        endStr: "](url)"
       },
       {
         name: "ul",
-        icon: "unorderedList"
+        icon: "unorderedList",
+        tip: "添加无序列表",
+        startStr: "\n- ",
+        endStr: ""
       },
       {
         name: "ol",
-        icon: "youxuliebiao"
+        icon: "youxuliebiao",
+        tip: "添加有序列表",
+        startStr: "",
+        endStr: ""
       },
       {
         name: "task",
-        icon: "renwu"
+        icon: "renwu",
+        tip: "添加任务列表",
+        startStr: "\n- [ ] ",
+        endStr: ""
       },
       {
         name: "table",
-        icon: "biaoge"
+        icon: "biaoge",
+        tip: "添加表格",
+        startStr:
+          "\n\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n",
+        endStr: ""
       },
       {
         name: "fullScreen",
-        icon: "fullScreen"
+        icon: "fullScreen",
+        tip: "全屏模式"
       }
     ],
     ulNum: 1,
-    text: "# 456456456\n## 4657567\n3456456456456",
+    text:
+      "# 456456456\n## 4657567\n3456`456`4\n```js\nfunction fn() {\n  return null;\n}\n```\n56456",
     selectionInfo: "",
     html: "",
     canAttachFile: true
