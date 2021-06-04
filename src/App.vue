@@ -3,7 +3,10 @@
     <markdown-header />
     <markdownPreview v-if="showPreview" />
     <markdown-editor v-else />
-    <markdown-footer v-if="!showPreview" />
+    <markdown-footer
+      :can-attach-file="canAttachFile"
+      v-if="!showPreview && canAttachFile"
+    />
   </div>
 </template>
 <script>
@@ -19,8 +22,9 @@ export default {
     markdownEditor,
     markdownPreview
   },
+
   computed: {
-    ...mapState(["showPreview", "isFocus"])
+    ...mapState(["showPreview", "isFocus", "canAttachFile"])
   }
 };
 </script>
@@ -28,13 +32,13 @@ export default {
 .md_container {
   width: 1000px;
   margin: 200px auto;
-  border: 1px solid var(--md-editor-theme-color);
+  border: 1px solid var(--md-editor-border-color);
   border-radius: 4px;
   padding: 10px 16px;
   box-sizing: border-box;
   transition: border 0.3s;
   &.active {
-    border: 1px solid var(--md-editor-theme-color-active);
+    border: 1px solid var(--md-editor-border-color-active);
   }
 }
 </style>

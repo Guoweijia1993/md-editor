@@ -43,9 +43,9 @@ export default {
   align-items: center;
   height: 32px;
   transition: border-bottom 0.3s;
-  border-bottom: 1px solid var(--md-editor-theme-color);
+  border-bottom: 1px solid var(--md-editor-border-color);
   &.active {
-    border-bottom: 1px solid var(--md-editor-theme-color-active);
+    border-bottom: 1px solid var(--md-editor-border-color-active);
   }
   .header_tabs {
     display: flex;
@@ -76,7 +76,7 @@ export default {
         color: var(--md-editor-text-color-active);
         &::after {
           width: 100%;
-          background: var(--md-editor-theme-color);
+          background: var(--md-editor-border-color);
         }
       }
       &.active {
@@ -84,7 +84,7 @@ export default {
         font-weight: 700;
         &::after {
           width: 100%;
-          background: var(--md-editor-theme-color-active);
+          background: var(--md-editor-border-color-active);
         }
       }
       & + .tab_item {

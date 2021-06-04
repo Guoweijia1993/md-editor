@@ -1,5 +1,5 @@
 <template>
-  <div class="md_preview">
+  <div class="htmledit_views">
     <div v-html="html"></div>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.md_preview {
+.htmledit_views {
   min-height: 170px;
   padding: 10px 0;
   box-sizing: border-box;

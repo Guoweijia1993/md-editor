@@ -52,9 +52,10 @@ export default new Vuex.Store({
       }
     ],
     ulNum: 1,
-    text: "4564564564657567\n3456456456456",
+    text: "# 456456456\n## 4657567\n3456456456456",
     selectionInfo: "",
-    html: ""
+    html: "",
+    canAttachFile: true
   },
   mutations: {
     setFullScreen(state, val) {
@@ -68,6 +69,7 @@ export default new Vuex.Store({
     },
     setText(state, val) {
       state.text = val;
+      state.selectionInfo = "";
     },
     setSelectionInfo(state, val) {
       state.selectionInfo = val;
@@ -77,6 +79,9 @@ export default new Vuex.Store({
     },
     setUlNum(state, val) {
       state.ulNum = val;
+    },
+    setCanAttachFile(state, val) {
+      state.canAttachFile = val;
     }
   }
 });

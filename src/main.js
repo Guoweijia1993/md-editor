@@ -1,19 +1,15 @@
 import Vue from "vue";
 import App from "./App";
 import store from "./store";
+import { initStyle, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
 
-function initStyle(val) {
-  document.documentElement.style.setProperty(
-    "--md-editor-theme-color-active",
-    val
-  );
-}
-
-function MdEditor(obj) {
-  const { el, onChange, themeActive } = obj;
+function initMdEditor(obj) {
+  const { el, onChange, canAttachFile, themeOptions } = obj;
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
-  initStyle(themeActive);
+  if (isNotEmpty(themeOptions)) initStyle(themeOptions);
+  if (isNotEmpty(canAttachFile))
+    store.commit("setCanAttachFile", canAttachFile);
 
   new Vue({
     store,
@@ -28,4 +24,4 @@ function MdEditor(obj) {
   }).$mount(el);
 }
 
-window.MdEditor = MdEditor;
+window.MdEditor = initMdEditor;
