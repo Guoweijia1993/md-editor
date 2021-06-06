@@ -9,7 +9,7 @@
 </template>
 <script>
 import { mapMutations, mapState } from "vuex";
-import { formatText } from "@/assets/js/utils";
+import { updateText } from "@/assets/js/utils";
 export default {
   props: {
     info: {
@@ -32,11 +32,11 @@ export default {
         case "ul":
         case "task":
         case "table":
-          this.updateText(startStr, endStr);
+          updateText(startStr, endStr);
           break;
         case "ol":
           let ulNum = this.ulNum;
-          this.updateText(`\n${ulNum++}. `, "");
+          updateText(`\n${ulNum++}. `, "");
           this.setUlNum(ulNum);
           break;
         case "fullScreen":
@@ -45,13 +45,6 @@ export default {
         default:
           break;
       }
-    },
-    updateText(startStr, endStr) {
-      const selectionInfo = this.selectionInfo;
-      const originalText = this.text;
-      const newText = formatText(originalText, selectionInfo, startStr, endStr);
-      if (!newText) return;
-      this.setText(newText);
     }
   }
 };

@@ -1,8 +1,8 @@
 <template>
   <div :class="['md_container', { active: isFocus }]">
     <markdown-header />
-    <markdownPreview v-if="showPreview" />
-    <markdown-editor v-else />
+    <markdownPreview v-show="showPreview" />
+    <markdown-editor v-show="!showPreview" />
     <markdown-footer
       :can-attach-file="canAttachFile"
       v-if="!showPreview && canAttachFile"
@@ -22,9 +22,33 @@ export default {
     markdownEditor,
     markdownPreview
   },
-
   computed: {
-    ...mapState(["showPreview", "isFocus", "canAttachFile"])
+    ...mapState([
+      "showPreview",
+      "isFocus",
+      "canAttachFile",
+      "text",
+      "html",
+      "fileList"
+    ])
+  },
+  watch: {
+    html: {
+      immediate: true,
+      handler: function(val) {
+        this.$emit("change", {
+          text: this.text,
+          html: this.html
+        });
+      }
+    },
+    fileList: {
+      immediate: false,
+      deep: true,
+      handler: function(val) {
+        this.$emit("upload", val);
+      }
+    }
   }
 };
 </script>

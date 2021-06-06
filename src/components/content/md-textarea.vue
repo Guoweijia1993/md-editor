@@ -5,6 +5,7 @@
       @change="setText(textContent)"
       @focus="setFocus(true)"
       @blur="setFocus(false)"
+      @paste="pasteFile"
       v-model="textContent"
       rows="10"
     >
@@ -55,6 +56,19 @@ export default {
       const info = getSelectionInfo(this.id);
       if (!info) return;
       this.setSelectionInfo(info);
+    },
+    pasteFile(event) {
+      let fileList = [];
+      const items = (event.clipboardData || window.clipboardData).items;
+      for (let i = 0; i < items.length; i++) {
+        console.log(items[i]);
+        if (items[i].type.indexOf("image") !== -1) {
+          fileList.push(items[i].getAsFile());
+          break;
+        }
+      }
+      if (!fileList.length) return;
+      console.log(fileList);
     }
   }
 };
@@ -63,6 +77,7 @@ export default {
 .md_textarea {
   position: relative;
   padding: 10px 0;
+  background: #fff;
   &.fullScreen {
     position: fixed;
     width: 100vw;

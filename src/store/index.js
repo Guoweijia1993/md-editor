@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { formatText } from "@/assets/js/utils";
 
 Vue.use(Vuex);
 
@@ -79,6 +80,7 @@ export default new Vuex.Store({
         tip: "全屏模式"
       }
     ],
+    fileList: "",
     ulNum: 1,
     text: `
 # 标题一标题一标题一
@@ -150,6 +152,9 @@ _斜体文字_
     },
     setCanAttachFile(state, val) {
       state.canAttachFile = val;
+    },
+    setFileList(state, val) {
+      state.fileList = val;
     }
   }
 });

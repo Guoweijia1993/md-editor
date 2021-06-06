@@ -1,4 +1,7 @@
+import store from '@/store'
+
 // 获取选中文本信息
+
 export function getSelectionInfo(selectorId) {
   const selector = document.getElementById(selectorId);
   // const selection = window.getSelection();
@@ -20,6 +23,15 @@ export function formatText(text, selectionInfo, startStr = "", endStr = "") {
     endStr +
     text.slice(selectionInfo.selectionEnd)
   );
+}
+
+//
+export function updateText(startStr, endStr) {
+  const selectionInfo = store.state.selectionInfo;
+  const originalText = store.state.text;
+  const newText = formatText(originalText, selectionInfo, startStr, endStr);
+  if (!newText) return;
+  store.commit("setText", newText);
 }
 
 // 初始化样式
