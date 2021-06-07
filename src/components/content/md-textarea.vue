@@ -7,6 +7,7 @@
       @blur="setFocus(false)"
       @paste="pasteFile"
       v-model="textContent"
+      :placeholder="placeholder"
       rows="10"
     >
     </textarea>
@@ -19,7 +20,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
-import { getSelectionInfo } from "@/assets/js/utils";
+import { getSelectionInfo, getPosition } from "@/assets/js/utils";
 export default {
   data() {
     return {
@@ -43,32 +44,40 @@ export default {
     document.removeEventListener("mouseup", this.checkSelection);
   },
   computed: {
-    ...mapState(["text", "fullScreen"])
+    ...mapState(["text", "fullScreen", "placeholder"])
   },
   methods: {
     ...mapMutations([
       "setText",
       "setFullScreen",
       "setSelectionInfo",
+      "setFileList",
       "setFocus"
     ]),
     checkSelection() {
       const info = getSelectionInfo(this.id);
-      if (!info) return;
+      if (!info) {
+        const cursorPoint = getPosition(this.id);
+        this.setSelectionInfo({
+          selectorId: this.id,
+          selectionStart: cursorPoint,
+          selectionEnd: cursorPoint
+        });
+        return;
+      }
       this.setSelectionInfo(info);
     },
     pasteFile(event) {
       let fileList = [];
       const items = (event.clipboardData || window.clipboardData).items;
       for (let i = 0; i < items.length; i++) {
-        console.log(items[i]);
         if (items[i].type.indexOf("image") !== -1) {
           fileList.push(items[i].getAsFile());
           break;
         }
       }
       if (!fileList.length) return;
-      console.log(fileList);
+      this.setFileList(fileList[0]);
     }
   }
 };

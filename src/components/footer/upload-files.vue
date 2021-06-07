@@ -8,7 +8,6 @@
       name="md-upload-file"
       id="md-upload-file"
       @change="upload"
-      multiple
     />
     <span>添加附件</span>
   </div>
@@ -27,7 +26,7 @@ export default {
     ...mapMutations(["setText", "setFileList"]),
     upload(e) {
       const fileList = Array.from(e.target.files);
-      this.setFileList(fileList);
+      this.setFileList(fileList[0]);
     }
   }
 };

@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from "@/store";
 
 // 获取选中文本信息
 
@@ -8,21 +8,36 @@ export function getSelectionInfo(selectorId) {
   const { selectionStart = 0, selectionEnd = 0 } = selector;
   if (selectionStart === selectionEnd) return "";
   return {
+    selectorId,
     selectionStart,
     selectionEnd
   };
 }
 
+export const getPosition = function(selectorId) {
+  const element = document.getElementById(selectorId);
+  let cursorPos = 0;
+  if (document.selection) {
+    //IE
+    var selectRange = document.selection.createRange();
+    selectRange.moveStart("character", -element.value.length);
+    cursorPos = selectRange.text.length;
+  } else if (element.selectionStart || element.selectionStart == "0") {
+    cursorPos = element.selectionStart;
+  }
+  return cursorPos;
+};
+
 // 工具栏格式化文本
 export function formatText(text, selectionInfo, startStr = "", endStr = "") {
-  if (!selectionInfo) return text + startStr + endStr;
-  return (
+  if (!selectionInfo) return;
+  const newText =
     text.slice(0, selectionInfo.selectionStart) +
     startStr +
     text.slice(selectionInfo.selectionStart, selectionInfo.selectionEnd) +
     endStr +
-    text.slice(selectionInfo.selectionEnd)
-  );
+    text.slice(selectionInfo.selectionEnd);
+  return newText;
 }
 
 //
@@ -67,7 +82,7 @@ export function initStyle({
   }
 }
 
-// 
+//
 export function isNotEmpty(val) {
   return val !== null && val !== undefined;
 }

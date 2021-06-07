@@ -9,6 +9,7 @@ export default new Vuex.Store({
     fullScreen: false,
     isFocus: false,
     showPreview: false,
+    placeholder: "请输入内容",
     toolButtonList: [
       {
         name: "bold",
@@ -82,48 +83,47 @@ export default new Vuex.Store({
     ],
     fileList: "",
     ulNum: 1,
-    text: `
-# 标题一标题一标题一
-## 标题二标题二
-666\`行内代码\`666
-\`\`\`js
-// 是注释呀
-/**
-* @params x
-*/
-function fn() {
-  return null;
-}
-\`\`\`
-**粗体文字**
+    //     text: `
+    // # 标题一标题一标题一
+    // ## 标题二标题二
+    // 666\`行内代码\`666
+    // \`\`\`js
+    // // 是注释呀
+    // /**
+    // * @params x
+    // */
+    // function fn() {
+    //   return null;
+    // }
+    // \`\`\`
+    // **粗体文字**
 
-_斜体文字_
+    // _斜体文字_
 
-> 这段是引用的内容\n
-> 这段是引用的内容
-> 这段是引用的内容
+    // > 这段是引用的内容\n
+    // > 这段是引用的内容
+    // > 这段是引用的内容
 
-[链接](url)
+    // [链接](url)
 
+    // - 无序列表
+    // - 无序列表
+    // - 无序列表
 
-- 无序列表
-- 无序列表
-- 无序列表
+    // 1. 有序列表
+    // 2. 有序列表
+    // 3. 有序列表
 
+    // - [ ] 任务列表
+    // - [x] 任务列表
+    // - [ ] 任务列表
 
-1. 有序列表
-2. 有序列表
-3. 有序列表
-
-- [ ] 任务列表
-- [x] 任务列表
-- [ ] 任务列表
-
-| header | header |
-| ------ | ------ |
-| cell | cell |
-| cell | cell |`,
+    // | header | header |
+    // | ------ | ------ |
+    // | cell | cell |
+    // | cell | cell |`,
     selectionInfo: "",
+    text: "",
     html: "",
     canAttachFile: true
   },
@@ -155,6 +155,9 @@ _斜体文字_
     },
     setFileList(state, val) {
       state.fileList = val;
+    },
+    setPlaceholder(state, val) {
+      state.placeholder = val;
     }
   }
 });

@@ -3,7 +3,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 module.exports = {
   entry: path.resolve(__dirname, "./src/main.js"),
   output: {
-    filename: "bundle.js",
+    filename: "markdown-editor.js",
     path: path.resolve(__dirname, "dist")
   },
   devServer: {

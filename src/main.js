@@ -9,15 +9,23 @@ import "@/assets/style/global.less";
 Vue.use(Vtip.directive);
 
 function initMdEditor(obj) {
-  const { el, onChange, onUpload, canAttachFile, themeOptions } = obj;
+  const {
+    el,
+    onChange,
+    onUpload,
+    placeholder,
+    canAttachFile,
+    themeOptions
+  } = obj;
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
   if (isNotEmpty(canAttachFile))
     store.commit("setCanAttachFile", canAttachFile);
+  if (isNotEmpty(placeholder)) store.commit("setPlaceholder", placeholder);
 
   new Vue({
     store,
-    render: (h) =>
+    render: h =>
       h(App, {
         on: {
           change(val) {

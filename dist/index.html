@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="app"></div>
-    <script src="./bundle.js"></script>
+    <script src="./markdown-editor.js"></script>
     <script>
       new MdEditor({
         el: "#app", // required
@@ -20,18 +20,21 @@
           textColorActive: "#000"
         },
         canAttachFile: true,
+        placeholder: "请输入内容",
         onChange: function(res) {
           console.log(res);
         },
-        onUpload: function(fileList, callback) {
+        onUpload: function(file, callback) {
           new Promise((res, rej) => {
             setTimeout(() => {
-              res(fileList);
+              res(file);
             }, 2000);
           }).then(res => {
-            callback(
-              "https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg"
-            );
+            var reader = new FileReader();
+            reader.readAsDataURL(res);
+            reader.onload = () => {
+              callback(reader.result);
+            };
           });
         }
       });
