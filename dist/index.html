@@ -22,6 +22,17 @@
         canAttachFile: true,
         onChange: function(res) {
           console.log(res);
+        },
+        onUpload: function(fileList, callback) {
+          new Promise((res, rej) => {
+            setTimeout(() => {
+              res(fileList);
+            }, 2000);
+          }).then(res => {
+            callback(
+              "https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg"
+            );
+          });
         }
       });
     </script>
