@@ -7,7 +7,7 @@
 ```html
 <script src="./markdown-editor.js"></script>
 ```
-2. 指定需要渲染的容易
+2. 指定需要渲染的容器
 ```html
 <div id="app"></div>
 ```
