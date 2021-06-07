@@ -80,6 +80,37 @@ new MdEditor({
 })
 ```
 
+# Example
+```html
+<div id="app"></div>
+    <script src="./markdown-editor.js"></script>
+    <script>
+      new MdEditor({
+        el: "#app", // required
+        themeOptions: {
+          borderColor: "#dbdbdb",
+          borderColorActive: "#409eff",
+          textColor: "#303030",
+          textColorActive: "#000"
+        },
+        canAttachFile: true,
+        placeholder: "请输入内容",
+        onChange: function(res) {
+          const { text, html } = res
+          // submit(text)
+          // render(html)
+        },
+        onUpload: function(file, callback) {
+          ajax.post('http://example.com', {
+              file: file
+          }).then(res=>{
+              callback(res.url)
+          })
+        }
+      });
+    </script>
+```
+
 # License
 
 [MIT](https://codechina.csdn.net/codechina_dev/markdown-editor/-/blob/master/LICENSE)
