@@ -26,8 +26,8 @@ new MdEditor({
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
-| onChange | 获取编辑器内容 | Function | function(res) {}
-| onUpload | 上传文件钩子函数 | Function | function(file, callback) {}
+| onChange | 获取编辑器内容 | Function | function(res) {} [示例](#onchange)
+| onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
 
 # themeOptions
 
@@ -37,3 +37,28 @@ new MdEditor({
 | borderColorActive | 编辑器边框激活颜色 | String | "#409eff"
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
+
+# onChange
+
+```js
+new MdEditor({
+    ...,
+    onChange: function(res) {
+        console.log(res) // { text: "...", html: "..." }
+    }
+})
+```
+
+#onUpload
+
+```js
+new MdEditor({
+    ...,
+    onUpload: function(file, callback) {
+        // ajax
+        // ...
+        // 得到图片的url
+        callback(url)
+    }
+})
+```
