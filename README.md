@@ -38,7 +38,9 @@ new MdEditor({
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
 
-# onChange（用于获取markdown内容及编译后的html内容）
+# onChange
+用于获取markdown内容及编译后的html内容
+
 
 ```js
 new MdEditor({
@@ -49,7 +51,9 @@ new MdEditor({
 })
 ```
 
-# onUpload（上传或粘贴文件时触发此函数）
+# onUpload
+
+上传或粘贴文件时会触发此函数
 
 ```js
 new MdEditor({
