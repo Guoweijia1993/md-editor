@@ -26,7 +26,7 @@ new MdEditor({
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
-| onChange | 获取编辑器内容 | Function | function(res) {} [示例](#onchange)
+| onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
 
 # themeOptions
@@ -38,7 +38,7 @@ new MdEditor({
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
 
-# onChange
+# onChange（用于获取markdown内容及编译后的html内容）
 
 ```js
 new MdEditor({
@@ -49,7 +49,7 @@ new MdEditor({
 })
 ```
 
-# onUpload
+# onUpload（上传或粘贴文件时触发此函数）
 
 ```js
 new MdEditor({
@@ -59,6 +59,7 @@ new MdEditor({
         // ajax
         // ...
         // 得到图片的url
+        // 在callback函数中回传图片url，编辑器会将图片链接粘贴到内容里
         callback(url)
     }
 })
