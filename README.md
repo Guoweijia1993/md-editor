@@ -49,12 +49,13 @@ new MdEditor({
 })
 ```
 
-#onUpload
+# onUpload
 
 ```js
 new MdEditor({
     ...,
     onUpload: function(file, callback) {
+        // do something with file
         // ajax
         // ...
         // 得到图片的url
@@ -62,3 +63,5 @@ new MdEditor({
     }
 })
 ```
+
+# License
