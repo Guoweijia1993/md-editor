@@ -65,3 +65,5 @@ new MdEditor({
 ```
 
 # License
+
+[MIT](https://codechina.csdn.net/codechina_dev/markdown-editor/-/blob/master/LICENSE)
