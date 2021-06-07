@@ -23,7 +23,7 @@ new MdEditor({
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
 | el | 编辑器渲染的容器 | String | "#app"
-| themeOptions | 主题颜色配置 | Object | [themeOptions](#themeOptions)
+| themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
 | onChange | 获取编辑器内容 | Function | function(res) {}
