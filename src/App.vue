@@ -54,8 +54,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .md_container {
-  width: 1000px;
-  margin: 200px auto;
+  width: 100%;
+  // margin: 200px auto;
   border: 1px solid var(--md-editor-border-color);
   border-radius: 4px;
   padding: 10px 16px;
