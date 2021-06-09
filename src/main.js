@@ -1,9 +1,8 @@
 import Vue from "vue";
 import App from "./App";
-import store from "./store";
 import Vtip from "vtip";
 import "vtip/lib/index.min.css";
-import { initStyle, isNotEmpty, updateText } from "@/assets/js/utils";
+import { initStyle, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
 
 Vue.use(Vtip.directive);
@@ -19,23 +18,23 @@ function initMdEditor(obj) {
   } = obj;
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
-  if (isNotEmpty(canAttachFile))
-    store.commit("setCanAttachFile", canAttachFile);
-  if (isNotEmpty(placeholder)) store.commit("setPlaceholder", placeholder);
 
   new Vue({
-    store,
     render: h =>
       h(App, {
         on: {
           change(val) {
             onChange(val);
           },
-          upload(val) {
+          upload({ val, callback }) {
             onUpload(val, function(res) {
-              updateText("\n\n![img](", `${res})\n`);
+              callback(res);
             });
           }
+        },
+        props: {
+          canAttachFile,
+          placeholder
         }
       })
   }).$mount(el);

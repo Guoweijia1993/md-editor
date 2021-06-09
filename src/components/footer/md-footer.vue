@@ -1,17 +1,27 @@
 <template>
   <div :class="['md_footer', { active: isFocus }]">
     <div class="doc"></div>
-    <upload-files v-if="canAttachFile" />
+    <upload-files @changeFileList="$emit('update:fileList', $event)" :fileList="fileList" v-if="canAttachFile" />
   </div>
 </template>
 <script>
 import uploadFiles from "./upload-files";
-import { mapState } from "vuex";
 export default {
   components: { uploadFiles },
-  computed: {
-    ...mapState(["isFocus", "canAttachFile"])
-  }
+  props: {
+     isFocus: {
+      type: Boolean,
+      default: false
+    },
+     canAttachFile: {
+      type: Boolean,
+      default: false
+    },
+    fileList: {
+      type: Array,
+      default: ()=>[]
+    }
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -8,20 +8,36 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapState } from "vuex";
-import { updateText } from "@/assets/js/utils";
+import { formatText } from "@/assets/js/utils";
 export default {
   props: {
     info: {
       type: Object,
       default: () => {}
+    },
+    fullScreen: {
+      type: Boolean,
+      default: false
+    },
+    text: {
+      type: String,
+      default: ''
+    },
+    selectionInfo: {
+      type: Object,
+      default: ()=>{}
+    },
+    uploadPath: {
+      type: String,
+      default: ''
     }
   },
-  computed: {
-    ...mapState(["selectionInfo", "text", "ulNum"])
+  data() {
+    return {
+      ulNum: 1
+    }
   },
   methods: {
-    ...mapMutations(["setFullScreen", "setText", "setUlNum"]),
     handleTool(type, startStr, endStr) {
       switch (type) {
         case "bold":
@@ -32,20 +48,26 @@ export default {
         case "ul":
         case "task":
         case "table":
-          updateText(startStr, endStr);
+          this.updateText(startStr, endStr);
           break;
         case "ol":
           let ulNum = this.ulNum;
-          updateText(`\n${ulNum++}. `, "");
-          this.setUlNum(ulNum);
+          this.updateText(`\n${ulNum}. `, "");
+          this.ulNum++
           break;
         case "fullScreen":
-          this.setFullScreen(true);
+          this.$emit('setFullScreen', true)
           break;
         default:
           break;
       }
-    }
+    },
+    updateText(startStr, endStr) {
+      const originalText = this.text
+      const selectionInfo = this.selectionInfo
+     const newText = formatText(originalText, selectionInfo, startStr, endStr)
+      this.$emit('updateText',newText)
+   }
   }
 };
 </script>

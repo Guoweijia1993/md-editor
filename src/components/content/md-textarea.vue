@@ -2,7 +2,7 @@
   <div :class="['md_textarea', { fullScreen }]">
     <textarea
       :id="id"
-      @change="setText(textContent)"
+      @change="$emit('update:text', textContent)"
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
@@ -12,20 +12,44 @@
     >
     </textarea>
     <span
-      @click="setFullScreen(false)"
+      @click="$emit('update:fullScreen', false)"
       v-if="fullScreen"
       class="icon iconfont icon-quxiaoquanping_o"
     ></span>
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
 import { getSelectionInfo, getPosition } from "@/assets/js/utils";
 export default {
+  props: {
+    fullScreen: {
+      type: Boolean,
+      default: false
+    },
+    isFocus: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: false
+    },
+    fileList: {
+      type: Array,
+      default: ()=>[]
+    },
+    text: {
+      type: String,
+      default: ''
+    },
+    selectionInfo: {
+      type: Object,
+      default: ()=>{}
+    }
+  },
   data() {
     return {
       id: new Date().getTime(),
-      isFocus: false,
       textContent: ""
     };
   },
@@ -43,29 +67,24 @@ export default {
   beforeDestroy() {
     document.removeEventListener("mouseup", this.checkSelection);
   },
-  computed: {
-    ...mapState(["text", "fullScreen", "placeholder"])
-  },
+  
   methods: {
-    ...mapMutations([
-      "setText",
-      "setFullScreen",
-      "setSelectionInfo",
-      "setFileList",
-      "setFocus"
-    ]),
+   
+    setFocus(val) {
+      this.$emit('update:isFocus', val)
+    },
     checkSelection() {
       const info = getSelectionInfo(this.id);
       if (!info) {
         const cursorPoint = getPosition(this.id);
-        this.setSelectionInfo({
+        this.$emit('update:selectionInfo',{
           selectorId: this.id,
           selectionStart: cursorPoint,
           selectionEnd: cursorPoint
-        });
+        })
         return;
       }
-      this.setSelectionInfo(info);
+      this.$emit('update:selectionInfo',info)
     },
     pasteFile(event) {
       let fileList = [];
@@ -77,7 +96,7 @@ export default {
         }
       }
       if (!fileList.length) return;
-      this.setFileList(fileList[0]);
+      this.$emit('update:fileList', fileList)
     }
   }
 };
