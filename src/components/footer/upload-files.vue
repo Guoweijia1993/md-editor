@@ -13,20 +13,20 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
-
 export default {
+  props: {
+    fileList: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {};
   },
-  computed: {
-    ...mapState(["text", "selectionInfo"])
-  },
   methods: {
-    ...mapMutations(["setText", "setFileList"]),
     upload(e) {
       const fileList = Array.from(e.target.files);
-      this.setFileList(fileList[0]);
+      this.$emit("changeFileList", fileList);
     }
   }
 };

@@ -4,18 +4,23 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
 import marked from "marked";
 import "highlight.js/styles/github.css";
 export default {
   data() {
     return {};
   },
-  computed: {
-    ...mapState(["text", "html"])
+  props: {
+    text: {
+      type: String,
+      default: ""
+    },
+    html: {
+      type: String,
+      default: ""
+    }
   },
   methods: {
-    ...mapMutations(["setHtml"]),
     transferMarkdown(val) {
       marked.setOptions({
         highlight: function(code, lang, callback) {
@@ -25,7 +30,7 @@ export default {
       });
       if (!val.trim()) return;
       const html = marked(val);
-      this.setHtml(html);
+      this.$emit("update:html", html);
     }
   },
   watch: {

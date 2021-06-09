@@ -17,22 +17,131 @@
     <div class="header_tools" v-if="!showPreview">
       <tool-button
         :info="item"
+        :fullScreen="fullScreen"
+        @setFullScreen="$emit('update:fullScreen', true)"
+        @updateText="updateText"
         v-for="(item, index) in toolButtonList"
         :key="index"
+        :text="text"
+        :selectionInfo="selectionInfo"
       />
     </div>
   </div>
 </template>
 <script>
 import toolButton from "./tool-button";
-import { mapState, mapMutations } from "vuex";
 export default {
   components: { toolButton },
-  computed: {
-    ...mapState(["toolButtonList", "isFocus", "showPreview"])
+  props: {
+    fullScreen: {
+      type: Boolean,
+      default: false
+    },
+    isFocus: {
+      type: Boolean,
+      default: false
+    },
+    showPreview: {
+      type: Boolean,
+      default: false
+    },
+    text: {
+      type: String,
+      default: ""
+    },
+    selectionInfo: {
+      type: Object,
+      default: () => {}
+    }
   },
+  data() {
+    return {
+      toolButtonList: [
+        {
+          name: "bold",
+          icon: "bold",
+          tip: "粗体",
+          startStr: "**",
+          endStr: "**"
+        },
+        {
+          name: "italic",
+          icon: "italic",
+          tip: "斜体",
+          startStr: "_",
+          endStr: "_"
+        },
+        {
+          name: "quote",
+          icon: "baojiaquotation",
+          tip: "插入引用",
+          startStr: "\n> ",
+          endStr: ""
+        },
+        {
+          name: "code",
+          icon: "code",
+          tip: "插入代码",
+          startStr: "`",
+          endStr: "`"
+        },
+        {
+          name: "link",
+          icon: "lianjie",
+          tip: "添加链接",
+          startStr: "[",
+          endStr: "](url)"
+        },
+        {
+          name: "ul",
+          icon: "unorderedList",
+          tip: "添加无序列表",
+          startStr: "\n- ",
+          endStr: ""
+        },
+        {
+          name: "ol",
+          icon: "youxuliebiao",
+          tip: "添加有序列表",
+          startStr: "",
+          endStr: ""
+        },
+        {
+          name: "task",
+          icon: "renwu",
+          tip: "添加任务列表",
+          startStr: "\n- [ ] ",
+          endStr: ""
+        },
+        {
+          name: "table",
+          icon: "biaoge",
+          tip: "添加表格",
+          startStr:
+            "\n\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n",
+          endStr: ""
+        },
+        {
+          name: "fullScreen",
+          icon: "fullScreen",
+          tip: "全屏模式"
+        }
+      ]
+    };
+  },
+
   methods: {
-    ...mapMutations(["setShowPreview"])
+    setShowPreview(val) {
+      this.$emit("update:showPreview", val);
+    },
+    updateText(val) {
+      this.$emit("update:text", val);
+      this.$emit("update:selectionInfo", {
+        selectorId: "",
+        selectionStart: "",
+        selectionEnd: ""
+      });
+    }
   }
 };
 </script>
