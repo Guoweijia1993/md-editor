@@ -20,4 +20,13 @@ compile:
   stage: build
   script:
     - npm run build
-
+check:
+  stage: test
+  script:
+    - |
+      if [[ ! -f dist/markdown-editor.js ]]; then
+        echo "failed!"
+      fi
+    -  
+      exit 1
+    
