@@ -1,0 +1,23 @@
+# This file is a template, and might need editing before it works on your project.
+default:
+  image: node:latest
+
+  # Validate that the repository contains a package.json and extract a few values from it.
+  before_script:
+    - |
+      if [[ ! -f package.json ]]; then
+        echo "No package.json found! A package.json file is required to run npm build"
+        exit 1
+      fi
+    - echo "current version is :"
+    - echo $(node -p "require('./package.json').version")
+
+install:
+  stage: build
+  script:
+    - npm install
+compile:
+  stage: build
+  script:
+    - npm run build
+
