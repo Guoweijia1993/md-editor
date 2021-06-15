@@ -114,12 +114,26 @@ new MdEditor({
     <script>
       new MdEditor({
         el: "#app", // required
+        value: "回显的内容",
         themeOptions: {
           borderColor: "#dbdbdb",
           borderColorActive: "#409eff",
           textColor: "#303030",
           textColorActive: "#000"
         },
+        toolsOptions: {
+          bold: true,
+          italic: false,
+          quote: true,
+          code: true,
+          link: false,
+          ul: true,
+          ol: true,
+          task: true,
+          table: false,
+          fullScreen: false
+        },
+        canPreview: true,
         canAttachFile: true,
         placeholder: "请输入内容",
         onChange: function(res) {
