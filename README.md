@@ -16,8 +16,8 @@
 
 2021-06-15 v0.2更新，添加功能：
 
-- 内容回显
-- 顶部工具栏配置
+- [内容回显](#options)
+- [顶部工具栏配置](#toolsoptions)
 
 # 使用
 
@@ -41,7 +41,7 @@ new MdEditor({
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
 | el | 编辑器渲染的容器 | String | "#app"
-| value | 编辑器回显内容 | String | Number | ""
+| value | 编辑器回显内容 | String \| Number | ""
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
