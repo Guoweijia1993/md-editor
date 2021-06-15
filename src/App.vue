@@ -5,9 +5,11 @@
       :selectionInfo.sync="selectionInfo"
       :showPreview.sync="showPreview"
       :isFocus.sync="isFocus"
+      :canPreview="canPreview"
+      :toolsOptions="toolsOptions"
       :fullScreen.sync="fullScreen"
     />
-    <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
+  <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
     <markdown-editor
       :selectionInfo.sync="selectionInfo"
       :text.sync="text"
@@ -47,6 +49,18 @@ export default {
     canAttachFile: {
       type: Boolean,
       default: true
+    },
+    value: {
+      type: [String, Number],
+      default: ""
+    },
+    canPreview: {
+      type: Boolean,
+      default: true
+    },
+    toolsOptions: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -56,45 +70,6 @@ export default {
       showPreview: false,
       fileList: [],
       text: "",
-//       text: `
-// # 标题一标题一标题一
-// ## 标题二标题二
-// 666\`行内代码\`666
-// \`\`\`js
-// // 是注释呀
-// /**
-// * @params x
-// */
-// function fn() {
-//   return null;
-// }
-// \`\`\`
-// **粗体文字**
-
-// _斜体文字_
-
-// > 这段是引用的内容\n
-// > 这段是引用的内容
-// > 这段是引用的内容
-
-// [链接](url)
-
-// - 无序列表
-// - 无序列表
-// - 无序列表
-
-// 1. 有序列表
-// 2. 有序列表
-// 3. 有序列表
-
-// - [ ] 任务列表
-// - [x] 任务列表
-// - [ ] 任务列表
-
-// | header | header |
-// | ------ | ------ |
-// | cell | cell |
-// | cell | cell |`,
       html: "",
       selectionInfo: {
         selectorId: "",
@@ -103,7 +78,6 @@ export default {
       }
     };
   },
-
   watch: {
     html: {
       immediate: true,
@@ -112,6 +86,12 @@ export default {
           text: this.text,
           html: this.html
         });
+      }
+    },
+    value: {
+      immediate: true,
+      handler: function(val) {
+        this.text = val;
       }
     },
     fileList: {

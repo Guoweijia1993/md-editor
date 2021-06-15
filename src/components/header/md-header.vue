@@ -2,12 +2,13 @@
   <div :class="['md_header', { active: isFocus }]">
     <div class="header_tabs">
       <div
-        :class="['tab_item', { active: !showPreview }]"
+        :class="['tab_item', { active: canPreview && !showPreview }]"
         @click="setShowPreview(false)"
       >
         编辑
       </div>
       <div
+        v-if="canPreview"
         :class="['tab_item', { active: showPreview }]"
         @click="setShowPreview(true)"
       >
@@ -20,7 +21,7 @@
         :fullScreen="fullScreen"
         @setFullScreen="$emit('update:fullScreen', true)"
         @updateText="updateText"
-        v-for="(item, index) in toolButtonList"
+        v-for="(item, index) in toolsShow"
         :key="index"
         :text="text"
         :selectionInfo="selectionInfo"
@@ -29,6 +30,7 @@
   </div>
 </template>
 <script>
+import { isNotFalse } from "@/assets/js/utils";
 import toolButton from "./tool-button";
 export default {
   components: { toolButton },
@@ -45,13 +47,31 @@ export default {
       type: Boolean,
       default: false
     },
+    canPreview: {
+      type: Boolean,
+      default: true
+    },
+    toolsOptions: {
+      type: Object,
+      default: () => {}
+    },
     text: {
-      type: String,
+      type: [String, Number],
       default: ""
     },
     selectionInfo: {
       type: Object,
       default: () => {}
+    }
+  },
+  computed: {
+    toolsShow() {
+      const toolsList = this.toolButtonList;
+      const toolsOptions = this.toolsOptions;
+      if (!toolsOptions) return toolsList;
+      return toolsList.filter(item => {
+        return isNotFalse(toolsOptions[item.name]);
+      });
     }
   },
   data() {

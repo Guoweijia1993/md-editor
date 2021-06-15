@@ -75,3 +75,7 @@ export function initStyle({
 export function isNotEmpty(val) {
   return val !== null && val !== undefined;
 }
+
+export function isNotFalse(val) {
+  return val !== false;
+}

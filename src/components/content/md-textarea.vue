@@ -36,15 +36,15 @@ export default {
     },
     fileList: {
       type: Array,
-      default: ()=>[]
+      default: () => []
     },
     text: {
-      type: String,
-      default: ''
+      type: [String, Number],
+      default: ""
     },
     selectionInfo: {
       type: Object,
-      default: ()=>{}
+      default: () => {}
     }
   },
   data() {
@@ -67,24 +67,23 @@ export default {
   beforeDestroy() {
     document.removeEventListener("mouseup", this.checkSelection);
   },
-  
+
   methods: {
-   
     setFocus(val) {
-      this.$emit('update:isFocus', val)
+      this.$emit("update:isFocus", val);
     },
     checkSelection() {
       const info = getSelectionInfo(this.id);
       if (!info) {
         const cursorPoint = getPosition(this.id);
-        this.$emit('update:selectionInfo',{
+        this.$emit("update:selectionInfo", {
           selectorId: this.id,
           selectionStart: cursorPoint,
           selectionEnd: cursorPoint
-        })
+        });
         return;
       }
-      this.$emit('update:selectionInfo',info)
+      this.$emit("update:selectionInfo", info);
     },
     pasteFile(event) {
       let fileList = [];
@@ -96,7 +95,7 @@ export default {
         }
       }
       if (!fileList.length) return;
-      this.$emit('update:fileList', fileList)
+      this.$emit("update:fileList", fileList);
     }
   }
 };

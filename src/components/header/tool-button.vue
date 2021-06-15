@@ -20,22 +20,22 @@ export default {
       default: false
     },
     text: {
-      type: String,
-      default: ''
+      type: [String, Number],
+      default: ""
     },
     selectionInfo: {
       type: Object,
-      default: ()=>{}
+      default: () => {}
     },
     uploadPath: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
     return {
       ulNum: 1
-    }
+    };
   },
   methods: {
     handleTool(type, startStr, endStr) {
@@ -53,21 +53,21 @@ export default {
         case "ol":
           let ulNum = this.ulNum;
           this.updateText(`\n${ulNum}. `, "");
-          this.ulNum++
+          this.ulNum++;
           break;
         case "fullScreen":
-          this.$emit('setFullScreen', true)
+          this.$emit("setFullScreen", true);
           break;
         default:
           break;
       }
     },
     updateText(startStr, endStr) {
-      const originalText = this.text
-      const selectionInfo = this.selectionInfo
-     const newText = formatText(originalText, selectionInfo, startStr, endStr)
-      this.$emit('updateText',newText)
-   }
+      const originalText = this.text;
+      const selectionInfo = this.selectionInfo;
+      const newText = formatText(originalText, selectionInfo, startStr, endStr);
+      this.$emit("updateText", newText);
+    }
   }
 };
 </script>

@@ -12,7 +12,7 @@ export default {
   },
   props: {
     text: {
-      type: String,
+      type: [String, Number],
       default: ""
     },
     html: {
@@ -28,8 +28,9 @@ export default {
           return html;
         }
       });
-      if (!val.trim()) return;
-      const html = marked(val);
+      const str = val + "";
+      if (!str.trim()) return;
+      const html = marked(str);
       this.$emit("update:html", html);
     }
   },

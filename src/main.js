@@ -13,8 +13,11 @@ function initMdEditor(obj) {
     onChange,
     onUpload,
     placeholder,
+    value,
+    canPreview,
     canAttachFile,
-    themeOptions
+    themeOptions,
+    toolsOptions
   } = obj;
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
@@ -34,6 +37,9 @@ function initMdEditor(obj) {
         },
         props: {
           canAttachFile,
+          value,
+          canPreview,
+          toolsOptions,
           placeholder
         }
       })
