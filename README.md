@@ -12,6 +12,13 @@
 - 单张图片/单个附件上传
 - Markdown & Html 内容获取
 
+### v0.2
+
+2021-06-15 v0.2更新，添加功能：
+
+- 内容回显
+- 顶部工具栏配置
+
 # 使用
 
 1. 通过script标签引入
@@ -34,8 +41,11 @@ new MdEditor({
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
 | el | 编辑器渲染的容器 | String | "#app"
+| value | 编辑器回显内容 | String | Number | ""
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
+| toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
+| canPreview | 是否开启预览 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
@@ -48,6 +58,23 @@ new MdEditor({
 | borderColorActive | 编辑器边框激活颜色 | String | "#409eff"
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
+
+
+# toolsOptions
+
+| 属性 | 说明 | 类型 | 默认值 |
+| ------ | ------ | ------ | ------ |
+| bold | 加粗 | Boolean | true
+| italic | 斜体 | Boolean | true
+| quote | 引用 | Boolean | true
+| code | 代码 | Boolean | true
+| link | 链接 | Boolean | true
+| ul | 无序列表 | Boolean | true
+| ol | 有序列表 | Boolean | true
+| task | 任务列表 | Boolean | true
+| table | 表格 | Boolean | true
+| fullScreen | 全屏模式 | Boolean | true
+
 
 # onChange
 用于获取markdown内容及编译后的html内容
