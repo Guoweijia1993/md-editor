@@ -1,11 +1,13 @@
 <template>
-  <div :class="['md_textarea', { fullScreen }]">
+  <div :class="['md_textarea', { fullScreen, isFocus }]">
     <textarea
       :id="id"
       @change="$emit('update:text', textContent)"
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
+      @keydown.meta.enter.exact="submit"
+      @keydown.ctrl.enter.exact="submit"
       v-model="textContent"
       :placeholder="placeholder"
       rows="10"
@@ -69,6 +71,9 @@ export default {
   },
 
   methods: {
+    submit() {
+      this.$emit("submit");
+    },
     setFocus(val) {
       this.$emit("update:isFocus", val);
     },
@@ -104,7 +109,16 @@ export default {
 .md_textarea {
   position: relative;
   padding: 10px 0;
-  background: #fff;
+  background: var(--md-editor-content-bg-color);
+  border-left: 1px solid var(--md-editor-border-color);
+  border-right: 1px solid var(--md-editor-border-color);
+  transition: border 0.3s;
+  padding: 14px;
+  box-sizing: border-box;
+  &.isFocus {
+    border-left: 1px solid var(--md-editor-border-color-active);
+    border-right: 1px solid var(--md-editor-border-color-active);
+  }
   &.fullScreen {
     position: fixed;
     width: 100vw;
@@ -124,6 +138,7 @@ export default {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    background: var(--md-editor-content-bg-color);
     color: var(--md-editor-text-color);
     resize: none;
     font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas",

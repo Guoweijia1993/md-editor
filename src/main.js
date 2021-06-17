@@ -12,6 +12,9 @@ function initMdEditor(obj) {
     el,
     onChange,
     onUpload,
+    onFocus,
+    onBlur,
+    onSubmit,
     placeholder,
     value,
     canPreview,
@@ -28,6 +31,15 @@ function initMdEditor(obj) {
         on: {
           change(val) {
             onChange(val);
+          },
+          focus(val) {
+            onFocus(val);
+          },
+          blur(val) {
+            onBlur(val);
+          },
+          submit(val) {
+            onSubmit(val);
           },
           upload({ val, callback }) {
             onUpload(val, function(res) {

@@ -1,7 +1,11 @@
 <template>
   <div :class="['md_footer', { active: isFocus }]">
     <div class="doc"></div>
-    <upload-files @changeFileList="$emit('update:fileList', $event)" :fileList="fileList" v-if="canAttachFile" />
+    <upload-files
+      @changeFileList="$emit('update:fileList', $event)"
+      :fileList="fileList"
+      v-if="canAttachFile"
+    />
   </div>
 </template>
 <script>
@@ -9,19 +13,19 @@ import uploadFiles from "./upload-files";
 export default {
   components: { uploadFiles },
   props: {
-     isFocus: {
+    isFocus: {
       type: Boolean,
       default: false
     },
-     canAttachFile: {
+    canAttachFile: {
       type: Boolean,
       default: false
     },
     fileList: {
       type: Array,
-      default: ()=>[]
+      default: () => []
     }
-  },
+  }
 };
 </script>
 <style lang="less" scoped>

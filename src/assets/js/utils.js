@@ -40,11 +40,45 @@ export function formatText(text, selectionInfo, startStr = "", endStr = "") {
 
 // 初始化样式
 export function initStyle({
+  dark,
   borderColor,
   borderColorActive,
   textColor,
-  textColorActive
+  textColorActive,
+  frameBgColor,
+  contentBgColor,
+  codeBgColor
 }) {
+  // 夜晚模式
+  if (dark) {
+    borderColor = "#b2b2b2";
+    borderColorActive = "#fff";
+    textColor = "#fff";
+    textColorActive = "#fff";
+    frameBgColor = "#343434";
+    codeBgColor = "#484848";
+    contentBgColor = "#484848";
+  }
+  if (frameBgColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-frame-bg-color",
+      frameBgColor
+    );
+  }
+  if (contentBgColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-content-bg-color",
+      contentBgColor
+  );
+  }
+
+  if (codeBgColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-code-bg-color",
+      codeBgColor
+    );
+  }
+
   if (borderColor) {
     document.documentElement.style.setProperty(
       "--md-editor-border-color",

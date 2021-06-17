@@ -29,7 +29,7 @@ export default {
         }
       });
       const str = val + "";
-      if (!str.trim()) return;
+      // if (!str.trim()) return;
       const html = marked(str);
       this.$emit("update:html", html);
     }

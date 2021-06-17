@@ -9,7 +9,7 @@
       :toolsOptions="toolsOptions"
       :fullScreen.sync="fullScreen"
     />
-  <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
+    <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
     <markdown-editor
       :selectionInfo.sync="selectionInfo"
       :text.sync="text"
@@ -17,6 +17,7 @@
       :placeholder="placeholder"
       :isFocus.sync="isFocus"
       :fullScreen.sync="fullScreen"
+      @submit="submit"
       v-show="!showPreview"
     />
     <markdown-footer
@@ -88,6 +89,19 @@ export default {
         });
       }
     },
+    isFocus: {
+      handler: function(val) {
+        const value = {
+          text: this.text,
+          html: this.html
+        };
+        if (val) {
+          this.$emit("focus", value);
+        } else {
+          this.$emit("blur", value);
+        }
+      }
+    },
     value: {
       immediate: true,
       handler: function(val) {
@@ -117,12 +131,21 @@ export default {
         this.fileList = [];
       }
     }
+  },
+  methods: {
+    submit() {
+      this.$emit("submit", {
+        text: this.text,
+        html: this.html
+      });
+    }
   }
 };
 </script>
 <style lang="less" scoped>
 .md_container {
   width: 100%;
+  background: var(--md-editor-frame-bg-color);
   // margin: 200px auto;
   border: 1px solid var(--md-editor-border-color);
   border-radius: 4px;
