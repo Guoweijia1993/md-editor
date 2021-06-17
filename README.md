@@ -23,10 +23,10 @@
 
 2021-06-15 v0.3更新，添加功能：
 
-- [focus事件](#)
-- [blur事件](#)
-- [ctrl+enter/command+enter快捷键](#)
-- [夜间模式](#)
+- [focus事件](#onfocus)
+- [blur事件](#onblur)
+- [ctrl+enter/command+enter快捷键](#onsubmit)
+- [夜间模式]((#themeoptions))
 
 # 使用
 
@@ -58,6 +58,7 @@ new MdEditor({
 | placeholder | placeholder | String | "请输入内容"
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
+| onsubmit | 快捷键函数 | Function | function(file, callback) {} [示例](#onsubmit)
 
 # themeOptions
 
@@ -120,6 +121,19 @@ new MdEditor({
 new MdEditor({
     ...,
     onChange: function(res) {
+        console.log(res) // { text: "...", html: "..." }
+    }
+})
+```
+
+# onSubmit
+按下ctrl+enter/command+enter组合键时触发
+
+
+```js
+new MdEditor({
+    ...,
+    onSubmit: function(res) {
         console.log(res) // { text: "...", html: "..." }
     }
 })
