@@ -26,7 +26,7 @@
 - [focus事件](#onfocus)
 - [blur事件](#onblur)
 - [ctrl+enter/command+enter快捷键](#onsubmit)
-- [夜间模式]((#themeoptions))
+- [夜间模式](#themeoptions)
 
 # 使用
 
