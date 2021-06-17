@@ -12,9 +12,15 @@ function initMdEditor(obj) {
     el,
     onChange,
     onUpload,
+    onFocus,
+    onBlur,
+    onSubmit,
     placeholder,
+    value,
+    canPreview,
     canAttachFile,
-    themeOptions
+    themeOptions,
+    toolsOptions
   } = obj;
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
@@ -26,6 +32,15 @@ function initMdEditor(obj) {
           change(val) {
             onChange(val);
           },
+          focus(val) {
+            onFocus(val);
+          },
+          blur(val) {
+            onBlur(val);
+          },
+          submit(val) {
+            onSubmit(val);
+          },
           upload({ val, callback }) {
             onUpload(val, function(res) {
               callback(res);
@@ -34,6 +49,9 @@ function initMdEditor(obj) {
         },
         props: {
           canAttachFile,
+          value,
+          canPreview,
+          toolsOptions,
           placeholder
         }
       })

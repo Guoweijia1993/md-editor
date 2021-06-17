@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style></style>
+    <style>
+      .md_container {
+        width: 600px !important;
+        margin: 40px auto;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
@@ -13,15 +18,39 @@
     <script>
       new MdEditor({
         el: "#app", // required
+        value: "34567567567",
         themeOptions: {
+          dark: true,
           borderColor: "#dbdbdb",
           borderColorActive: "#409eff",
           textColor: "#303030",
           textColorActive: "#000"
         },
+        toolsOptions: {
+          bold: true,
+          italic: true,
+          quote: true,
+          code: true,
+          link: true,
+          ul: true,
+          ol: true,
+          task: true,
+          table: true,
+          fullScreen: true
+        },
+        canPreview: true,
         canAttachFile: true,
         placeholder: "请输入内容",
+        onFocus: function(res) {
+          console.log(res);
+        },
+        onBlur: function(res) {
+          console.log(res);
+        },
         onChange: function(res) {
+          console.log(res);
+        },
+        onSubmit: function(res) {
           console.log(res);
         },
         onUpload: function(file, callback) {

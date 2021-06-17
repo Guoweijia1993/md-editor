@@ -1,11 +1,13 @@
 <template>
-  <div :class="['md_textarea', { fullScreen }]">
+  <div :class="['md_textarea', { fullScreen, isFocus }]">
     <textarea
       :id="id"
       @change="$emit('update:text', textContent)"
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
+      @keydown.meta.enter.exact="submit"
+      @keydown.ctrl.enter.exact="submit"
       v-model="textContent"
       :placeholder="placeholder"
       rows="10"
@@ -36,15 +38,15 @@ export default {
     },
     fileList: {
       type: Array,
-      default: ()=>[]
+      default: () => []
     },
     text: {
-      type: String,
-      default: ''
+      type: [String, Number],
+      default: ""
     },
     selectionInfo: {
       type: Object,
-      default: ()=>{}
+      default: () => {}
     }
   },
   data() {
@@ -67,24 +69,26 @@ export default {
   beforeDestroy() {
     document.removeEventListener("mouseup", this.checkSelection);
   },
-  
+
   methods: {
-   
+    submit() {
+      this.$emit("submit");
+    },
     setFocus(val) {
-      this.$emit('update:isFocus', val)
+      this.$emit("update:isFocus", val);
     },
     checkSelection() {
       const info = getSelectionInfo(this.id);
       if (!info) {
         const cursorPoint = getPosition(this.id);
-        this.$emit('update:selectionInfo',{
+        this.$emit("update:selectionInfo", {
           selectorId: this.id,
           selectionStart: cursorPoint,
           selectionEnd: cursorPoint
-        })
+        });
         return;
       }
-      this.$emit('update:selectionInfo',info)
+      this.$emit("update:selectionInfo", info);
     },
     pasteFile(event) {
       let fileList = [];
@@ -96,7 +100,7 @@ export default {
         }
       }
       if (!fileList.length) return;
-      this.$emit('update:fileList', fileList)
+      this.$emit("update:fileList", fileList);
     }
   }
 };
@@ -105,7 +109,16 @@ export default {
 .md_textarea {
   position: relative;
   padding: 10px 0;
-  background: #fff;
+  background: var(--md-editor-content-bg-color);
+  border-left: 1px solid var(--md-editor-border-color);
+  border-right: 1px solid var(--md-editor-border-color);
+  transition: border 0.3s;
+  padding: 14px;
+  box-sizing: border-box;
+  &.isFocus {
+    border-left: 1px solid var(--md-editor-border-color-active);
+    border-right: 1px solid var(--md-editor-border-color-active);
+  }
   &.fullScreen {
     position: fixed;
     width: 100vw;
@@ -125,6 +138,7 @@ export default {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    background: var(--md-editor-content-bg-color);
     color: var(--md-editor-text-color);
     resize: none;
     font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas",
