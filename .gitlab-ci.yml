@@ -1,7 +1,5 @@
 default:
   image: node:latest
-
-  # Validate that the repository contains a package.json and extract a few values from it.
   before_script:
     - |
       if [[ ! -f package.json ]]; then
@@ -10,24 +8,39 @@ default:
       fi
     - echo "current version is :"
     - echo $(node -p "require('./package.json').version")
-
 stages:
-  - build
   - test
+  - deploy
 
-install:
-  stage: build
-  script:
-    - npm install
-    - npm run build
-    
 check:
   stage: test
   script:
+    - npm install
+    - npm run build
+
+publish:
+  stage: deploy
+  script:
+    # If no .npmrc if included in the repo, generate a temporary one 
     - |
-      if [[ ! -f dist/markdown-editor.js ]]; then
-        echo "failed!"
+      if [[ ! -f .npmrc ]]; then
+        echo 'No .npmrc found! Creating one now. Now we will generate one'
+        {
+          echo "//registry.npmjs.org/:_authToken=\${NPM_PUBLISH_TOKEN}"
+        } >> .npmrc
       fi
-    -  
-      exit 1
-    
+    - echo "Created the following .npmrc:"; cat .npmrc
+
+    # Extract a few values from package.json
+    - NPM_PACKAGE_NAME=$(node -p "require('./package.json').name")
+    - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+    # Compare the version in package.json to all published versions.
+    # If the package.json version has not yet been published, run `npm publish`.
+    - |
+      if [[ $(npm view "${NPM_PACKAGE_NAME}" versions) != *"'${NPM_PACKAGE_VERSION}'"* ]]; then
+        npm publish
+        echo "Successfully published version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} "
+      else
+        echo "Version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} has already been published, so no new version has been published."
+      fi
