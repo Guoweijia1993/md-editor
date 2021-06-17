@@ -19,6 +19,15 @@
 - [内容回显](#options)
 - [顶部工具栏配置](#toolsoptions)
 
+### v0.3
+
+2021-06-15 v0.3更新，添加功能：
+
+- [focus事件](#)
+- [blur事件](#)
+- [ctrl+enter/command+enter快捷键](#)
+- [夜间模式](#)
+
 # 使用
 
 1. 通过script标签引入
@@ -54,6 +63,7 @@ new MdEditor({
 
 | 属性 | 说明 | 类型 | 默认值 |
 | ------ | ------ | ------ | ------ |
+| dark | 夜间模式 | Boolean | false
 | borderColor | 编辑器边框默认颜色 | String | "#dbdbdb"
 | borderColorActive | 编辑器边框激活颜色 | String | "#409eff"
 | textColor | 编辑器文字默认颜色 | String | "#303030"
@@ -75,6 +85,32 @@ new MdEditor({
 | table | 表格 | Boolean | true
 | fullScreen | 全屏模式 | Boolean | true
 
+
+# onFocus
+编辑器获取焦点时触发
+
+
+```js
+new MdEditor({
+    ...,
+    onFocus: function(res) {
+        console.log(res) // { text: "...", html: "..." }
+    }
+})
+```
+
+# onBlur
+编辑器失去焦点时触发
+
+
+```js
+new MdEditor({
+    ...,
+    onBlur: function(res) {
+        console.log(res) // { text: "...", html: "..." }
+    }
+})
+```
 
 # onChange
 用于获取markdown内容及编译后的html内容
