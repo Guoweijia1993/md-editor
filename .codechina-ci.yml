@@ -23,12 +23,12 @@ publish:
   script:
     # If no .npmrc if included in the repo, generate a temporary one 
     - echo $NPM_PUBLISH_TOKEN
-    - echo "https//registry.npmjs.org/:_authToken=\${NPM_PUBLISH_TOKEN}"
+    - echo "https//registry.npmjs.org/:_authToken=${NPM_PUBLISH_TOKEN}"
     - |
       if [[ ! -f .npmrc ]]; then
         echo 'No .npmrc found! Creating one now. Now we will generate one'
         {
-          echo "https//registry.npmjs.org/:_authToken=\${NPM_PUBLISH_TOKEN}"
+          echo "https//registry.npmjs.org/:_authToken=${NPM_PUBLISH_TOKEN}"
         } >> .npmrc
       fi
     - echo "Created the following .npmrc:"; cat .npmrc
