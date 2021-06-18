@@ -29,7 +29,9 @@ publish:
           echo "//registry.npmjs.org/:_authToken=\${NPM_PUBLISH_TOKEN}"
         } >> .npmrc
       fi
-    - echo "Created the following .npmrc:"; cat .npmrc
+    - npm config get registry
+    - echo "Created the following .npmrc:"
+    - cat .npmrc
 
     # Extract a few values from package.json
     - NPM_PACKAGE_NAME=$(node -p "require('./package.json').name")
