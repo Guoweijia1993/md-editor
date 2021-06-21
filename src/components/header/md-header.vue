@@ -21,6 +21,7 @@
         :fullScreen="fullScreen"
         @setFullScreen="$emit('update:fullScreen', true)"
         @updateText="updateText"
+        @upload="$emit('upload')"
         v-for="(item, index) in toolsShow"
         :key="index"
         :text="text"
@@ -55,6 +56,7 @@ export default {
       type: Object,
       default: () => {}
     },
+
     text: {
       type: [String, Number],
       default: ""
@@ -101,9 +103,9 @@ export default {
         {
           name: "code",
           icon: "code",
-          tip: "插入代码",
-          startStr: "`",
-          endStr: "`"
+          tip: "插入代码块",
+          startStr: "\n```\n",
+          endStr: "\n```"
         },
         {
           name: "link",
@@ -123,6 +125,13 @@ export default {
           name: "ol",
           icon: "youxuliebiao",
           tip: "添加有序列表",
+          startStr: "",
+          endStr: ""
+        },
+        {
+          name: "file",
+          icon: "tupian",
+          tip: "上传文件",
           startStr: "",
           endStr: ""
         },

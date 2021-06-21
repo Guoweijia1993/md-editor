@@ -12,8 +12,24 @@ export function getSelectionInfo(selectorId) {
   };
 }
 
+// 节流
+export const throttle = function(fn, wait) {
+  var timer = null;
+  return function() {
+    var context = this;
+    var args = arguments;
+    if (!timer) {
+      timer = setTimeout(function() {
+        fn.apply(context, args);
+        timer = null;
+      }, wait);
+    }
+  };
+};
+
 export const getPosition = function(selectorId) {
   const element = document.getElementById(selectorId);
+  if (!element) return 0;
   let cursorPos = 0;
   if (document.selection) {
     //IE
@@ -38,6 +54,13 @@ export function formatText(text, selectionInfo, startStr = "", endStr = "") {
   return newText;
 }
 
+export function setzIndex(index) {
+  document.documentElement.style.setProperty(
+    "--md-editor-fullScrren-zIndex",
+    index
+  );
+}
+
 // 初始化样式
 export function initStyle({
   dark,
@@ -51,13 +74,13 @@ export function initStyle({
 }) {
   // 夜晚模式
   if (dark) {
-    borderColor = "#b2b2b2";
-    borderColorActive = "#fff";
-    textColor = "#fff";
-    textColorActive = "#fff";
-    frameBgColor = "#343434";
-    codeBgColor = "#484848";
-    contentBgColor = "#484848";
+    borderColor = "#44444F";
+    borderColorActive = "#2998F2";
+    textColor = "#777888";
+    textColorActive = "#CCCCD8";
+    frameBgColor = "#222226";
+    codeBgColor = "#777888";
+    contentBgColor = "#222226";
   }
   if (frameBgColor) {
     document.documentElement.style.setProperty(
@@ -69,7 +92,7 @@ export function initStyle({
     document.documentElement.style.setProperty(
       "--md-editor-content-bg-color",
       contentBgColor
-  );
+    );
   }
 
   if (codeBgColor) {

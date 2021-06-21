@@ -26,10 +26,6 @@ export default {
     selectionInfo: {
       type: Object,
       default: () => {}
-    },
-    uploadPath: {
-      type: String,
-      default: ""
     }
   },
   data() {
@@ -55,6 +51,9 @@ export default {
           this.updateText(`\n${ulNum}. `, "");
           this.ulNum++;
           break;
+        case "file":
+          this.$emit("upload");
+          break;
         case "fullScreen":
           this.$emit("setFullScreen", true);
           break;
@@ -79,6 +78,9 @@ export default {
     cursor: pointer;
     &:hover {
       color: var(--md-editor-text-color-active);
+    }
+    &.icon-tupian {
+      font-size: 24px;
     }
   }
 }

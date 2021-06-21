@@ -8,6 +8,16 @@
       :canPreview="canPreview"
       :toolsOptions="toolsOptions"
       :fullScreen.sync="fullScreen"
+      @upload="$refs.mdUploadFile.click()"
+    />
+    <input
+      ref="mdUploadFile"
+      class="md_upload"
+      type="file"
+      hidden
+      name="md-upload-file"
+      id="md-upload-file"
+      @change="upload"
     />
     <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
     <markdown-editor
@@ -16,17 +26,25 @@
       :fileList.sync="fileList"
       :placeholder="placeholder"
       :isFocus.sync="isFocus"
+      :throttleTime="throttle"
       :fullScreen.sync="fullScreen"
+      :maxLength="maxLength"
+      :textLength.sync="textLength"
+      :rows="rows"
       @submit="submit"
       v-show="!showPreview"
     />
-    <markdown-footer
+    <div v-if="maxLength && showWordLimit" class="word_limit">
+      <span>{{ textLength }}</span
+      >/<span>{{ maxLength }}</span>
+    </div>
+    <!-- <markdown-footer
       :fileList.sync="fileList"
       :canAttachFile="canAttachFile"
       :isFocus.sync="isFocus"
       :can-attach-file="canAttachFile"
       v-if="!showPreview && canAttachFile"
-    />
+    /> -->
   </div>
 </template>
 <script>
@@ -55,6 +73,10 @@ export default {
       type: [String, Number],
       default: ""
     },
+    throttle: {
+      type: Number,
+      default: 1000
+    },
     canPreview: {
       type: Boolean,
       default: true
@@ -62,6 +84,22 @@ export default {
     toolsOptions: {
       type: Object,
       default: () => {}
+    },
+    rows: {
+      type: [Number, String],
+      default: ""
+    },
+    maxLength: {
+      type: [Number, String],
+      default: ""
+    },
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    },
+    rule: {
+      type: RegExp,
+      default: /./
     }
   },
   data() {
@@ -72,6 +110,7 @@ export default {
       fileList: [],
       text: "",
       html: "",
+      textLength: "",
       selectionInfo: {
         selectorId: "",
         selectionStart: "",
@@ -79,11 +118,17 @@ export default {
       }
     };
   },
+
   watch: {
     html: {
       immediate: true,
       handler: function(val) {
+        this.textLength = this.text.length;
         this.$emit("change", {
+          text: this.text,
+          html: this.html
+        });
+        this.$emit("input", {
           text: this.text,
           html: this.html
         });
@@ -133,6 +178,9 @@ export default {
     }
   },
   methods: {
+    upload(e) {
+      this.fileList = Array.from(e.target.files);
+    },
     submit() {
       this.$emit("submit", {
         text: this.text,
@@ -152,8 +200,16 @@ export default {
   padding: 10px 16px;
   box-sizing: border-box;
   transition: border 0.3s;
+  position: relative;
   &.active {
     border: 1px solid var(--md-editor-border-color-active);
+  }
+  .word_limit {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 12px;
+    color: var(--md-editor-text-color);
   }
 }
 </style>

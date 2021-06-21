@@ -10,6 +10,9 @@
         width: 600px !important;
         margin: 40px auto;
       }
+      body {
+        /* background-color: #222226; */
+      }
     </style>
   </head>
   <body>
@@ -20,7 +23,7 @@
         el: "#app", // required
         value: "34567567567",
         themeOptions: {
-          dark: true,
+          // dark: true,
           borderColor: "#dbdbdb",
           borderColorActive: "#409eff",
           textColor: "#303030",
@@ -36,19 +39,29 @@
           ol: true,
           task: true,
           table: true,
+          file: true,
           fullScreen: true
         },
+        zIndex: 7000,
+        maxLength: 600,
+        showWordLimit: true,
+        rows: "auto",
+        rule: /http:\/\/www\.baidu\.com/,
         canPreview: true,
         canAttachFile: true,
         placeholder: "请输入内容",
-        onFocus: function(res) {
-          console.log(res);
-        },
+        throttle: 1000,
+        // onFocus: function(res) {
+        //   console.log(res);
+        // },
         onBlur: function(res) {
           console.log(res);
         },
+        onInput: function(res) {
+          console.log("input");
+        },
         onChange: function(res) {
-          console.log(res);
+          console.log("change");
         },
         onSubmit: function(res) {
           console.log(res);
