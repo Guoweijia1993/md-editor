@@ -7,7 +7,7 @@
     <title>Document</title>
     <style>
       .md_container {
-        width: 600px !important;
+        /* width: 600px !important; */
         margin: 40px auto;
       }
       body {
@@ -17,13 +17,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <button id="a">111111</button>
+    <button id="b">2222222</button>
     <script src="./markdown-editor.js"></script>
     <script>
-      new MdEditor({
+      const ee = new MdEditor({
         el: "#app", // required
-        value: "34567567567",
+        value: "![pic](https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3681880960,455182084&fm=26&gp=0.jpg)\n\n<a href='https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3681880960,455182084&fm=26&gp=0.jpg'>图片</a>\n\n<img src='https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3681880960,455182084&fm=26&gp=0.jpg' />",
         themeOptions: {
-          // dark: true,
+          dark: false,
           borderColor: "#dbdbdb",
           borderColorActive: "#409eff",
           textColor: "#303030",
@@ -32,36 +34,40 @@
         toolsOptions: {
           bold: true,
           italic: true,
-          quote: true,
+          quote: false,
           code: true,
-          link: true,
+          link: false,
           ul: true,
           ol: true,
           task: true,
           table: true,
-          file: true,
-          fullScreen: true
+          file: true, 
+          fullScreen: false
         },
         zIndex: 7000,
-        maxLength: 600,
+        maxLength: 1000,
         showWordLimit: true,
-        rows: "auto",
-        rule: /http:\/\/www\.baidu\.com/,
+        rows: "8",
+        filePathRule: /^https:\/\/ss2\.bdstatic\.com/,
         canPreview: true,
-        canAttachFile: true,
+        // canAttachFile: true,
         placeholder: "请输入内容",
         throttle: 1000,
         // onFocus: function(res) {
         //   console.log(res);
         // },
+        onLoad: function(res) {
+          console.log('load',res);
+          
+        },
         onBlur: function(res) {
           console.log(res);
         },
         onInput: function(res) {
-          console.log("input");
+          console.log("input",res);
         },
         onChange: function(res) {
-          console.log("change");
+          console.log("change",res);
         },
         onSubmit: function(res) {
           console.log(res);
@@ -80,6 +86,17 @@
           });
         }
       });
+
+     
+
+      document.querySelector('#a').onclick = function() {
+       ee.setValue(234523453245345)
+      
+      }
+      document.querySelector('#b').onclick = function() {
+       ee.setValue(222222222222)
+      }
+
     </script>
   </body>
 </html>

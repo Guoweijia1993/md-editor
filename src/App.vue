@@ -1,5 +1,8 @@
 <template>
-  <div :class="['md_container', { active: isFocus }]">
+  <div
+    :class="['md_container', { active: isFocus, fullScreen }]"
+    :id="'md_' + id"
+  >
     <markdown-header
       :text.sync="text"
       :selectionInfo.sync="selectionInfo"
@@ -7,7 +10,9 @@
       :isFocus.sync="isFocus"
       :canPreview="canPreview"
       :toolsOptions="toolsOptions"
+      :zIndex="zIndex"
       :fullScreen.sync="fullScreen"
+      :themeOptions="themeOptions"
       @upload="$refs.mdUploadFile.click()"
     />
     <input
@@ -31,6 +36,7 @@
       :maxLength="maxLength"
       :textLength.sync="textLength"
       :rows="rows"
+      :id="textareaId"
       @submit="submit"
       v-show="!showPreview"
     />
@@ -52,7 +58,7 @@ import markdownHeader from "./components/header/md-header";
 import markdownFooter from "./components/footer/md-footer";
 import markdownEditor from "./components/content/md-textarea";
 import markdownPreview from "./components/content/md-preview";
-import { formatText } from "@/assets/js/utils";
+import { formatText, checktUrl } from "@/assets/js/utils";
 export default {
   components: {
     markdownHeader,
@@ -65,41 +71,72 @@ export default {
       type: String,
       default: "请输入内容"
     },
-    canAttachFile: {
-      type: Boolean,
-      default: true
+    id: {
+      type: String,
+      default: ""
     },
+    // canAttachFile: {
+    //   type: Boolean,
+    //   default: true
+    // },
+    // 初始化时赋值
     value: {
       type: [String, Number],
       default: ""
     },
+    // 全屏时的z-index
+    zIndex: {
+      type: [String, Number],
+      default: ""
+    },
+    // input时间节流
     throttle: {
       type: Number,
-      default: 1000
+      default: 0
     },
+    // 是否可以预览
     canPreview: {
       type: Boolean,
       default: true
     },
+    // 主题
+    themeOptions: {
+      type: Object,
+      default: () => {}
+    },
+    focus: {
+      type: Boolean,
+      default: false
+    },
+    // 工具栏
     toolsOptions: {
       type: Object,
       default: () => {}
     },
+    // 行高度
     rows: {
       type: [Number, String],
       default: ""
     },
+    // 最大长度
     maxLength: {
       type: [Number, String],
       default: ""
     },
+    // 显示字数限制
     showWordLimit: {
       type: Boolean,
       default: false
     },
-    rule: {
+    // 图片路径规则
+    filePathRule: {
       type: RegExp,
-      default: /./
+      default: () => {}
+    }
+  },
+  computed: {
+    textareaId() {
+      return "textarea_" + this.id;
     }
   },
   data() {
@@ -118,20 +155,44 @@ export default {
       }
     };
   },
-
+  created() {
+    setTimeout(() => {
+      this.$emit("load", {
+        text: this.text,
+        html: this.html
+      });
+    }, 0);
+  },
   watch: {
+    focus: {
+      handler: function(val) {
+        const textEl = document.getElementById(this.textareaId);
+        if (val) {
+          textEl.focus();
+        } else {
+          textEl.blur();
+        }
+      }
+    },
+    text: {
+      immediate: true,
+      handler: function(val) {
+        this.textLength = val.length;
+      }
+    },
     html: {
       immediate: true,
       handler: function(val) {
-        this.textLength = this.text.length;
-        this.$emit("change", {
+        const emitContent = {
           text: this.text,
           html: this.html
-        });
-        this.$emit("input", {
-          text: this.text,
-          html: this.html
-        });
+        };
+        if (this.filePathRule) {
+          const checkResult = checktUrl(val, this.filePathRule);
+          emitContent.invalidList = checkResult;
+        }
+        this.$emit("change", emitContent);
+        this.$emit("input", emitContent);
       }
     },
     isFocus: {
@@ -201,6 +262,16 @@ export default {
   box-sizing: border-box;
   transition: border 0.3s;
   position: relative;
+  &.fullScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border: none !important;
+    z-index: var(--md-editor-fullScrren-zIndex);
+  }
   &.active {
     border: 1px solid var(--md-editor-border-color-active);
   }

@@ -2,6 +2,7 @@
 
 export function getSelectionInfo(selectorId) {
   const selector = document.getElementById(selectorId);
+  if (!selector) return;
   // const selection = window.getSelection();
   const { selectionStart = 0, selectionEnd = 0 } = selector;
   if (selectionStart === selectionEnd) return "";
@@ -135,4 +136,20 @@ export function isNotEmpty(val) {
 
 export function isNotFalse(val) {
   return val !== false;
+}
+
+export function checktUrl(val, rule) {
+  if (!val || !rule) return;
+  const hideEl = document.createElement("div");
+  hideEl.style.display = "none";
+  hideEl.innerHTML = val;
+  const imgList = Array.from(hideEl.getElementsByTagName("img"));
+  return imgList.filter(item => !rule.test(item.src)).map(item => item.src);
+}
+
+export function checkBoswer() {
+  const agent = navigator.userAgent.match(
+    /(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i
+  );
+  return agent !== null;
 }

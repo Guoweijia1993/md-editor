@@ -13,7 +13,7 @@
       :placeholder="placeholder"
       :maxlength="maxLength"
       :rows="rows"
-      :style="{ height: editorHeight, overflow: autoSize ? 'hidden' : 'auto' }"
+      :style="{ height: editorHeight, overflow: editorOverFlow }"
     >
     </textarea>
     <span
@@ -31,6 +31,10 @@ import {
 } from "@/assets/js/utils";
 export default {
   props: {
+    id: {
+      type: String,
+      default: ""
+    },
     fullScreen: {
       type: Boolean,
       default: false
@@ -71,9 +75,9 @@ export default {
 
   data() {
     return {
-      id: new Date().getTime(),
       textContent: "",
-      editorHeight: "auto"
+      editorHeight: "auto",
+      editorOverFlow: "auto"
     };
   },
   created() {
@@ -84,6 +88,15 @@ export default {
       immediate: true,
       handler: function(val) {
         this.textContent = val;
+      }
+    },
+    fullScreen: {
+      immediate: true,
+      handler: function() {
+        setTimeout(() => {
+          // if (!this.autoSize) return;
+          this.reSizeHeight();
+        }, 0);
       }
     },
     textContent: {
@@ -138,7 +151,13 @@ export default {
       hideEl.style.fontFamily = fontFamily;
       hideEl.innerText = this.textContent;
       const contentHeight = hideEl.offsetHeight;
-      this.editorHeight = `${contentHeight + parseFloat(fontSize) * 1.2}px`;
+      this.editorHeight = this.fullScreen
+        ? "calc(100% - 42px)"
+        : this.autoSize
+        ? `${contentHeight + parseFloat(fontSize) * 1.2}px`
+        : "auto";
+      this.editorOverFlow =
+        this.autoSize && !this.fullScreen ? "hidden" : "auto";
       textEl.parentNode.removeChild(hideEl);
     },
     submit() {
@@ -189,18 +208,13 @@ export default {
   //   border-left: 1px solid var(--md-editor-border-color-active);
   //   border-right: 1px solid var(--md-editor-border-color-active);
   // }
+
   &.fullScreen {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: var(--md-editor-fullScrren-zIndex);
-    padding: 40px 60px;
-    box-sizing: border-box;
+    height: 100%;
     textarea {
       font-size: 20px;
+      max-height: 100%;
+      overflow-y: auto;
     }
   }
 

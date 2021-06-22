@@ -1,6 +1,14 @@
 <template>
   <div
-    v-tip.top="info.tip"
+    v-if="isMobile"
+    @click="handleTool(info.name, info.startStr, info.endStr)"
+    class="tool_button"
+  >
+    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+  </div>
+  <div
+    v-else
+    v-tip.top="options"
     @click="handleTool(info.name, info.startStr, info.endStr)"
     class="tool_button"
   >
@@ -8,7 +16,7 @@
   </div>
 </template>
 <script>
-import { formatText } from "@/assets/js/utils";
+import { formatText, checkBoswer } from "@/assets/js/utils";
 export default {
   props: {
     info: {
@@ -23,6 +31,14 @@ export default {
       type: [String, Number],
       default: ""
     },
+    zIndex: {
+      type: [String, Number],
+      default: ""
+    },
+    themeOptions: {
+      type: Object,
+      default: () => {}
+    },
     selectionInfo: {
       type: Object,
       default: () => {}
@@ -32,6 +48,22 @@ export default {
     return {
       ulNum: 1
     };
+  },
+  computed: {
+    darkMode() {
+      return this.themeOptions && this.themeOptions.dark;
+    },
+    isMobile() {
+      const isMobile = checkBoswer();
+      return isMobile;
+    },
+    options() {
+      return {
+        content: this.info.tip,
+        zIndex: parseInt(this.zIndex) + 1,
+        theme: this.darkMode ? "dark" : "light"
+      };
+    }
   },
   methods: {
     handleTool(type, startStr, endStr) {
@@ -78,9 +110,6 @@ export default {
     cursor: pointer;
     &:hover {
       color: var(--md-editor-text-color-active);
-    }
-    &.icon-tupian {
-      font-size: 24px;
     }
   }
 }

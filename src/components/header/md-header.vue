@@ -25,6 +25,8 @@
         v-for="(item, index) in toolsShow"
         :key="index"
         :text="text"
+        :zIndex="zIndex"
+        :themeOptions="themeOptions"
         :selectionInfo="selectionInfo"
       />
     </div>
@@ -52,11 +54,18 @@ export default {
       type: Boolean,
       default: true
     },
+    themeOptions: {
+      type: Object,
+      default: () => {}
+    },
     toolsOptions: {
       type: Object,
       default: () => {}
     },
-
+    zIndex: {
+      type: [String,Number],
+      default: ''
+    },
     text: {
       type: [String, Number],
       default: ""

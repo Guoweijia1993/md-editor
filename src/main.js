@@ -8,8 +8,15 @@ import "@/assets/style/global.less";
 Vue.use(Vtip.directive);
 
 function initMdEditor(obj) {
-  const {
+  const _this = this;
+  this.value = {
+    text: "",
+    html: ""
+  };
+  this.vEl = "";
+  let {
     el,
+    onLoad = () => {},
     onChange = () => {},
     onUpload = () => {},
     onFocus = () => {},
@@ -19,11 +26,11 @@ function initMdEditor(obj) {
     placeholder,
     value,
     zIndex = 2000,
-    rule,
-    rows = 10,
+    filePathRule,
+    rows = 6,
     maxLength,
     showWordLimit,
-    throttle,
+    throttle = 1000,
     canPreview,
     canAttachFile,
     themeOptions,
@@ -32,45 +39,84 @@ function initMdEditor(obj) {
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
   if (isNotEmpty(zIndex)) setzIndex(zIndex);
-  new Vue({
+  const id = new Date().getTime() + "";
+  const props = {
+    canAttachFile,
+    value,
+    themeOptions,
+    filePathRule,
+    rows,
+    id,
+    throttle,
+    canPreview,
+    toolsOptions,
+    placeholder,
+    maxLength,
+    zIndex,
+    focus: false,
+    showWordLimit
+  };
+  const listeners = {
+    change(val) {
+      onChange(val);
+      _this.value = val;
+    },
+    input(val) {
+      onInput(val);
+      _this.value = val;
+    },
+    load(val) {
+      onLoad(val);
+      _this.value = val;
+    },
+    focus(val) {
+      onFocus(val);
+      _this.value = val;
+    },
+    blur(val) {
+      onBlur(val);
+      _this.value = val;
+    },
+    submit(val) {
+      onSubmit(val);
+      _this.value = val;
+    },
+    upload({ val, callback }) {
+      onUpload(val, function(res) {
+        callback(res);
+      });
+    }
+  };
+  this.vEl = new Vue({
     render: h =>
       h(App, {
-        on: {
-          change(val) {
-            onChange(val);
-          },
-          input(val) {
-            onInput(val);
-          },
-          focus(val) {
-            onFocus(val);
-          },
-          blur(val) {
-            onBlur(val);
-          },
-          submit(val) {
-            onSubmit(val);
-          },
-          upload({ val, callback }) {
-            onUpload(val, function(res) {
-              callback(res);
-            });
-          }
-        },
-        props: {
-          canAttachFile,
-          value,
-          rule,
-          rows,
-          throttle,
-          canPreview,
-          toolsOptions,
-          placeholder,
-          maxLength,
-          showWordLimit
-        }
+        on: listeners,
+        props: props
       })
   }).$mount(el);
+
+  this.getValue = function(callback) {
+    if (callback) {
+      callback(this.value);
+    }
+    return this.value;
+  };
+
+  this.setValue = function(val) {
+    if (!val) return;
+    props.value = val + "";
+    this.vEl.$forceUpdate();
+  };
+
+  this.focus = function() {
+    props.focus = true;
+    this.vEl.$forceUpdate();
+  };
+
+  this.blur = function() {
+    props.focus = false;
+    this.vEl.$forceUpdate();
+  };
 }
 
 window.MdEditor = initMdEditor;

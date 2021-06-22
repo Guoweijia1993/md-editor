@@ -5,7 +5,8 @@
   "publisher": "guoweijia",
   "scripts": {
     "start": "webpack serve --mode=development",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "p": "npm run build && ssh -t root@45.76.193.214 rm -rf /test/markdown-editor.js exit && scp -r dist/markdown-editor.js root@45.76.193.214:/test/"
   },
   "devDependencies": {
     "chalk": "^4.1.1",
