@@ -4,20 +4,24 @@
 
 ## 更新记录
 
-### v0.1 
+### v0.4
 
-2021-06-07 v0.1 初版更新，支持功能：
+2021-06-23 v0.4更新，添加功能：
 
-- 自定义主题
-- 单张图片/单个附件上传
-- Markdown & Html 内容获取
-
-### v0.2
-
-2021-06-15 v0.2更新，添加功能：
-
-- [内容回显](#options)
-- [顶部工具栏配置](#toolsoptions)
+- [onLoad事件]
+- [onInput事件]
+- [throttle属性]
+- [zIndex属性]
+- [maxLength属性](#maxLength)
+- [showWordLimit属性](#showWordLimit)
+- [rows属性](#rows)
+- [filePathRule属性](#filePathRule)
+- [setValue方法]
+- [getValue方法]
+- [focus方法]
+- [blur方法]
+- 移除footer，工具栏添加上传文件按钮
+- 全屏模式添加工具栏
 
 ### v0.3
 
@@ -27,6 +31,23 @@
 - [blur事件](#onblur)
 - [ctrl+enter/command+enter快捷键](#onsubmit)
 - [夜间模式](#themeoptions)
+
+### v0.2
+
+2021-06-15 v0.2更新，添加功能：
+
+- [内容回显](#options)
+- [顶部工具栏配置](#toolsoptions)
+
+### v0.1 
+
+2021-06-07 v0.1 初版更新，支持功能：
+
+- 自定义主题
+- 单张图片/单个附件上传
+- Markdown & Html 内容获取
+
+
 
 # 使用
 
@@ -47,18 +68,37 @@ new MdEditor({
 
 # options
 
-| 属性 | 说明 | 类型 | 默认值 |
-| ------ | ------ | ------ | ------ |
-| el | 编辑器渲染的容器 | String | "#app"
-| value | 编辑器回显内容 | String \| Number | ""
+| 属性 | 说明 | 类型 | 默认值 | 可选值 |
+| ------ | ------ | ------ | ------ | ------ |
+| el | 编辑器渲染的容器 | String | "#app" | |
+| value | 编辑器回显内容 | String \| Number | "" | |
+| zIndex | 全屏模式的层级 | String \| Number | 2000 | |
+| maxLength | 最大字数限制 | String \| Number | 1000 | |
+| showWordLimit | 是否显示当前字数 | Boolean | false | |
+| rows | 编辑区行数 | String \| Number | 6 | 'auto' |
+| throttle | input事件的节流时间 | Number | 1000 | |
+| filePathRule | 图片链接的格式限制 | RegExp | | |
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canAttachFile | 是否可以上传图片 | Boolean | true
 | canPreview | 是否开启预览 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
+| onLoad | 编辑器实例化 | Function | function(res) {} [示例](#onLoad)
+| onInput | 输入事件 | Function | function(res) {} [示例](#onInput)
+| onFocus | 获取焦点事件 | Function | function(res) {} [示例](#onFocus)
+| onBlur | 失去焦点事件 | Function | function(res) {} [示例](#onBlur)
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
 | onsubmit | 快捷键函数 | Function | function(file, callback) {} [示例](#onsubmit)
+
+# 方法
+
+| 方法 | 说明 | 类型 | 示例 |
+| ------ | ------ | ------ | ------ | ------ |
+| focus | 使编辑器获取焦点 | Function | [focus](#focus) |
+| blur | 使编辑器失去焦点 | Function | [blur](#focus) |
+| getValue | 获取编辑器的内容 | Function | [getValue](#getvalue) |
+| setValue | 设置编辑器的内容 | Function | [setValue](#setvalue) |
 
 # themeOptions
 
