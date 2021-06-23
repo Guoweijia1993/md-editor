@@ -24,7 +24,13 @@
       id="md-upload-file"
       @change="upload"
     />
-    <markdownPreview :text="text" :html.sync="html" v-show="showPreview" />
+    <markdownPreview
+      :id="textareaId"
+      :fullScreen.sync="fullScreen"
+      :text="text"
+      :html.sync="html"
+      v-show="showPreview"
+    />
     <markdown-editor
       :selectionInfo.sync="selectionInfo"
       :text.sync="text"
@@ -40,7 +46,7 @@
       @submit="submit"
       v-show="!showPreview"
     />
-    <div v-if="maxLength && showWordLimit" class="word_limit">
+    <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
       <span>{{ textLength }}</span
       >/<span>{{ maxLength }}</span>
     </div>
@@ -269,7 +275,7 @@ export default {
     width: 100vw;
     height: 100vh;
     margin: 0;
-    border: none !important;
+    border: 1px solid transparent !important;
     z-index: var(--md-editor-fullScrren-zIndex);
   }
   &.active {

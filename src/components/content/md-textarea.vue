@@ -16,11 +16,6 @@
       :style="{ height: editorHeight, overflow: editorOverFlow }"
     >
     </textarea>
-    <span
-      @click="$emit('update:fullScreen', false)"
-      v-if="fullScreen"
-      class="icon iconfont icon-quxiaoquanping_o"
-    ></span>
   </div>
 </template>
 <script>
@@ -92,9 +87,13 @@ export default {
     },
     fullScreen: {
       immediate: true,
-      handler: function() {
+      handler: function(val) {
+        if (val) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "auto";
+        }
         setTimeout(() => {
-          // if (!this.autoSize) return;
           this.reSizeHeight();
         }, 0);
       }

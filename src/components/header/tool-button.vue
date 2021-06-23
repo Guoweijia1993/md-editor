@@ -8,7 +8,7 @@
   </div>
   <div
     v-else
-    v-tip.top="options"
+    v-tip.bottom="options"
     @click="handleTool(info.name, info.startStr, info.endStr)"
     class="tool_button"
   >
@@ -89,6 +89,9 @@ export default {
         case "fullScreen":
           this.$emit("setFullScreen", true);
           break;
+        case "cancelFullScreen":
+          this.$emit("setFullScreen", false);
+          break;
         default:
           break;
       }
@@ -110,6 +113,10 @@ export default {
     cursor: pointer;
     &:hover {
       color: var(--md-editor-text-color-active);
+    }
+    &.icon-quxiaoquanping_o {
+      font-size: 24px;
+      margin: 0 -4px;
     }
   }
 }

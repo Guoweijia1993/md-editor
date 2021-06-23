@@ -64,6 +64,7 @@ function initMdEditor(obj) {
     input(val) {
       onInput(val);
       _this.value = val;
+      props.value = val.text;
     },
     load(val) {
       onLoad(val);
@@ -76,6 +77,8 @@ function initMdEditor(obj) {
     blur(val) {
       onBlur(val);
       _this.value = val;
+      props.focus = false;
+      _this.vEl.$forceUpdate();
     },
     submit(val) {
       onSubmit(val);
@@ -103,8 +106,7 @@ function initMdEditor(obj) {
   };
 
   this.setValue = function(val) {
-    if (!val) return;
-    props.value = val + "";
+    props.value = (val || "") + "";
     this.vEl.$forceUpdate();
   };
 

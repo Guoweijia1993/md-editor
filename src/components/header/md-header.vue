@@ -19,7 +19,7 @@
       <tool-button
         :info="item"
         :fullScreen="fullScreen"
-        @setFullScreen="$emit('update:fullScreen', true)"
+        @setFullScreen="$emit('update:fullScreen', $event)"
         @updateText="updateText"
         @upload="$emit('upload')"
         v-for="(item, index) in toolsShow"
@@ -63,8 +63,8 @@ export default {
       default: () => {}
     },
     zIndex: {
-      type: [String,Number],
-      default: ''
+      type: [String, Number],
+      default: ""
     },
     text: {
       type: [String, Number],
@@ -85,8 +85,32 @@ export default {
       });
     }
   },
+  watch: {
+    fullScreen: {
+      handler: function(val) {
+        console.log(val);
+        if (val) {
+          this.toolButtonList.pop();
+          this.toolButtonList.push(this.cancelFullScreenBtn);
+        } else {
+          this.toolButtonList.pop();
+          this.toolButtonList.push(this.fullScreenBtn);
+        }
+      }
+    }
+  },
   data() {
     return {
+      cancelFullScreenBtn: {
+        name: "cancelFullScreen",
+        icon: "quxiaoquanping_o",
+        tip: "退出全屏"
+      },
+      fullScreenBtn: {
+        name: "fullScreen",
+        icon: "fullScreen",
+        tip: "全屏模式"
+      },
       toolButtonList: [
         {
           name: "bold",
