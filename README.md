@@ -8,19 +8,20 @@
 
 2021-06-23 v0.4更新，添加功能：
 
-- [onLoad事件]
-- [onInput事件]
-- [throttle属性]
-- [zIndex属性]
-- [maxLength属性](#maxLength)
-- [showWordLimit属性](#showWordLimit)
-- [rows属性](#rows)
-- [filePathRule属性](#filePathRule)
-- [setValue方法]
-- [getValue方法]
-- [focus方法]
-- [blur方法]
-- 移除footer，工具栏添加上传文件按钮
+- throttle属性
+- zIndex属性
+- maxLength属性
+- showWordLimit属性
+- rows属性
+- filePathRule属性
+- [onLoad事件](#onload)
+- [onInput事件](#oninput)
+- [setValue方法](#setvalue)
+- [getValue方法](#getvalue)
+- [focus方法](#focus)
+- [blur方法](#blur)
+- **移除canAttachFile属性**
+- **移除footer，工具栏添加上传文件按钮**
 - 全屏模式添加工具栏
 
 ### v0.3
@@ -76,17 +77,16 @@ new MdEditor({
 | maxLength | 最大字数限制 | String \| Number | 1000 | |
 | showWordLimit | 是否显示当前字数 | Boolean | false | |
 | rows | 编辑区行数 | String \| Number | 6 | 'auto' |
-| throttle | input事件的节流时间 | Number | 1000 | |
+| throttle | input事件的节流时间 | Number | 1000 |  |
 | filePathRule | 图片链接的格式限制 | RegExp | | |
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
-| canAttachFile | 是否可以上传图片 | Boolean | true
 | canPreview | 是否开启预览 | Boolean | true
 | placeholder | placeholder | String | "请输入内容"
-| onLoad | 编辑器实例化 | Function | function(res) {} [示例](#onLoad)
-| onInput | 输入事件 | Function | function(res) {} [示例](#onInput)
-| onFocus | 获取焦点事件 | Function | function(res) {} [示例](#onFocus)
-| onBlur | 失去焦点事件 | Function | function(res) {} [示例](#onBlur)
+| onLoad | 编辑器实例化 | Function | function(res) {} [示例](#onload)
+| onInput | 输入事件 | Function | function(res) {} [示例](#oninput)
+| onFocus | 获取焦点事件 | Function | function(res) {} [示例](#onfocus)
+| onBlur | 失去焦点事件 | Function | function(res) {} [示例](#onblur)
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
 | onsubmit | 快捷键函数 | Function | function(file, callback) {} [示例](#onsubmit)
@@ -94,7 +94,7 @@ new MdEditor({
 # 方法
 
 | 方法 | 说明 | 类型 | 示例 |
-| ------ | ------ | ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | focus | 使编辑器获取焦点 | Function | [focus](#focus) |
 | blur | 使编辑器失去焦点 | Function | [blur](#focus) |
 | getValue | 获取编辑器的内容 | Function | [getValue](#getvalue) |
@@ -118,14 +118,28 @@ new MdEditor({
 | bold | 加粗 | Boolean | true
 | italic | 斜体 | Boolean | true
 | quote | 引用 | Boolean | true
-| code | 代码 | Boolean | true
+| code | 代码块 | Boolean | true
 | link | 链接 | Boolean | true
 | ul | 无序列表 | Boolean | true
 | ol | 有序列表 | Boolean | true
 | task | 任务列表 | Boolean | true
 | table | 表格 | Boolean | true
+| file | 上传文件 | Boolean | true
 | fullScreen | 全屏模式 | Boolean | true
 
+
+# onLoad
+编辑器实例化后触发
+
+
+```js
+new MdEditor({
+    ...,
+    onLoad: function() {
+        console.log('ready') // { text: "...", html: "..." }
+    }
+})
+```
 
 # onFocus
 编辑器获取焦点时触发
@@ -148,6 +162,19 @@ new MdEditor({
 new MdEditor({
     ...,
     onBlur: function(res) {
+        console.log(res) // { text: "...", html: "..." }
+    }
+})
+```
+
+# onInput
+用于获取markdown内容及编译后的html内容
+
+
+```js
+new MdEditor({
+    ...,
+    onInput: function(res) {
         console.log(res) // { text: "...", html: "..." }
     }
 })
@@ -195,6 +222,65 @@ new MdEditor({
         callback(url)
     }
 })
+```
+
+# getValue
+
+获取编辑器内容
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+const value = myEditor.getValue()
+console.log(value)
+
+或
+
+myEditor.getValue(value => {
+    console.log(value)
+})
+```
+
+# setValue
+
+设置编辑器内容
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.setValue('this is new content')
+```
+
+# focus
+
+使编辑器获取焦点
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.focus()
+```
+
+# blur
+
+使编辑器失去焦点
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.blur()
 ```
 
 # Example
