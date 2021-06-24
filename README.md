@@ -78,7 +78,7 @@ new MdEditor({
 | showWordLimit | 是否显示当前字数 | Boolean | false | |
 | rows | 编辑区行数 | String \| Number | 6 | 'auto' |
 | throttle | input事件的节流时间 | Number | 1000 |  |
-| filePathRule | 图片链接的格式限制 | RegExp | | |
+| filePathRule | 图片链接的格式限制 | RegExp | [示例](#filepathrule) | |
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canPreview | 是否开启预览 | Boolean | true
@@ -126,6 +126,18 @@ new MdEditor({
 | table | 表格 | Boolean | true
 | file | 上传文件 | Boolean | true
 | fullScreen | 全屏模式 | Boolean | true
+
+
+# filePathRule
+用于限制可上传文件的路径规则
+
+```js
+new MdEditor({
+    ...,
+    filePathRule: /^https:\/\/csdn\.net/
+})
+
+```
 
 
 # onLoad
