@@ -133,24 +133,19 @@ export function initStyle({
   if (codeTheme) {
     switch (codeTheme) {
       case "dark":
-        import("highlight.js/styles/dark.css");
-        break;
-      case "github":
-        import("highlight.js/styles/github.css");
-        break;
-      case "idea":
-        import("highlight.js/styles/idea.css");
+        import("@/assets/style/code/dark.css");
         break;
       case "light":
-        import("highlight.js/styles/lightfair.css");
+        import("@/assets/style/code/lightfair.css");
         break;
-      case "monokai":
-        import("highlight.js/styles/monokai.css");
+      case "atom-one-dark":
+        import("@/assets/style/code/atom-one-dark.css");
         break;
-
       default:
         break;
     }
+  } else {
+    import("@/assets/style/code/lightfair.css");
   }
 }
 

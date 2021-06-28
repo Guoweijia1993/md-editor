@@ -83,6 +83,8 @@ export default {
     text: {
       immediate: true,
       handler: function(val) {
+        const cursorPoint = getPosition(this.id);
+        console.log(cursorPoint);
         this.textContent = val;
       }
     },

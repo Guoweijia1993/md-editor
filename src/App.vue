@@ -4,6 +4,7 @@
     :id="'md_' + id"
   >
     <markdown-header
+      :id="textareaId"
       :ref="'md_header' + id"
       :text.sync="text"
       :selectionInfo.sync="selectionInfo"
@@ -90,7 +91,7 @@ export default {
     // 初始化时赋值
     value: {
       type: [String, Number],
-      default: ""
+      default: " "
     },
     // 全屏时的z-index
     zIndex: {
@@ -101,6 +102,10 @@ export default {
     throttle: {
       type: Number,
       default: 0
+    },
+    preview: {
+      type: String,
+      default: ""
     },
     // 是否可以预览
     canPreview: {
@@ -182,6 +187,11 @@ export default {
         }
       }
     },
+    preview: {
+      handler: function(val) {
+        this.showPreview = val === "preview";
+      }
+    },
     text: {
       immediate: true,
       handler: function(val) {
@@ -240,6 +250,7 @@ export default {
               `${url})\n`
             );
             _this.text = newText;
+            _this.$refs.mdUploadFile.value = "";
           }
         });
         this.fileList = [];

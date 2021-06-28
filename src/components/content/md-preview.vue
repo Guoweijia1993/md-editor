@@ -5,7 +5,6 @@
 </template>
 <script>
 import marked from "marked";
-import "highlight.js/styles/github.css";
 export default {
   data() {
     return {
@@ -30,10 +29,23 @@ export default {
       default: false
     }
   },
-  // mounted() {
-  //   this.resetMinHeight();
-  // },
+  mounted() {
+    setTimeout(() => {
+      this.resetMinHeight();
+    }, 0) 
+    this.addClass();
+  },
+  updated() {
+    this.addClass();
+  },
   methods: {
+    addClass() {
+      setTimeout(() => {
+        const previewDom = document.querySelector(".md_preview code");
+        if (!previewDom) return;
+        previewDom.className = "md_hljs";
+      }, 0);
+    },
     transferMarkdown(val) {
       marked.setOptions({
         highlight: function(code, lang, callback) {

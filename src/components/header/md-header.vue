@@ -34,11 +34,15 @@
   </div>
 </template>
 <script>
-import { isNotFalse, formatText } from "@/assets/js/utils";
+import { isNotFalse, formatText, getPosition } from "@/assets/js/utils";
 import toolButton from "./tool-button";
 export default {
   components: { toolButton },
   props: {
+    id: {
+      type: String,
+      default: ""
+    },
     fullScreen: {
       type: Boolean,
       default: false
@@ -98,6 +102,9 @@ export default {
           this.toolButtonList.push(this.fullScreenBtn);
         }
       }
+    },
+    text: {
+      handler: function(newVal, oldVal) {}
     }
   },
   data() {
@@ -200,20 +207,32 @@ export default {
       const originalText = this.text;
       const selectionInfo = this.selectionInfo;
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
-      this.updateText(newText);
-
-      // this.$refs.tool_button.tab();
+      const len = newText.length - originalText.length;
+      // const len = 0;
+      this.updateText(newText, len);
     },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
     },
-    updateText(val) {
+    updateText(val, len = 0) {
+      console.log(val);
       this.$emit("update:text", val);
+      const cursorPoint = getPosition(this.id);
+      console.log(cursorPoint);
+
       this.$emit("update:selectionInfo", {
         selectorId: "",
-        selectionStart: "",
-        selectionEnd: ""
+        selectionStart: cursorPoint,
+        selectionEnd: cursorPoint
       });
+      console.log(cursorPoint);
+
+      setTimeout(() => {
+        // document.getElementById(this.id).setSelectionRange(0, 0);
+        document
+          .getElementById(this.id)
+          .setSelectionRange(cursorPoint + len, cursorPoint + len);
+      }, 0);
     }
   }
 };

@@ -53,6 +53,7 @@ function initMdEditor(obj) {
     placeholder,
     maxLength,
     zIndex,
+    preview: "",
     focus: false,
     showWordLimit
   };
@@ -60,6 +61,7 @@ function initMdEditor(obj) {
     change(val) {
       onChange(val);
       _this.value = val;
+      props.value = val.text;
     },
     input(val) {
       onInput(val);
@@ -78,11 +80,13 @@ function initMdEditor(obj) {
       onBlur(val);
       _this.value = val;
       props.focus = false;
+      props.value = val.text;
       _this.vEl.$forceUpdate();
     },
     submit(val) {
       onSubmit(val);
       _this.value = val;
+      props.value = val.text;
     },
     upload({ val, callback }) {
       onUpload(val, function(res) {
@@ -117,6 +121,15 @@ function initMdEditor(obj) {
 
   this.blur = function() {
     props.focus = false;
+    this.vEl.$forceUpdate();
+  };
+
+  this.toggleTab = function(tabName) {
+    if (!tabName) {
+      props.preview = props.preview === "edit" ? "preview" : "edit";
+    } else {
+      props.preview = tabName;
+    }
     this.vEl.$forceUpdate();
   };
 }
