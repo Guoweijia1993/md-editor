@@ -9,6 +9,7 @@
       @paste="pasteFile"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
+      @keydown.tab.prevent="$emit('tab')"
       v-model="textContent"
       :placeholder="placeholder"
       :maxlength="maxLength"

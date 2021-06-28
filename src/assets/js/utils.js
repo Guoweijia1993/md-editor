@@ -69,15 +69,18 @@ export function initStyle({
   borderColorActive,
   textColor,
   textColorActive,
+  placeholderColor,
   frameBgColor,
   contentBgColor,
-  codeBgColor
+  codeBgColor,
+  codeTheme
 }) {
   // 夜晚模式
   if (dark) {
     borderColor = "#44444F";
     borderColorActive = "#2998F2";
     textColor = "#777888";
+    placeholderColor = "#777888";
     textColorActive = "#CCCCD8";
     frameBgColor = "#222226";
     codeBgColor = "#777888";
@@ -126,6 +129,28 @@ export function initStyle({
       "--md-editor-text-color-active",
       textColorActive
     );
+  }
+  if (codeTheme) {
+    switch (codeTheme) {
+      case "dark":
+        import("highlight.js/styles/dark.css");
+        break;
+      case "github":
+        import("highlight.js/styles/github.css");
+        break;
+      case "idea":
+        import("highlight.js/styles/idea.css");
+        break;
+      case "light":
+        import("highlight.js/styles/lightfair.css");
+        break;
+      case "monokai":
+        import("highlight.js/styles/monokai.css");
+        break;
+
+      default:
+        break;
+    }
   }
 }
 

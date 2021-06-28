@@ -17,6 +17,7 @@
     </div>
     <div class="header_tools" v-if="!showPreview">
       <tool-button
+        ref="tool_button"
         :info="item"
         :fullScreen="fullScreen"
         @setFullScreen="$emit('update:fullScreen', $event)"
@@ -33,7 +34,7 @@
   </div>
 </template>
 <script>
-import { isNotFalse } from "@/assets/js/utils";
+import { isNotFalse, formatText } from "@/assets/js/utils";
 import toolButton from "./tool-button";
 export default {
   components: { toolButton },
@@ -88,7 +89,7 @@ export default {
   watch: {
     fullScreen: {
       handler: function(val) {
-        console.log(val);
+        // console.log(val);
         if (val) {
           this.toolButtonList.pop();
           this.toolButtonList.push(this.cancelFullScreenBtn);
@@ -193,6 +194,16 @@ export default {
   },
 
   methods: {
+    tab() {
+      const startStr = " ";
+      const endStr = "";
+      const originalText = this.text;
+      const selectionInfo = this.selectionInfo;
+      const newText = formatText(originalText, selectionInfo, startStr, endStr);
+      this.updateText(newText);
+
+      // this.$refs.tool_button.tab();
+    },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
     },
@@ -247,7 +258,7 @@ export default {
         color: var(--md-editor-text-color-active);
         &::after {
           width: 100%;
-          background: var(--md-editor-border-color);
+          background: var(--md-editor-border-color-active);
         }
       }
       &.active {

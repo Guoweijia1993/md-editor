@@ -1,13 +1,13 @@
-.htmledit_views address,
-.htmledit_views cite,
-.htmledit_views dfn,
-.htmledit_views em,
-.htmledit_views i,
-.htmledit_views span[lang],
-.htmledit_views var {
+.md_preview address,
+.md_preview cite,
+.md_preview dfn,
+.md_preview em,
+.md_preview i,
+.md_preview span[lang],
+.md_preview var {
   font-style: italic;
 }
-.htmledit_views {
+.md_preview {
   font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei, SimSun;
 
@@ -393,51 +393,51 @@
   margin: 24px;
   word-wrap: break-word;
 }
-.htmledit_views .image-grayscale img,
-.htmledit_views img.image-grayscale {
+.md_preview .image-grayscale img,
+.md_preview img.image-grayscale {
   filter: grayscale(100%);
 }
 p[align="center"] {
   text-align: center;
 }
-.htmledit_views strong,
-.htmledit_views strong span,
-.htmledit_views strong em {
+.md_preview strong,
+.md_preview strong span,
+.md_preview strong em {
   font-weight: 700;
 }
 
-.htmledit_views em strong {
+.md_preview em strong {
   font-style: italic;
 }
-.htmledit_views h1,
-.htmledit_views h2,
-.htmledit_views h3,
-.htmledit_views h4,
-.htmledit_views h5,
-.htmledit_views h6 {
+.md_preview h1,
+.md_preview h2,
+.md_preview h3,
+.md_preview h4,
+.md_preview h5,
+.md_preview h6 {
   color: #4f4f4f;
   margin: 8px 0 16px;
   font-weight: 700;
 }
-.htmledit_views ol,
-.htmledit_views ul {
+.md_preview ol,
+.md_preview ul {
   margin: 0 0 24px;
   padding: 0;
   font-size: 16px;
 }
-.htmledit_views blockquote ol,
-.htmledit_views blockquote ul {
+.md_preview blockquote ol,
+.md_preview blockquote ul {
   margin-bottom: 16px;
   padding: 0;
   font-size: 16px;
   line-height: 24px;
 }
-.htmledit_views blockquote ol li,
-.htmledit_views blockquote ul li {
+.md_preview blockquote ol li,
+.md_preview blockquote ul li {
   margin-bottom: 0;
 }
-.htmledit_views table tr td,
-.htmledit_views table tr th {
+.md_preview table tr td,
+.md_preview table tr th {
   border: 1px solid #ddd;
   font-size: 14px;
   color: #4f4f4f;
@@ -445,8 +445,8 @@ p[align="center"] {
   padding: 8px;
   text-align: left;
 }
-.htmledit_views table tr td p,
-.htmledit_views table tr th p {
+.md_preview table tr td p,
+.md_preview table tr th p {
   font-size: 14px;
   color: #4f4f4f;
   margin: 0;
@@ -454,76 +454,84 @@ p[align="center"] {
   text-align: left;
   line-height: 22px;
 }
-.htmledit_views table tr td code,
-.htmledit_views table tr th code {
+.md_preview table tr td code,
+.md_preview table tr th code {
   white-space: normal;
   word-break: break-word;
 }
-.htmledit_views abbr[data-original-title],
-.htmledit_views abbr[title] {
+.md_preview abbr[data-original-title],
+.md_preview abbr[title] {
   cursor: help;
   border-bottom: 1px dotted #999;
 }
 .marker {
   background-color: #ff0;
 }
-.htmledit_views kbd,
-.htmledit_views pre,
-.htmledit_views samp {
+.md_preview pre {
+  overflow: hidden;
+  code {
+    overflow-y: hidden;
+  }
+}
+
+.md_preview kbd,
+.md_preview pre,
+.md_preview samp {
   font-family: Consolas, Inconsolata, Courier, monospace;
   font-size: 14px;
   line-height: 22px;
   color: #000;
 }
-.htmledit_views code ol li div.hljs-ln-code,
-.htmledit_views code ol li div.hljs-ln-numbers,
-.htmledit_views pre code,
-.htmledit_views pre code div,
-.htmledit_views pre code span {
+
+.md_preview code ol li div.hljs-ln-code,
+.md_preview code ol li div.hljs-ln-numbers,
+.md_preview pre code,
+.md_preview pre code div,
+.md_preview pre code span {
   font-family: "Source Code Pro", "DejaVu Sans Mono", "Ubuntu Mono",
     "Anonymous Pro", "Droid Sans Mono", Menlo, Monaco, Consolas, Inconsolata,
     Courier, monospace, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
-.htmledit_views a:focus,
-.htmledit_views a:hover {
+.md_preview a:focus,
+.md_preview a:hover {
   color: #ca0c16;
 }
-.htmledit_views .flow-chart,
-.htmledit_views .sequence-diagram {
+.md_preview .flow-chart,
+.md_preview .sequence-diagram {
   text-align: center;
   margin-bottom: 24px;
   font-size: 14px !important;
 }
-.htmledit_views .flow-chart [fill="#000"],
-.htmledit_views .flow-chart [fill="#000000"],
-.htmledit_views .flow-chart [fill="black"],
-.htmledit_views .sequence-diagram [fill="#000"],
-.htmledit_views .sequence-diagram [fill="#000000"],
-.htmledit_views .sequence-diagram [fill="black"] {
+.md_preview .flow-chart [fill="#000"],
+.md_preview .flow-chart [fill="#000000"],
+.md_preview .flow-chart [fill="black"],
+.md_preview .sequence-diagram [fill="#000"],
+.md_preview .sequence-diagram [fill="#000000"],
+.md_preview .sequence-diagram [fill="black"] {
   fill: #4f4f4f;
 }
-.htmledit_views .flow-chart [stroke="#000000"],
-.htmledit_views .sequence-diagram [stroke="#000000"] {
+.md_preview .flow-chart [stroke="#000000"],
+.md_preview .sequence-diagram [stroke="#000000"] {
   stroke: #4f4f4f;
 }
-.htmledit_views pre code,
-.htmledit_views pre code div,
-.htmledit_views pre code span {
+.md_preview pre code,
+.md_preview pre code div,
+.md_preview pre code span {
   font-size: 14px;
 }
-.htmledit_views .prettyprint,
-.htmledit_views pre.prettyprint {
+.md_preview .prettyprint,
+.md_preview pre.prettyprint {
   margin: 0 0 24px;
   padding: 8px 16px 4px 56px;
   background-color: #f6f8fa;
   border: none;
 }
-.htmledit_views code ol li div.hljs-ln-code,
-.htmledit_views code ol li div.hljs-ln-numbers {
+.md_preview code ol li div.hljs-ln-code,
+.md_preview code ol li div.hljs-ln-numbers {
   float: left;
   height: 22px;
 }
 
-.htmledit_views pre code .hljs-comment {
+.md_preview pre code .hljs-comment {
   color: green;
 }

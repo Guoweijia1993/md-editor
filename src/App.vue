@@ -4,6 +4,7 @@
     :id="'md_' + id"
   >
     <markdown-header
+      :ref="'md_header' + id"
       :text.sync="text"
       :selectionInfo.sync="selectionInfo"
       :showPreview.sync="showPreview"
@@ -43,6 +44,7 @@
       :textLength.sync="textLength"
       :rows="rows"
       :id="textareaId"
+      @tab="$refs['md_header' + id].tab()"
       @submit="submit"
       v-show="!showPreview"
     />

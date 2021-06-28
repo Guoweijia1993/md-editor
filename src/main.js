@@ -4,7 +4,6 @@ import Vtip from "vtip";
 import "vtip/lib/index.min.css";
 import { initStyle, setzIndex, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
-
 Vue.use(Vtip.directive);
 
 function initMdEditor(obj) {
@@ -39,6 +38,7 @@ function initMdEditor(obj) {
   if (!el || !document.querySelector(el)) throw new Error("请指定容器");
   if (isNotEmpty(themeOptions)) initStyle(themeOptions);
   if (isNotEmpty(zIndex)) setzIndex(zIndex);
+
   const id = new Date().getTime() + "";
   const props = {
     canAttachFile,

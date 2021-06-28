@@ -1,6 +1,6 @@
 <template>
-  <div :class="['htmledit_views', { fullScreen }]">
-    <div v-html="html" :style="{ 'min-height': htmlHeight + 'px' }"></div>
+  <div :class="['md_preview', { fullScreen }]">
+    <div v-html="html" :style="{ 'min-height': htmlMinHeight + 'px' }"></div>
   </div>
 </template>
 <script>
@@ -9,7 +9,7 @@ import "highlight.js/styles/github.css";
 export default {
   data() {
     return {
-      htmlHeight: 150
+      htmlMinHeight: 150
     };
   },
   props: {
@@ -30,9 +30,9 @@ export default {
       default: false
     }
   },
-  mounted() {
-    this.resetHeight();
-  },
+  // mounted() {
+  //   this.resetMinHeight();
+  // },
   methods: {
     transferMarkdown(val) {
       marked.setOptions({
@@ -46,17 +46,18 @@ export default {
       const html = marked(str);
       this.$emit("update:html", html);
     },
-    resetHeight() {
+    resetMinHeight() {
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const height = textEl.offsetHeight;
-      this.htmlHeight = height;
+      this.htmlMinHeight = height;
     }
   },
   watch: {
     text: {
       immediate: true,
       handler: function(val) {
+        this.resetMinHeight();
         this.transferMarkdown(val);
       }
     }
@@ -64,7 +65,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.htmledit_views {
+.md_preview {
   // min-height: 148px;
   padding: 14px 0;
   box-sizing: border-box;
