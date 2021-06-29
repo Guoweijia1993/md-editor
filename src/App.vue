@@ -13,6 +13,7 @@
       :canPreview="canPreview"
       :toolsOptions="toolsOptions"
       :zIndex="zIndex"
+      :tabSize="tabSize"
       :fullScreen.sync="fullScreen"
       :themeOptions="themeOptions"
       @upload="$refs.mdUploadFile.click()"
@@ -51,6 +52,7 @@
       :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
+      @enter="$refs['md_header' + id].resetUlNum()"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -86,6 +88,10 @@ export default {
     },
     id: {
       type: String,
+      default: ""
+    },
+    tabSize: {
+      type: [String, Number],
       default: ""
     },
     // canAttachFile: {
@@ -168,6 +174,7 @@ export default {
       fileList: [],
       text: "",
       html: "",
+      ulNum: 1,
       htmlMinHeight: 150,
       textLength: "",
       selectionInfo: {

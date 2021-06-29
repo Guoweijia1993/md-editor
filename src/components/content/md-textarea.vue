@@ -7,6 +7,7 @@
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
+      @keydown.enter="$emit('enter')"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
       @keydown.tab.prevent="$emit('tab')"
@@ -102,7 +103,6 @@ export default {
       immediate: true,
       handler: function(val) {
         const cursorPoint = getPosition(this.id);
-        console.log(cursorPoint);
         this.textContent = val;
         this.transferMarkdown(val);
       }

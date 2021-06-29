@@ -42,11 +42,15 @@ export default {
     selectionInfo: {
       type: Object,
       default: () => {}
+    },
+    ulNum: {
+      type: Number,
+      default: 1
     }
   },
   data() {
     return {
-      ulNum: 1
+      // ulNum: 1
     };
   },
   computed: {
@@ -66,6 +70,9 @@ export default {
     }
   },
   methods: {
+    // resetUlNum() {
+    //   this.ulNum = 1;
+    // },
     handleTool(type, startStr, endStr) {
       switch (type) {
         case "bold":
@@ -80,8 +87,8 @@ export default {
           break;
         case "ol":
           let ulNum = this.ulNum;
-          this.updateText(`\n${ulNum}. `, "");
-          this.ulNum++;
+          this.updateText(`\n${ulNum++}. `, "");
+          this.$emit("update:ulNum", ulNum);
           break;
         case "file":
           this.$emit("upload");
@@ -100,7 +107,12 @@ export default {
       const originalText = this.text;
       const selectionInfo = this.selectionInfo;
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
-      this.$emit("updateText", newText);
+      const len =
+        selectionInfo.selectionEnd -
+        selectionInfo.selectionStart +
+        startStr.length +
+        endStr.length;
+      this.$emit("updateText", { val: newText, len });
     }
   }
 };

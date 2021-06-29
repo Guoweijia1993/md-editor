@@ -17,11 +17,12 @@
     </div>
     <div class="header_tools" v-if="!showPreview">
       <tool-button
-        ref="tool_button"
+        :ref="item.name"
+        :ulNum.sync="ulNum"
         :info="item"
         :fullScreen="fullScreen"
         @setFullScreen="$emit('update:fullScreen', $event)"
-        @updateText="updateText"
+        @updateText="handleUpdateText"
         @upload="$emit('upload')"
         v-for="(item, index) in toolsShow"
         :key="index"
@@ -71,6 +72,10 @@ export default {
       type: [String, Number],
       default: ""
     },
+    tabSize: {
+      type: [String, Number],
+      default: ""
+    },
     text: {
       type: [String, Number],
       default: ""
@@ -109,11 +114,13 @@ export default {
   },
   data() {
     return {
+      cursorPoint: "",
       cancelFullScreenBtn: {
         name: "cancelFullScreen",
         icon: "quxiaoquanping_o",
         tip: "退出全屏"
       },
+      ulNum: 1,
       fullScreenBtn: {
         name: "fullScreen",
         icon: "fullScreen",
@@ -201,48 +208,46 @@ export default {
   },
 
   methods: {
+    resetUlNum() {
+      this.ulNum = 1;
+    },
     tab() {
-      const startStr = " ";
+      let startStr = "";
+      const tabSize = parseInt(this.tabSize);
+      Array.from({ length: tabSize }).forEach(() => {
+        startStr += " ";
+      });
       const endStr = "";
       const originalText = this.text;
       const cursorPoint = getPosition(this.id);
-      console.log(cursorPoint);
-
       const selectionInfo = {
         selectionStart: cursorPoint,
         selectionEnd: cursorPoint
       };
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
       const len = newText.length - originalText.length;
-      // const len = 0;
-      this.$emit("update:selectionInfo", {
-        selectorId: "",
-        selectionStart: cursorPoint.selectionStart + len,
-        selectionEnd: cursorPoint.selectionEnd + len
-      });
-      this.updateText(newText, len);
+      this.updateText(newText, len, cursorPoint);
     },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
     },
-    updateText(val, len = 0) {
-      console.log(val);
-      this.$emit("update:text", val);
+    handleUpdateText({ val, len }) {
       const cursorPoint = getPosition(this.id);
-      console.log(cursorPoint);
-
+      this.updateText(val, len, cursorPoint);
+    },
+    updateText(val, len = 0) {
+      const textEl = document.getElementById(this.id);
+      textEl.blur();
+      const cursorPoint = getPosition(this.id);
+      this.$emit("update:text", val);
       this.$emit("update:selectionInfo", {
         selectorId: "",
         selectionStart: "",
         selectionEnd: ""
       });
-      console.log(cursorPoint);
-
       setTimeout(() => {
-        // document.getElementById(this.id).setSelectionRange(0, 0);
-        document
-          .getElementById(this.id)
-          .setSelectionRange(cursorPoint + len, cursorPoint + len);
+        textEl.focus();
+        textEl.setSelectionRange(cursorPoint + len, cursorPoint + len);
       }, 0);
     }
   }
