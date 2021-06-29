@@ -88,11 +88,16 @@ export default {
     document.addEventListener("mouseup", this.checkSelection);
   },
   mounted() {
-    setTimeout(() => {
-      this.resetMinHeight();
-    }, 0);
+    this.resetPreviewMinHeight();
   },
   watch: {
+    isFocus: {
+      handler: function(val) {
+        if (val) {
+          this.resetPreviewMinHeight();
+        }
+      }
+    },
     text: {
       immediate: true,
       handler: function(val) {
@@ -111,7 +116,7 @@ export default {
           document.body.style.overflow = "auto";
         }
         setTimeout(() => {
-          this.reSizeHeight();
+          this.reSizeTextareaHeight();
         }, 0);
       }
     },
@@ -120,7 +125,7 @@ export default {
       handler: function() {
         setTimeout(() => {
           if (!this.autoSize) return;
-          this.reSizeHeight();
+          this.reSizeTextareaHeight();
         }, 0);
       }
     }
@@ -139,15 +144,13 @@ export default {
     }
   },
   methods: {
-    resetMinHeight() {
-      console.log("resetHeight");
-
-      const textEl = document.getElementById(this.id);
-      if (!textEl) return;
-      const height = textEl.offsetHeight;
-      console.log("编辑区高度", height);
-      this.$emit("update:htmlMinHeight", height);
-      // this.htmlMinHeight = height;
+    resetPreviewMinHeight() {
+      setTimeout(() => {
+        const textEl = document.getElementById(this.id);
+        if (!textEl) return;
+        const height = textEl.offsetHeight;
+        this.$emit("update:htmlMinHeight", height);
+      }, 0);
     },
     transferMarkdown(val) {
       marked.setOptions({
@@ -165,7 +168,7 @@ export default {
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
     },
-    reSizeHeight() {
+    reSizeTextareaHeight() {
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const fontSize = getComputedStyle(textEl).getPropertyValue("font-size");

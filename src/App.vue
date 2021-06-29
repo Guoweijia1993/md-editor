@@ -48,6 +48,7 @@
       :rows="rows"
       :html.sync="html"
       :id="textareaId"
+      :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
       v-else

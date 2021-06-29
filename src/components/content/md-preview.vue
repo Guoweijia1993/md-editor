@@ -31,9 +31,6 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      // this.resetMinHeight();
-    }, 0);
     this.addClass();
   },
   updated() {
@@ -46,39 +43,6 @@ export default {
         if (!previewDom) return;
         previewDom.className = "md_hljs";
       }, 0);
-    },
-    transferMarkdown(val) {
-      marked.setOptions({
-        highlight: function(code, lang, callback) {
-          const html = require("highlight.js").highlightAuto(code).value;
-          return html;
-        }
-      });
-      const str = val + "";
-      // if (!str.trim()) return;
-      const html = marked(str);
-      this.$emit("update:html", html);
-    },
-    resetMinHeight() {
-      console.log("resetHeight");
-
-      const textEl = document.getElementById(this.id);
-      if (!textEl) return;
-      const height = textEl.offsetHeight;
-      console.log("编辑区高度", height);
-
-      this.htmlMinHeight = height;
-    }
-  },
-  watch: {
-    text: {
-      immediate: true,
-      handler: function(val) {
-        setTimeout(() => {
-          // this.resetMinHeight();
-        }, 0);
-        // this.transferMarkdown(val);
-      }
     }
   }
 };

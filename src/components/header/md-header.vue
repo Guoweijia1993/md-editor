@@ -205,10 +205,21 @@ export default {
       const startStr = " ";
       const endStr = "";
       const originalText = this.text;
-      const selectionInfo = this.selectionInfo;
+      const cursorPoint = getPosition(this.id);
+      console.log(cursorPoint);
+
+      const selectionInfo = {
+        selectionStart: cursorPoint,
+        selectionEnd: cursorPoint
+      };
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
       const len = newText.length - originalText.length;
       // const len = 0;
+      this.$emit("update:selectionInfo", {
+        selectorId: "",
+        selectionStart: cursorPoint.selectionStart + len,
+        selectionEnd: cursorPoint.selectionEnd + len
+      });
       this.updateText(newText, len);
     },
     setShowPreview(val) {
@@ -222,8 +233,8 @@ export default {
 
       this.$emit("update:selectionInfo", {
         selectorId: "",
-        selectionStart: cursorPoint,
-        selectionEnd: cursorPoint
+        selectionStart: "",
+        selectionEnd: ""
       });
       console.log(cursorPoint);
 
