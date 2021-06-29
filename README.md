@@ -10,9 +10,9 @@
 
 - tab快捷键
 - tabSize属性
-- 代码风格配置[codeTheme](#themeoptions)
-- toggleTab方法[toggleTab](#toggletab)
-- toggleFullScreen方法[toggleFullScreen](#togglefullscreen)
+- [代码风格配置](#themeoptions)
+- [toggleTab方法](#toggletab)
+- [toggleFullScreen方法](#togglefullscreen)
 
 ### v0.4
 
