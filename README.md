@@ -115,14 +115,14 @@ new MdEditor({
 
 # themeOptions
 
-| 属性 | 说明 | 类型 | 默认值 |
-| ------ | ------ | ------ | ------ |
+| 属性 | 说明 | 类型 | 默认值 | 可选值 |
+| ------ | ------ | ------ | ------ | ------ |
 | dark | 夜间模式 | Boolean | false
 | borderColor | 编辑器边框默认颜色 | String | "#dbdbdb"
 | borderColorActive | 编辑器边框激活颜色 | String | "#409eff"
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
-| codeTheme | 代码主题色配置 | String | "light"
+| codeTheme | 代码主题色配置 | String | "light" | 'light', 'dark', 'atom-one-dark' |
 
 
 # toolsOptions
@@ -320,8 +320,8 @@ const myEditor = new MdEditor({
 })
 
 myEditor.toggleTab() // 默认取反
-myEditor.toggleTab(’edit‘)
-myEditor.toggleTab('preview')
+myEditor.toggleTab({"edit")
+myEditor.toggleTab("preview")
 ```
 
 # toggleFullScreen
