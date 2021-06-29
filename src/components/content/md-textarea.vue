@@ -25,10 +25,18 @@ import {
   getPosition,
   throttle as throttleFn
 } from "@/assets/js/utils";
+import marked from "marked";
 export default {
   props: {
     id: {
       type: String,
+      default: ""
+    },
+    html: {
+      type: String,
+      default: ""
+    },
+    htmlMinHeight: {
       default: ""
     },
     fullScreen: {
@@ -79,6 +87,11 @@ export default {
   created() {
     document.addEventListener("mouseup", this.checkSelection);
   },
+  mounted() {
+    setTimeout(() => {
+      this.resetMinHeight();
+    }, 0);
+  },
   watch: {
     text: {
       immediate: true,
@@ -86,6 +99,7 @@ export default {
         const cursorPoint = getPosition(this.id);
         console.log(cursorPoint);
         this.textContent = val;
+        this.transferMarkdown(val);
       }
     },
     fullScreen: {
@@ -125,6 +139,28 @@ export default {
     }
   },
   methods: {
+    resetMinHeight() {
+      console.log("resetHeight");
+
+      const textEl = document.getElementById(this.id);
+      if (!textEl) return;
+      const height = textEl.offsetHeight;
+      console.log("编辑区高度", height);
+      this.$emit("update:htmlMinHeight", height);
+      // this.htmlMinHeight = height;
+    },
+    transferMarkdown(val) {
+      marked.setOptions({
+        highlight: function(code, lang, callback) {
+          const html = require("highlight.js").highlightAuto(code).value;
+          return html;
+        }
+      });
+      const str = val + "";
+      // if (!str.trim()) return;
+      const html = marked(str);
+      this.$emit("update:html", html);
+    },
     input() {
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();

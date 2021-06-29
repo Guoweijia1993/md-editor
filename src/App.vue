@@ -31,7 +31,8 @@
       :fullScreen.sync="fullScreen"
       :text="text"
       :html.sync="html"
-      v-show="showPreview"
+      :htmlMinHeight="htmlMinHeight"
+      v-if="showPreview"
     />
     <markdown-editor
       :selectionInfo.sync="selectionInfo"
@@ -40,14 +41,16 @@
       :placeholder="placeholder"
       :isFocus.sync="isFocus"
       :throttleTime="throttle"
+      :htmlMinHeight.sync="htmlMinHeight"
       :fullScreen.sync="fullScreen"
       :maxLength="maxLength"
       :textLength.sync="textLength"
       :rows="rows"
+      :html.sync="html"
       :id="textareaId"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
-      v-show="!showPreview"
+      v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
       <span>{{ textLength }}</span
@@ -103,8 +106,12 @@ export default {
       type: Number,
       default: 0
     },
-    preview: {
-      type: String,
+    setPreview: {
+      type: Boolean,
+      default: false
+    },
+    setFullScreen: {
+      // type: Boolean,
       default: ""
     },
     // 是否可以预览
@@ -160,6 +167,7 @@ export default {
       fileList: [],
       text: "",
       html: "",
+      htmlMinHeight: 150,
       textLength: "",
       selectionInfo: {
         selectorId: "",
@@ -179,17 +187,34 @@ export default {
   watch: {
     focus: {
       handler: function(val) {
-        const textEl = document.getElementById(this.textareaId);
-        if (val) {
-          textEl.focus();
-        } else {
-          textEl.blur();
-        }
+        setTimeout(() => {
+          const textEl = document.getElementById(this.textareaId);
+          if (val) {
+            textEl.focus();
+          } else {
+            textEl.blur();
+          }
+        });
       }
     },
-    preview: {
+    showPreview: {
       handler: function(val) {
-        this.showPreview = val === "preview";
+        this.$emit("changeTab", val);
+      }
+    },
+    setPreview: {
+      handler: function(val) {
+        this.showPreview = val;
+      }
+    },
+    setFullScreen: {
+      handler: function(val) {
+        this.fullScreen = val;
+      }
+    },
+    fullScreen: {
+      handler: function(val) {
+        this.$emit("changeFullScreen", val);
       }
     },
     text: {
@@ -199,7 +224,7 @@ export default {
       }
     },
     html: {
-      immediate: true,
+      immediate: false,
       handler: function(val) {
         const emitContent = {
           text: this.text,

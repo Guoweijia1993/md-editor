@@ -7,9 +7,7 @@
 import marked from "marked";
 export default {
   data() {
-    return {
-      htmlMinHeight: 150
-    };
+    return {};
   },
   props: {
     id: {
@@ -18,6 +16,9 @@ export default {
     },
     text: {
       type: [String, Number],
+      default: ""
+    },
+    htmlMinHeight: {
       default: ""
     },
     html: {
@@ -31,8 +32,8 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.resetMinHeight();
-    }, 0) 
+      // this.resetMinHeight();
+    }, 0);
     this.addClass();
   },
   updated() {
@@ -59,9 +60,13 @@ export default {
       this.$emit("update:html", html);
     },
     resetMinHeight() {
+      console.log("resetHeight");
+
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const height = textEl.offsetHeight;
+      console.log("编辑区高度", height);
+
       this.htmlMinHeight = height;
     }
   },
@@ -69,8 +74,10 @@ export default {
     text: {
       immediate: true,
       handler: function(val) {
-        this.resetMinHeight();
-        this.transferMarkdown(val);
+        setTimeout(() => {
+          // this.resetMinHeight();
+        }, 0);
+        // this.transferMarkdown(val);
       }
     }
   }

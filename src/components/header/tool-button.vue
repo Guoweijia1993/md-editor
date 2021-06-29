@@ -111,8 +111,10 @@ export default {
     font-size: 18px;
     color: var(--md-editor-text-color);
     cursor: pointer;
-    &:hover {
-      color: var(--md-editor-text-color-active);
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--md-editor-text-color-active);
+      }
     }
     &.icon-quxiaoquanping_o {
       font-size: 24px;

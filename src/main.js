@@ -29,7 +29,7 @@ function initMdEditor(obj) {
     rows = 6,
     maxLength,
     showWordLimit,
-    throttle = 1000,
+    throttle = 600,
     canPreview,
     canAttachFile,
     themeOptions,
@@ -53,15 +53,26 @@ function initMdEditor(obj) {
     placeholder,
     maxLength,
     zIndex,
-    preview: "",
+    setPreview: false,
+    setFullScreen: false,
     focus: false,
     showWordLimit
   };
   const listeners = {
+    changeTab(val) {
+      props.setPreview = val;
+      props.focus = !val;
+      _this.vEl.$forceUpdate();
+    },
+    changeFullScreen(val) {
+      props.setFullScreen = val;
+      _this.vEl.$forceUpdate();
+    },
     change(val) {
       onChange(val);
       _this.value = val;
       props.value = val.text;
+      _this.vEl.$forceUpdate();
     },
     input(val) {
       onInput(val);
@@ -85,8 +96,6 @@ function initMdEditor(obj) {
     },
     submit(val) {
       onSubmit(val);
-      _this.value = val;
-      props.value = val.text;
     },
     upload({ val, callback }) {
       onUpload(val, function(res) {
@@ -124,11 +133,21 @@ function initMdEditor(obj) {
     this.vEl.$forceUpdate();
   };
 
-  this.toggleTab = function(tabName) {
-    if (!tabName) {
-      props.preview = props.preview === "edit" ? "preview" : "edit";
+  this.toggleTab = function(setPreview) {
+    if (setPreview !== "edit" && setPreview !== "preview") {
+      props.setPreview = !props.preview;
     } else {
-      props.preview = tabName;
+      props.setPreview = setPreview === "preview";
+    }
+    props.focus = !props.setPreview;
+    this.vEl.$forceUpdate();
+  };
+
+  this.toggleFullScreen = function(setFullScreen) {
+    if (setFullScreen === undefined) {
+      props.setFullScreen = !props.setFullScreen;
+    } else {
+      props.setFullScreen = setFullScreen;
     }
     this.vEl.$forceUpdate();
   };
