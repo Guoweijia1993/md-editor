@@ -4,6 +4,16 @@
 
 ## 更新记录
 
+### v0.5
+
+2021-06-29 v0.5更新，添加功能：
+
+- tab快捷键
+- tabSize属性
+- [代码风格配置](#themeoptions)
+- [toggleTab方法](#toggletab)
+- [toggleFullScreen方法](#togglefullscreen)
+
 ### v0.4
 
 2021-06-23 v0.4更新，添加功能：
@@ -77,6 +87,7 @@ new MdEditor({
 | maxLength | 最大字数限制 | String \| Number | 1000 | |
 | showWordLimit | 是否显示当前字数 | Boolean | false | |
 | rows | 编辑区行数 | String \| Number | 6 | 'auto' |
+| tabSize | tab键缩紧空格数 | String \| Number | 2
 | throttle | input事件的节流时间 | Number | 1000 |  |
 | filePathRule | 图片链接的格式限制 | RegExp | [示例](#filepathrule) | |
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
@@ -99,16 +110,19 @@ new MdEditor({
 | blur | 使编辑器失去焦点 | Function | [blur](#focus) |
 | getValue | 获取编辑器的内容 | Function | [getValue](#getvalue) |
 | setValue | 设置编辑器的内容 | Function | [setValue](#setvalue) |
+| toggleTab | 切换编辑和预览tab | Function | [toggleTab](#toggletab) |
+| toggleFullScreen | 切换编辑器全屏模式 | Function | [toggleFullScreen](#togglefullscreen) |
 
 # themeOptions
 
-| 属性 | 说明 | 类型 | 默认值 |
-| ------ | ------ | ------ | ------ |
+| 属性 | 说明 | 类型 | 默认值 | 可选值 |
+| ------ | ------ | ------ | ------ | ------ |
 | dark | 夜间模式 | Boolean | false
 | borderColor | 编辑器边框默认颜色 | String | "#dbdbdb"
 | borderColorActive | 编辑器边框激活颜色 | String | "#409eff"
 | textColor | 编辑器文字默认颜色 | String | "#303030"
 | textColorActive | 编辑器文字激活颜色 | String | "#000"
+| codeTheme | 代码主题色配置 | String | "light" | 'light', 'dark', 'atom-one-dark' |
 
 
 # toolsOptions
@@ -293,6 +307,36 @@ const myEditor = new MdEditor({
 })
 
 myEditor.blur()
+```
+
+# toggleTab
+
+切换编辑器编辑和预览tab
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.toggleTab() // 默认取反
+myEditor.toggleTab({"edit")
+myEditor.toggleTab("preview")
+```
+
+# toggleFullScreen
+
+切换编辑器全屏模式
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.toggleFullScreen() // 默认取反
+myEditor.toggleFullScreen(true)
+myEditor.toggleFullScreen(false)
 ```
 
 # Example
