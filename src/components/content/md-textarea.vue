@@ -135,9 +135,10 @@ export default {
   },
   computed: {
     emitText() {
-      return throttleFn(() => {
+      // return throttleFn(() => {}, this.throttleTime);
+      return () => {
         this.$emit("update:text", this.textContent);
-      }, this.throttleTime);
+      };
     },
     autoSize() {
       return this.rows === "auto";
