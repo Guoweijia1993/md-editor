@@ -42,7 +42,7 @@ export default {
         const previewDomList = document.querySelectorAll(".md_preview code");
         if (!previewDomList.length) return;
         previewDomList.forEach(item => {
-          item.className = "md_hljs";
+          item.className += " md_hljs";
         });
       }, 0);
     }

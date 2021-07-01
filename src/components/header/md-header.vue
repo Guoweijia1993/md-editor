@@ -35,7 +35,12 @@
   </div>
 </template>
 <script>
-import { isNotFalse, formatText, getPosition } from "@/assets/js/utils";
+import {
+  isNotFalse,
+  formatText,
+  getPosition,
+  removeBlankLine
+} from "@/assets/js/utils";
 import toolButton from "./tool-button";
 export default {
   components: { toolButton },
@@ -152,8 +157,8 @@ export default {
           name: "code",
           icon: "code",
           tip: "插入代码块",
-          startStr: "\n```\n",
-          endStr: "\n```"
+          startStr: "\n```",
+          endStr: "\n\n\n```"
         },
         {
           name: "link",
@@ -237,9 +242,10 @@ export default {
     },
     updateText(val, len = 0) {
       const textEl = document.getElementById(this.id);
+      const scrollTop = textEl.scrollTop;
       textEl.blur();
       const cursorPoint = getPosition(this.id);
-      this.$emit("update:text", val);
+      this.$emit("update:text", removeBlankLine(val));
       this.$emit("update:selectionInfo", {
         selectorId: "",
         selectionStart: "",
@@ -247,6 +253,7 @@ export default {
       });
       setTimeout(() => {
         textEl.focus();
+        textEl.scrollTop = scrollTop;
         textEl.setSelectionRange(cursorPoint + len, cursorPoint + len);
       }, 0);
     }
@@ -315,9 +322,6 @@ export default {
     align-items: center;
     padding-bottom: 10px;
     box-sizing: border-box;
-    /deep/.tool_button {
-      margin: 0 8px;
-    }
   }
 }
 </style>

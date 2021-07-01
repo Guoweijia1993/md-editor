@@ -155,15 +155,33 @@ export default {
     },
     transferMarkdown(val) {
       marked.setOptions({
+        breaks: true,
+        gfm: true,
+        langPrefix: "language-",
         highlight: function(code, lang, callback) {
           const html = require("highlight.js").highlightAuto(code).value;
+
+          // const html = require("highlight.js").highlight(code, {
+          //   language: lang || "xml"
+          // }).value;
           return html;
         }
       });
       const str = val + "";
       // if (!str.trim()) return;
       const html = marked(str);
-      this.$emit("update:html", html);
+      const virtualDom = document.createElement("div");
+      virtualDom.innerHTML = html;
+      virtualDom.querySelectorAll("code").forEach(item => {
+        if (!/language-/.test(item.className)) {
+          item.className = "language-xml";
+        }
+      });
+      const DOMPurify = require("dompurify");
+      const cleanHtml = DOMPurify.sanitize(virtualDom.innerHTML, {
+        FORBID_TAGS: ["style", "script"]
+      });
+      this.$emit("update:html", cleanHtml);
     },
     input() {
       this.$emit("update:textLength", this.textContent.length);

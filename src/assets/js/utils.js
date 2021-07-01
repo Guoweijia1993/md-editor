@@ -173,3 +173,8 @@ export function checkBoswer() {
   );
   return agent !== null;
 }
+
+export function removeBlankLine(val) {
+  if (!val) return "";
+  return val.replace(/^\n/, "");
+}

@@ -110,8 +110,7 @@ export default {
       const len =
         selectionInfo.selectionEnd -
         selectionInfo.selectionStart +
-        startStr.length +
-        endStr.length;
+        startStr.length;
       this.$emit("updateText", { val: newText, len });
     }
   }
@@ -119,10 +118,12 @@ export default {
 </script>
 <style lang="less" scoped>
 .tool_button {
+  padding: 4px 8px;
+  box-sizing: border-box;
+  cursor: pointer;
   .icon {
     font-size: 18px;
     color: var(--md-editor-text-color);
-    cursor: pointer;
     @media (any-hover: hover) {
       &:hover {
         color: var(--md-editor-text-color-active);
