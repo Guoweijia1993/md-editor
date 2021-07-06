@@ -173,8 +173,18 @@ export function checkBoswer() {
   );
   return agent !== null;
 }
-
+// 去除头部空格行
 export function removeBlankLine(val) {
   if (!val) return "";
   return val.replace(/^\n/, "");
+}
+
+// 获取被过滤掉的标签
+export function getFilteredTags(oldStr, newStr) {
+  if (oldStr.length - newStr.length === 0) return [];
+  const filteredStr = oldStr.replace(newStr.trim(), "");
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = filteredStr;
+  const filteredTags = Array.from(virtualDom.getElementsByTagName("*"));
+  return filteredTags;
 }

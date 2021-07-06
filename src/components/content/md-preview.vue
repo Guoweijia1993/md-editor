@@ -1,6 +1,12 @@
 <template>
   <div :class="['md_preview', { fullScreen }]">
-    <div v-html="html" :style="{ 'min-height': htmlMinHeight + 'px' }"></div>
+    <div
+      v-html="html"
+      :style="{
+        height: height > 0 ? height + 'px' : 'auto',
+        'min-height': htmlMinHeight + 'px'
+      }"
+    ></div>
   </div>
 </template>
 <script>
@@ -20,6 +26,10 @@ export default {
     },
     htmlMinHeight: {
       default: ""
+    },
+    height: {
+      type: Number,
+      default: 0
     },
     html: {
       type: String,
@@ -56,6 +66,10 @@ export default {
   box-sizing: border-box;
   color: var(--md-editor-text-color);
   word-break: break-all;
+  overflow-y: auto;
+  & > div {
+    overflow-y: auto;
+  }
   &.fullScreen {
     max-height: calc(100% - 42px);
     overflow-y: auto;

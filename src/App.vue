@@ -31,6 +31,7 @@
       :id="textareaId"
       :fullScreen.sync="fullScreen"
       :text="text"
+      :height="textareaHeight"
       :html.sync="html"
       :htmlMinHeight="htmlMinHeight"
       v-if="showPreview"
@@ -47,12 +48,14 @@
       :maxLength="maxLength"
       :textLength.sync="textLength"
       :rows="rows"
+      :height="textareaHeight"
       :html.sync="html"
       :id="textareaId"
       :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
       @enter="$refs['md_header' + id].resetUlNum()"
+      @getFilteredTags="filteredTags = $event"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -101,7 +104,7 @@ export default {
     // 初始化时赋值
     value: {
       type: [String, Number],
-      default: " "
+      default: ""
     },
     // 全屏时的z-index
     zIndex: {
@@ -145,6 +148,11 @@ export default {
       type: [Number, String],
       default: ""
     },
+    // 高度
+    height: {
+      type: Number,
+      default: 0
+    },
     // 最大长度
     maxLength: {
       type: [Number, String],
@@ -164,6 +172,11 @@ export default {
   computed: {
     textareaId() {
       return "textarea_" + this.id;
+    },
+    textareaHeight() {
+      const height = this.height;
+      if (!height) return 0;
+      return height - 83;
     }
   },
   data() {
@@ -172,6 +185,7 @@ export default {
       isFocus: false,
       showPreview: false,
       fileList: [],
+      filteredTags: [],
       text: "",
       html: "",
       ulNum: 1,
@@ -242,6 +256,7 @@ export default {
           const checkResult = checktUrl(val, this.filePathRule);
           emitContent.invalidList = checkResult;
         }
+        emitContent.filteredTags = this.filteredTags;
         this.$emit("change", emitContent);
         this.$emit("input", emitContent);
       }

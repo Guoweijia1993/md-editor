@@ -111,6 +111,7 @@ export default {
         selectionInfo.selectionEnd -
         selectionInfo.selectionStart +
         startStr.length;
+
       this.$emit("updateText", { val: newText, len });
     }
   }

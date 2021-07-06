@@ -200,7 +200,7 @@ export default {
           icon: "biaoge",
           tip: "添加表格",
           startStr:
-            "\n\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n",
+            "\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n",
           endStr: ""
         },
         {
@@ -231,14 +231,14 @@ export default {
       };
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
       const len = newText.length - originalText.length;
-      this.updateText(newText, len, cursorPoint);
+      this.updateText(newText, len);
     },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
     },
     handleUpdateText({ val, len }) {
-      const cursorPoint = getPosition(this.id);
-      this.updateText(val, len, cursorPoint);
+      // const cursorPoint = getPosition(this.id);
+      this.updateText(val, len);
     },
     updateText(val, len = 0) {
       const textEl = document.getElementById(this.id);

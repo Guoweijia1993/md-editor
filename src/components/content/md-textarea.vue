@@ -24,6 +24,7 @@
 import {
   getSelectionInfo,
   getPosition,
+  getFilteredTags,
   throttle as throttleFn
 } from "@/assets/js/utils";
 import marked from "marked";
@@ -71,6 +72,10 @@ export default {
     rows: {
       type: [String, Number],
       default: ""
+    },
+    height: {
+      type: Number,
+      default: 0
     },
     selectionInfo: {
       type: Object,
@@ -159,11 +164,7 @@ export default {
         gfm: true,
         langPrefix: "language-",
         highlight: function(code, lang, callback) {
-          const html = require("highlight.js").highlightAuto(code).value;
-
-          // const html = require("highlight.js").highlight(code, {
-          //   language: lang || "xml"
-          // }).value;
+          let html = require("highlight.js").highlightAuto(code).value;
           return html;
         }
       });
@@ -174,13 +175,18 @@ export default {
       virtualDom.innerHTML = html;
       virtualDom.querySelectorAll("code").forEach(item => {
         if (!/language-/.test(item.className)) {
-          item.className = "language-xml";
+          item.className = "language-html";
         }
       });
       const DOMPurify = require("dompurify");
       const cleanHtml = DOMPurify.sanitize(virtualDom.innerHTML, {
         FORBID_TAGS: ["style", "script"]
       });
+      // console.log(html.length);
+      // console.log(cleanHtml.length);
+
+      const filteredTags = getFilteredTags(html, cleanHtml);
+      this.$emit("getFilteredTags", filteredTags);
       this.$emit("update:html", cleanHtml);
     },
     input() {
@@ -188,6 +194,8 @@ export default {
       this.emitText();
     },
     reSizeTextareaHeight() {
+      console.log("setHeight");
+
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const fontSize = getComputedStyle(textEl).getPropertyValue("font-size");
@@ -213,6 +221,8 @@ export default {
       const contentHeight = hideEl.offsetHeight;
       this.editorHeight = this.fullScreen
         ? "calc(100% - 42px)"
+        : this.height
+        ? this.height + "px"
         : this.autoSize
         ? `${contentHeight + parseFloat(fontSize) * 1.2}px`
         : "auto";
