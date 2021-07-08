@@ -217,6 +217,8 @@ export default {
       this.ulNum = 1;
     },
     tab() {
+      const textEl = document.getElementById(this.id);
+      const scrollTop = textEl.scrollTop;
       let startStr = "";
       const tabSize = parseInt(this.tabSize);
       Array.from({ length: tabSize }).forEach(() => {
@@ -231,7 +233,7 @@ export default {
       };
       const newText = formatText(originalText, selectionInfo, startStr, endStr);
       const len = newText.length - originalText.length;
-      this.updateText(newText, len);
+      this.updateText(newText, len, scrollTop);
     },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
@@ -253,8 +255,8 @@ export default {
       });
       setTimeout(() => {
         textEl.focus();
-        textEl.scrollTop = scrollTop;
         textEl.setSelectionRange(cursorPoint + len, cursorPoint + len);
+        textEl.scrollTop = scrollTop;
       }, 0);
     }
   }

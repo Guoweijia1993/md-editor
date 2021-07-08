@@ -175,7 +175,7 @@ export default {
       virtualDom.innerHTML = html;
       virtualDom.querySelectorAll("code").forEach(item => {
         if (!/language-/.test(item.className)) {
-          item.className = "language-html";
+          item.className = "language-javascript";
         }
       });
       const DOMPurify = require("dompurify");
@@ -227,7 +227,7 @@ export default {
         ? `${contentHeight + parseFloat(fontSize) * 1.2}px`
         : "auto";
       this.editorOverFlow =
-        this.autoSize && !this.fullScreen ? "hidden" : "auto";
+        this.autoSize && !this.fullScreen && !this.height ? "hidden" : "auto";
       textEl.parentNode.removeChild(hideEl);
     },
     submit() {

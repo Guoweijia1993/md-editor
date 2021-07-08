@@ -54,7 +54,7 @@
       :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
-      @enter="$refs['md_header' + id].resetUlNum()"
+      @enter="handleEnter"
       @getFilteredTags="filteredTags = $event"
       v-else
     />
@@ -172,6 +172,9 @@ export default {
   computed: {
     textareaId() {
       return "textarea_" + this.id;
+    },
+    headId() {
+      return "md_header" + this.id;
     },
     textareaHeight() {
       const height = this.height;
@@ -306,6 +309,9 @@ export default {
     }
   },
   methods: {
+    handleEnter() {
+      this.$refs[this.headId].resetUlNum();
+    },
     upload(e) {
       this.fileList = Array.from(e.target.files);
     },
