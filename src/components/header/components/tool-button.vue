@@ -7,6 +7,22 @@
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
   <div
+    v-else-if="info.name === 'code'"
+    @click="handleTool(info.name, info.startStr, info.endStr)"
+    v-tip.bottom="codeOptions"
+    class="tool_button"
+  >
+    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+  </div>
+  <div
+    v-else-if="info.name === 'table'"
+    @click="handleTool(info.name, info.startStr, info.endStr)"
+    v-tip.bottom="tableOptions"
+    class="tool_button"
+  >
+    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+  </div>
+  <div
     v-else
     v-tip.bottom="options"
     @click="handleTool(info.name, info.startStr, info.endStr)"
@@ -17,7 +33,10 @@
 </template>
 <script>
 import { formatText, checkBoswer } from "@/assets/js/utils";
+import languageList from "./language-list";
+import tableSelect from "./table-select";
 export default {
+  components: { languageList, tableSelect },
   props: {
     info: {
       type: Object,
@@ -67,12 +86,39 @@ export default {
         zIndex: parseInt(this.zIndex) + 1,
         theme: this.darkMode ? "dark" : "light"
       };
+    },
+    codeOptions() {
+      return {
+        content: this.info.tip,
+        customComponent: languageList,
+        customListeners: {
+          select: val => {
+            console.log(val);
+            const lang = val.toLowerCase().replace(/-/, "");
+            this.handleTool("code", "\n```" + lang, "\n\n\n```");
+          }
+        },
+        zIndex: parseInt(this.zIndex) + 1,
+        theme: this.darkMode ? "dark" : "light"
+      };
+    },
+    tableOptions() {
+      return {
+        content: this.info.tip,
+        customComponent: tableSelect,
+        customListeners: {
+          select: val => {
+            console.log(val);
+            const lang = val.toLowerCase().replace(/-/, "");
+            this.handleTool("code", "\n```" + lang, "\n\n\n```");
+          }
+        },
+        zIndex: parseInt(this.zIndex) + 1,
+        theme: this.darkMode ? "dark" : "light"
+      };
     }
   },
   methods: {
-    // resetUlNum() {
-    //   this.ulNum = 1;
-    // },
     handleTool(type, startStr, endStr) {
       switch (type) {
         case "bold":

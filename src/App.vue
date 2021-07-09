@@ -69,6 +69,7 @@
       :can-attach-file="canAttachFile"
       v-if="!showPreview && canAttachFile"
     /> -->
+    <tableSelect />
   </div>
 </template>
 <script>
@@ -76,13 +77,15 @@ import markdownHeader from "./components/header/md-header";
 import markdownFooter from "./components/footer/md-footer";
 import markdownEditor from "./components/content/md-textarea";
 import markdownPreview from "./components/content/md-preview";
+import tableSelect from "./components/header/components/table-select";
 import { formatText, checktUrl } from "@/assets/js/utils";
 export default {
   components: {
     markdownHeader,
     markdownFooter,
     markdownEditor,
-    markdownPreview
+    markdownPreview,
+    tableSelect
   },
   props: {
     placeholder: {

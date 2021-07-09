@@ -41,7 +41,7 @@ import {
   getPosition,
   removeBlankLine
 } from "@/assets/js/utils";
-import toolButton from "./tool-button";
+import toolButton from "./components/tool-button";
 export default {
   components: { toolButton },
   props: {
