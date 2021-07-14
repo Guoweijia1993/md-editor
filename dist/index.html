@@ -51,7 +51,7 @@ void main()
         {
             if(i%j==0)
             {
-                a+=i/j;{1}
+                a+=i/j;
             }
         }
         if(i==a){
@@ -81,7 +81,7 @@ void main()
         //   aaa.remove()
         // })
         //         `,
-        value: "",
+        value: "abcabcabc123**中文的**字体",
         themeOptions: {
           dark: false,
           borderColorActive: "#409eff",
@@ -90,11 +90,12 @@ void main()
           codeTheme: "atom-one-dark"
         },
         toolsOptions: {
+          format: true,
           bold: true,
           italic: true,
-          quote: false,
+          quote: true,
           code: true,
-          link: false,
+          link: true,
           ul: true,
           ol: true,
           task: true,
@@ -103,7 +104,7 @@ void main()
           fullScreen: true
         },
         zIndex: 7000,
-        // maxLength: 1000,
+        maxLength: 20000,
         showWordLimit: true,
         rows: "10",
         // height: "600",

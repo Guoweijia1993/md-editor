@@ -3,11 +3,12 @@
 export function getSelectionInfo(selectorId) {
   const selector = document.getElementById(selectorId);
   if (!selector) return;
-  // const selection = window.getSelection();
   const { selectionStart = 0, selectionEnd = 0 } = selector;
   if (selectionStart === selectionEnd) return "";
+  const selection = window.getSelection().toString();
   return {
     selectorId,
+    selection,
     selectionStart,
     selectionEnd
   };
@@ -187,4 +188,111 @@ export function getFilteredTags(oldStr, newStr) {
   virtualDom.innerHTML = filteredStr;
   const filteredTags = Array.from(virtualDom.getElementsByTagName("*"));
   return filteredTags;
+}
+// 格式刷的规则
+export function copyFormatRules(selection) {
+  if (!selection) return "";
+  const first1 = selection.slice(0, 1);
+  const first2 = selection.slice(0, 2);
+  const first3 = selection.slice(0, 3);
+  const first4 = selection.slice(0, 4);
+  const first5 = selection.slice(0, 5);
+  const first6 = selection.slice(0, 6);
+  const first7 = selection.slice(0, 7);
+  const end1 = selection.slice(-1);
+  const end2 = selection.slice(-2);
+  const end3 = selection.slice(-3);
+  let formatType = "";
+  console.log(first6);
+
+  switch (true) {
+    // 斜体
+    case first1 === "_" && end1 === "_":
+      formatType = {
+        startStr: "_",
+        endStr: "_"
+      };
+      break;
+    // 加粗
+    case first2 === "**" && end2 === "**":
+      formatType = {
+        startStr: "**",
+        endStr: "**"
+      };
+      break;
+    // 代码
+    case first3 === "```" && end3 === "```":
+      formatType = {
+        startStr: "\n```\n",
+        endStr: "\n\n```"
+      };
+      break;
+    // 引用
+    case first2 === "> ":
+      formatType = {
+        startStr: "\n> ",
+        endStr: ""
+      };
+      break;
+    // 待办
+    case first6 === "- [ ] ":
+      formatType = {
+        startStr: "\n- [ ] ",
+        endStr: ""
+      };
+      break;
+    // 无序列表
+    case first2 === "- ":
+      formatType = {
+        startStr: "\n- ",
+        endStr: ""
+      };
+      break;
+    // H6
+    case first7 === "###### ":
+      formatType = {
+        startStr: "\n###### ",
+        endStr: ""
+      };
+      break;
+    // H5
+    case first6 === "##### ":
+      formatType = {
+        startStr: "\n##### ",
+        endStr: ""
+      };
+      break;
+    // H4
+    case first5 === "#### ":
+      formatType = {
+        startStr: "\n#### ",
+        endStr: ""
+      };
+      break;
+    // H3
+    case first4 === "### ":
+      formatType = {
+        startStr: "\n### ",
+        endStr: ""
+      };
+      break;
+    // H2
+    case first3 === "## ":
+      formatType = {
+        startStr: "\n## ",
+        endStr: ""
+      };
+      break;
+    // H1
+    case first2 === "# ":
+      formatType = {
+        startStr: "\n# ",
+        endStr: ""
+      };
+      break;
+    default:
+      break;
+  }
+
+  return formatType;
 }

@@ -297,9 +297,9 @@ export default {
     color: var(--md-editor-text-color-active);
     height: var(--md-editor-height);
     resize: none;
-
-    font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas",
-      "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+    font-family: "Menlo", -apple-system, SF UI Text, Arial, PingFang SC,
+      Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei,
+      SimSun;
     &::placeholder {
       color: var(--md-editor-text-color);
     }

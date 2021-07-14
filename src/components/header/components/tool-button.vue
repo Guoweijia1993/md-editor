@@ -26,6 +26,7 @@
     v-else
     v-tip.bottom="options"
     @click="handleTool(info.name, info.startStr, info.endStr)"
+    @dblclick="handleDbClick(info.name)"
     class="tool_button"
   >
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
@@ -33,10 +34,10 @@
 </template>
 <script>
 import { formatText, checkBoswer } from "@/assets/js/utils";
-import languageList from "./language-list";
+import codeSelect from "./code-select";
 import tableSelect from "./table-select";
 export default {
-  components: { languageList, tableSelect },
+  components: { codeSelect, tableSelect },
   props: {
     info: {
       type: Object,
@@ -68,9 +69,7 @@ export default {
     }
   },
   data() {
-    return {
-      // ulNum: 1
-    };
+    return {};
   },
   computed: {
     darkMode() {
@@ -90,12 +89,14 @@ export default {
     codeOptions() {
       return {
         content: this.info.tip,
-        customComponent: languageList,
+        customComponent: codeSelect,
+        customClass: "codeSelectDialog",
+        width: 110,
         customListeners: {
           select: val => {
-            console.log(val);
+            this.closeTips();
             const lang = val.toLowerCase().replace(/-/, "");
-            this.handleTool("code", "\n```" + lang, "\n\n\n```");
+            this.handleTool("code", "\n```" + lang + "\n", "\n\n\n```");
           }
         },
         zIndex: parseInt(this.zIndex) + 1,
@@ -105,12 +106,13 @@ export default {
     tableOptions() {
       return {
         content: this.info.tip,
+        customClass: "tableSelectDialog",
         customComponent: tableSelect,
         customListeners: {
           select: val => {
             console.log(val);
-            const lang = val.toLowerCase().replace(/-/, "");
-            this.handleTool("code", "\n```" + lang, "\n\n\n```");
+            this.handleTool("table", val, "");
+            this.closeTips();
           }
         },
         zIndex: parseInt(this.zIndex) + 1,
@@ -119,6 +121,17 @@ export default {
     }
   },
   methods: {
+    closeTips() {
+      Array.from(document.getElementsByClassName("v-tip-container")).map(
+        item => {
+          item.remove();
+        }
+      );
+    },
+    handleDbClick(type) {
+      if (type !== "format") return;
+      this.$emit("setFormatType", { lock: true });
+    },
     handleTool(type, startStr, endStr) {
       switch (type) {
         case "bold":
@@ -129,11 +142,14 @@ export default {
         case "ul":
         case "task":
         case "table":
-          this.updateText(startStr, endStr);
+          this.$emit("updateText", { startStr, endStr });
+          break;
+        case "format":
+          this.$emit("setFormatType", { lock: false });
           break;
         case "ol":
           let ulNum = this.ulNum;
-          this.updateText(`\n${ulNum++}. `, "");
+          this.$emit("updateText", { startStr: `\n${ulNum++}. `, endStr: "" });
           this.$emit("update:ulNum", ulNum);
           break;
         case "file":
@@ -148,17 +164,6 @@ export default {
         default:
           break;
       }
-    },
-    updateText(startStr, endStr) {
-      const originalText = this.text;
-      const selectionInfo = this.selectionInfo;
-      const newText = formatText(originalText, selectionInfo, startStr, endStr);
-      const len =
-        selectionInfo.selectionEnd -
-        selectionInfo.selectionStart +
-        startStr.length;
-
-      this.$emit("updateText", { val: newText, len });
     }
   }
 };
@@ -168,14 +173,20 @@ export default {
   padding: 4px 8px;
   box-sizing: border-box;
   cursor: pointer;
+  &.active {
+    .icon {
+      color: var(--md-editor-border-color-active);
+    }
+  }
   .icon {
     font-size: 18px;
     color: var(--md-editor-text-color);
     @media (any-hover: hover) {
       &:hover {
-        color: var(--md-editor-text-color-active);
+        color: var(--md-editor-border-color-active);
       }
     }
+
     &.icon-quxiaoquanping_o {
       font-size: 24px;
       margin: 0 -4px;

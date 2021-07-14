@@ -24,9 +24,12 @@
         @setFullScreen="$emit('update:fullScreen', $event)"
         @updateText="handleUpdateText"
         @upload="$emit('upload')"
+        @setFormatType="setFormatType"
+        :class="{ active: item.name === 'format' && formatType }"
         v-for="(item, index) in toolsShow"
         :key="index"
         :text="text"
+        :formatType.sync="formatType"
         :zIndex="zIndex"
         :themeOptions="themeOptions"
         :selectionInfo="selectionInfo"
@@ -39,7 +42,8 @@ import {
   isNotFalse,
   formatText,
   getPosition,
-  removeBlankLine
+  removeBlankLine,
+  copyFormatRules
 } from "@/assets/js/utils";
 import toolButton from "./components/tool-button";
 export default {
@@ -113,8 +117,15 @@ export default {
         }
       }
     },
-    text: {
-      handler: function(newVal, oldVal) {}
+    selectionInfo: {
+      handler: function(newVal, oldVal) {
+        if (
+          newVal.selectionStart === oldVal.selectionStart &&
+          newVal.selectionEnd === oldVal.selectionEnd
+        )
+          return;
+        this.copyFormat();
+      }
     }
   },
   data() {
@@ -125,6 +136,8 @@ export default {
         icon: "quxiaoquanping_o",
         tip: "退出全屏"
       },
+      formatType: "", // 格式刷类型
+      lock: false,
       ulNum: 1,
       fullScreenBtn: {
         name: "fullScreen",
@@ -132,6 +145,11 @@ export default {
         tip: "全屏模式"
       },
       toolButtonList: [
+        {
+          name: "format",
+          icon: "geshishua",
+          tip: "格式刷"
+        },
         {
           name: "bold",
           icon: "bold",
@@ -148,7 +166,7 @@ export default {
         },
         {
           name: "quote",
-          icon: "baojiaquotation",
+          icon: "yinyong",
           tip: "插入引用",
           startStr: "\n> ",
           endStr: ""
@@ -157,15 +175,15 @@ export default {
           name: "code",
           icon: "code",
           tip: "插入代码块",
-          startStr: "\n```",
+          startStr: "\n```\n",
           endStr: "\n\n\n```"
         },
         {
           name: "link",
           icon: "lianjie",
           tip: "添加链接",
-          startStr: "[",
-          endStr: "](url)"
+          startStr: "[链接](",
+          endStr: ")"
         },
         {
           name: "ul",
@@ -200,7 +218,7 @@ export default {
           icon: "biaoge",
           tip: "添加表格",
           startStr:
-            "\n| header | header |\n| ------ | ------ |\n| cell | cell |\n| cell | cell |\n\n",
+            "\n\n| 表头 | 表头 |\n| ------ | ------ |\n| 单元格 | 单元格 |\n| 单元格 | 单元格 |\n\n",
           endStr: ""
         },
         {
@@ -211,10 +229,35 @@ export default {
       ]
     };
   },
-
   methods: {
     resetUlNum() {
       this.ulNum = 1;
+    },
+    setFormatType({ lock }) {
+      if (this.formatType) {
+        this.formatType = "";
+        return;
+      }
+      const selectionInfo = this.selectionInfo;
+      const selection = this.text.slice(
+        selectionInfo.selectionStart,
+        selectionInfo.selectionEnd
+      );
+      const formatType = copyFormatRules(selection);
+      this.formatType = formatType;
+      this.lock = lock;
+    },
+    copyFormat() {
+      const selectionInfo = this.selectionInfo;
+      const formatType = this.formatType;
+      if (
+        selectionInfo.selectionStart === selectionInfo.selectionEnd ||
+        !formatType
+      )
+        return;
+      this.handleUpdateText(formatType);
+      if (this.lock) return;
+      this.formatType = "";
     },
     tab() {
       const textEl = document.getElementById(this.id);
@@ -238,9 +281,16 @@ export default {
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
     },
-    handleUpdateText({ val, len }) {
-      // const cursorPoint = getPosition(this.id);
-      this.updateText(val, len);
+
+    handleUpdateText({ startStr, endStr }) {
+      const originalText = this.text;
+      const selectionInfo = this.selectionInfo;
+      const newText = formatText(originalText, selectionInfo, startStr, endStr);
+      const len =
+        selectionInfo.selectionEnd -
+        selectionInfo.selectionStart +
+        startStr.length;
+      this.updateText(newText, len);
     },
     updateText(val, len = 0) {
       const textEl = document.getElementById(this.id);

@@ -52,11 +52,27 @@ export default {
 </script>
 <style lang="less" scoped>
 ul {
-  max-height: 160px;
+  max-height: 162px;
   overflow-y: auto;
   margin-top: 2px;
+  margin-bottom: 6px;
+  border-top: 1px solid #e1e1e1;
+  padding-top: 4px;
+  box-sizing: border-box;
+  scrollbar-color: transparent transparent;
+  // scrollbar-track-color: transparent;
+  // -ms-scrollbar-track-color: transparent;
   &::-webkit-scrollbar {
-    display: none;
+    width: 2px;
+    height: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, 0.3);
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background-color: rgba(50, 50, 50, 0);
   }
   li {
     cursor: pointer;
