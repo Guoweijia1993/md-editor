@@ -4,6 +4,14 @@
 
 ## 更新记录
 
+### v0.6
+
+2021-07-15 v0.6更新，添加功能：
+
+- 优化表格交互方式
+- 添加代码语言选择
+- height属性
+
 ### v0.5
 
 2021-06-29 v0.5更新，添加功能：
@@ -87,6 +95,7 @@ new MdEditor({
 | maxLength | 最大字数限制 | String \| Number | 1000 | |
 | showWordLimit | 是否显示当前字数 | Boolean | false | |
 | rows | 编辑区行数 | String \| Number | 6 | 'auto' |
+| height | 编辑器高度 | String \| Number |  |  |
 | tabSize | tab键缩紧空格数 | String \| Number | 2
 | throttle | input事件的节流时间 | Number | 1000 |  |
 | filePathRule | 图片链接的格式限制 | RegExp | [示例](#filepathrule) | |
