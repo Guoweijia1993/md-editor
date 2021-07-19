@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="isMobile"
-    @click="handleTool(info.name, info.startStr, info.endStr)"
-    class="tool_button"
-  >
+  <div v-if="isMobile" @click="mobileClick" class="tool_button">
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
   <div
@@ -33,9 +29,10 @@
   </div>
 </template>
 <script>
-import { formatText, checkBoswer } from "@/assets/js/utils";
+import { checkBoswer } from "@/assets/js/utils";
 import codeSelect from "./code-select";
 import tableSelect from "./table-select";
+import markdownDoc from "./markdown-doc";
 export default {
   components: { codeSelect, tableSelect },
   props: {
@@ -81,7 +78,11 @@ export default {
     },
     options() {
       return {
-        content: this.info.tip,
+        customComponent: markdownDoc,
+        customProps: {
+          name: this.info.tip,
+          doc: this.info.doc
+        },
         zIndex: parseInt(this.zIndex) + 1,
         theme: this.darkMode ? "dark" : "light"
       };
@@ -110,7 +111,6 @@ export default {
         customComponent: tableSelect,
         customListeners: {
           select: val => {
-            console.log(val);
             this.handleTool("table", val, "");
             this.closeTips();
           }
@@ -121,10 +121,16 @@ export default {
     }
   },
   methods: {
+    mobileClick() {
+      setTimeout(() => {
+        this.handleTool(this.info.name, this.info.startStr, this.info.endStr);
+      }, 0);
+    },
     closeTips() {
       Array.from(document.getElementsByClassName("v-tip-container")).map(
         item => {
-          item.remove();
+          // item.remove();
+          item.style.display = "none";
         }
       );
     },
@@ -161,6 +167,9 @@ export default {
         case "cancelFullScreen":
           this.$emit("setFullScreen", false);
           break;
+        case "help":
+          this.$emit("updateShowHelp", true);
+          break;
         default:
           break;
       }
@@ -170,7 +179,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .tool_button {
-  padding: 4px 8px;
+  padding: 0 8px 8px;
   box-sizing: border-box;
   cursor: pointer;
   &.active {
@@ -181,6 +190,11 @@ export default {
   .icon {
     font-size: 18px;
     color: var(--md-editor-text-color);
+    display: inline-block;
+    vertical-align: text-bottom;
+    @media screen and (max-width: 768px) {
+      vertical-align: text-top;
+    }
     @media (any-hover: hover) {
       &:hover {
         color: var(--md-editor-border-color-active);
@@ -190,6 +204,19 @@ export default {
     &.icon-quxiaoquanping_o {
       font-size: 24px;
       margin: 0 -4px;
+    }
+    &.icon-unorderedList,
+    &.icon-youxuliebiao {
+      font-size: 18px;
+    }
+    &.icon-geshishua {
+      font-size: 15px;
+    }
+    &.icon-lianjie {
+      font-size: 16px;
+    }
+    &.icon-help {
+      font-size: 19px;
     }
   }
 }

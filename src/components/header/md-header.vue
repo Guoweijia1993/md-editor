@@ -5,14 +5,16 @@
         :class="['tab_item', { active: canPreview && !showPreview }]"
         @click="setShowPreview(false)"
       >
-        编辑
+        <span :class="['icon iconfont', `icon-bianji`]"></span>
+        <span v-if="!isMobile">编辑</span>
       </div>
       <div
         v-if="canPreview"
         :class="['tab_item', { active: showPreview }]"
         @click="setShowPreview(true)"
       >
-        预览
+        <span :class="['icon iconfont', `icon-yulan`]"></span>
+        <span v-if="!isMobile">预览</span>
       </div>
     </div>
     <div class="header_tools" v-if="!showPreview">
@@ -25,6 +27,7 @@
         @updateText="handleUpdateText"
         @upload="$emit('upload')"
         @setFormatType="setFormatType"
+        @updateShowHelp="$emit('updateShowHelp', $event)"
         :class="{ active: item.name === 'format' && formatType }"
         v-for="(item, index) in toolsShow"
         :key="index"
@@ -43,7 +46,8 @@ import {
   formatText,
   getPosition,
   removeBlankLine,
-  copyFormatRules
+  copyFormatRules,
+  checkBoswer
 } from "@/assets/js/utils";
 import toolButton from "./components/tool-button";
 export default {
@@ -102,6 +106,10 @@ export default {
       return toolsList.filter(item => {
         return isNotFalse(toolsOptions[item.name]);
       });
+    },
+    isMobile() {
+      const isMobile = checkBoswer();
+      return isMobile;
     }
   },
   watch: {
@@ -126,6 +134,11 @@ export default {
           return;
         this.copyFormat();
       }
+    },
+    formatType: {
+      handler: function(val) {
+        this.$emit("getFormatType", val);
+      }
     }
   },
   data() {
@@ -146,14 +159,10 @@ export default {
       },
       toolButtonList: [
         {
-          name: "format",
-          icon: "geshishua",
-          tip: "格式刷"
-        },
-        {
           name: "bold",
           icon: "bold",
           tip: "粗体",
+          doc: "**内容**",
           startStr: "**",
           endStr: "**"
         },
@@ -161,6 +170,7 @@ export default {
           name: "italic",
           icon: "italic",
           tip: "斜体",
+          doc: "_内容_",
           startStr: "_",
           endStr: "_"
         },
@@ -168,8 +178,14 @@ export default {
           name: "quote",
           icon: "yinyong",
           tip: "插入引用",
+          doc: "> 空格",
           startStr: "\n> ",
           endStr: ""
+        },
+        {
+          name: "format",
+          icon: "geshishua",
+          tip: "格式刷"
         },
         {
           name: "code",
@@ -182,13 +198,15 @@ export default {
           name: "link",
           icon: "lianjie",
           tip: "添加链接",
-          startStr: "[链接](",
+          doc: "[标题](链接)",
+          startStr: "[链接标题](",
           endStr: ")"
         },
         {
           name: "ul",
           icon: "unorderedList",
           tip: "添加无序列表",
+          doc: "- 空格",
           startStr: "\n- ",
           endStr: ""
         },
@@ -196,13 +214,14 @@ export default {
           name: "ol",
           icon: "youxuliebiao",
           tip: "添加有序列表",
+          doc: "1. 空格",
           startStr: "",
           endStr: ""
         },
         {
           name: "file",
           icon: "tupian",
-          tip: "上传文件",
+          tip: "上传图片",
           startStr: "",
           endStr: ""
         },
@@ -210,6 +229,7 @@ export default {
           name: "task",
           icon: "renwu",
           tip: "添加任务列表",
+          doc: "- [空格]",
           startStr: "\n- [ ] ",
           endStr: ""
         },
@@ -220,6 +240,11 @@ export default {
           startStr:
             "\n\n| 表头 | 表头 |\n| ------ | ------ |\n| 单元格 | 单元格 |\n| 单元格 | 单元格 |\n\n",
           endStr: ""
+        },
+        {
+          name: "help",
+          icon: "help",
+          tip: "帮助"
         },
         {
           name: "fullScreen",
@@ -255,7 +280,7 @@ export default {
         !formatType
       )
         return;
-      this.handleUpdateText(formatType);
+      this.handleUpdateText({ ...formatType, copy: true });
       if (this.lock) return;
       this.formatType = "";
     },
@@ -282,10 +307,23 @@ export default {
       this.$emit("update:showPreview", val);
     },
 
-    handleUpdateText({ startStr, endStr }) {
+    handleUpdateText({ startStr, endStr, type, copy }) {
       const originalText = this.text;
       const selectionInfo = this.selectionInfo;
-      const newText = formatText(originalText, selectionInfo, startStr, endStr);
+      let newText = formatText(originalText, selectionInfo, startStr, endStr);
+      const s = selectionInfo.selectionStart;
+      const e = selectionInfo.selectionEnd;
+      if (copy) {
+        const handleBlank = newText
+          .slice(s, e)
+          .replace(/(\n{2,})/g, `${endStr}$1${startStr}`);
+        if (type !== "code") {
+          newText =
+            newText.slice(0, s) +
+            handleBlank +
+            newText.slice(e, newText.length);
+        }
+      }
       const len =
         selectionInfo.selectionEnd -
         selectionInfo.selectionStart +
@@ -303,11 +341,13 @@ export default {
         selectionStart: "",
         selectionEnd: ""
       });
-      setTimeout(() => {
+      this.$nextTick(() => {
+        // setTimeout(() => {
         textEl.focus();
         textEl.setSelectionRange(cursorPoint + len, cursorPoint + len);
         textEl.scrollTop = scrollTop;
-      }, 0);
+      });
+      // }, 0);
     }
   }
 };
@@ -320,6 +360,7 @@ export default {
   height: 32px;
   transition: border-bottom 0.3s;
   border-bottom: 1px solid var(--md-editor-border-color);
+  // overflow-y: hidden;
   &.active {
     border-bottom: 1px solid var(--md-editor-border-color-active);
   }
@@ -327,25 +368,29 @@ export default {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
     box-sizing: border-box;
     .tab_item {
       color: var(--md-editor-text-color);
       cursor: pointer;
       position: relative;
-      padding: 0 6px;
+      // height: 28px;
+      padding: 0 6px 8px;
       box-sizing: border-box;
       &::after {
         display: block;
         content: "";
         position: absolute;
-        bottom: -12px;
+        bottom: -2px;
         width: 0;
-        height: 3px;
+        height: 2px;
         left: 50%;
         transform: translateX(-50%);
         background: transparent;
         transition: all 0.3s;
+        // @media screen and (max-width: 768px) {
+        //   bottom: -2px;
+        // }
       }
 
       &:hover {
@@ -366,13 +411,17 @@ export default {
       & + .tab_item {
         margin-left: 10px;
       }
+      .iconfont {
+        font-size: 14px;
+        display: inline-block;
+      }
     }
   }
   .header_tools {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
     box-sizing: border-box;
   }
 }

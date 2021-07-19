@@ -52,7 +52,7 @@ export default {
 </script>
 <style lang="less" scoped>
 ul {
-  max-height: 162px;
+  max-height: 142px;
   overflow-y: auto;
   margin-top: 2px;
   margin-bottom: 6px;
@@ -63,6 +63,7 @@ ul {
   // scrollbar-track-color: transparent;
   // -ms-scrollbar-track-color: transparent;
   &::-webkit-scrollbar {
+    display: none;
     width: 2px;
     height: 2px;
   }

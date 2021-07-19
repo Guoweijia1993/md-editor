@@ -203,8 +203,6 @@ export function copyFormatRules(selection) {
   const end2 = selection.slice(-2);
   const end3 = selection.slice(-3);
   let formatType = "";
-  console.log(first6);
-
   switch (true) {
     // 斜体
     case first1 === "_" && end1 === "_":
@@ -224,7 +222,8 @@ export function copyFormatRules(selection) {
     case first3 === "```" && end3 === "```":
       formatType = {
         startStr: "\n```\n",
-        endStr: "\n\n```"
+        endStr: "\n\n```",
+        type: "code"
       };
       break;
     // 引用

@@ -81,7 +81,7 @@ void main()
         //   aaa.remove()
         // })
         //         `,
-        value: "abcabcabc123**中文的**字体",
+        value: "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         themeOptions: {
           dark: false,
           borderColorActive: "#409eff",
@@ -89,6 +89,7 @@ void main()
           textColorActive: "#000",
           codeTheme: "atom-one-dark"
         },
+        height: 400,
         toolsOptions: {
           format: true,
           bold: true,
@@ -124,7 +125,7 @@ void main()
           console.log(res);
         },
         onInput: function(res) {
-          // console.log("input", res);
+          console.log("input", res);
         },
         onChange: function(res) {
           // console.log("change", res);
@@ -147,9 +148,8 @@ void main()
         }
       });
 
-      document.querySelector("#a").onclick = function() {
-        ee.focus();
-      };
+      ee.focus();
+      document.querySelector("#a").onclick = function() {};
       document.querySelector("#b").onclick = function() {
         ee.setValue("");
       };

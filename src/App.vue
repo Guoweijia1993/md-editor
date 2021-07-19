@@ -16,7 +16,9 @@
       :tabSize="tabSize"
       :fullScreen.sync="fullScreen"
       :themeOptions="themeOptions"
-      @upload="$refs.mdUploadFile.click()"
+      @upload="handleUpload"
+      @getFormatType="formatType = $event"
+      @updateShowHelp="showHelp = $event"
     />
     <input
       ref="mdUploadFile"
@@ -51,11 +53,14 @@
       :height="textareaHeight"
       :html.sync="html"
       :id="textareaId"
+      :show-help="showHelp"
+      :formatType="formatType"
       :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
       @enter="handleEnter"
       @getFilteredTags="filteredTags = $event"
+      @updateShowHelp="showHelp = $event"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -170,6 +175,10 @@ export default {
     }
   },
   computed: {
+    // isMobile() {
+    //   const isMobile = checkBoswer();
+    //   return isMobile;
+    // },
     textareaId() {
       return "textarea_" + this.id;
     },
@@ -192,7 +201,9 @@ export default {
       text: "",
       html: "",
       ulNum: 1,
+      formatType: "",
       htmlMinHeight: 150,
+      showHelp: false,
       textLength: "",
       selectionInfo: {
         selectorId: "",
@@ -208,6 +219,10 @@ export default {
         html: this.html
       });
     }, 0);
+
+    // if(this.isMobile) {
+
+    // }
   },
   watch: {
     focus: {
@@ -255,9 +270,11 @@ export default {
           text: this.text,
           html: this.html
         };
+
         if (this.filePathRule) {
           const checkResult = checktUrl(val, this.filePathRule);
           emitContent.invalidList = checkResult;
+          console.log(checkResult);
         }
         emitContent.filteredTags = this.filteredTags;
         this.$emit("change", emitContent);
@@ -271,6 +288,7 @@ export default {
           html: this.html
         };
         if (val) {
+          this.showHelp = false;
           this.$emit("focus", value);
         } else {
           this.$emit("blur", value);
@@ -309,6 +327,10 @@ export default {
     }
   },
   methods: {
+    handleUpload() {
+      this.$refs.mdUploadFile.click();
+      document.getElementById(this.textareaId).focus();
+    },
     handleEnter() {
       this.$refs[this.headId].resetUlNum();
     },
@@ -335,6 +357,7 @@ export default {
   box-sizing: border-box;
   transition: border 0.3s;
   position: relative;
+  overflow: hidden;
   &.fullScreen {
     position: fixed;
     top: 0;

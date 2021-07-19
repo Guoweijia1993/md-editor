@@ -15,9 +15,22 @@
       :placeholder="placeholder"
       :maxlength="maxLength"
       :rows="rows"
-      :style="{ height: editorHeight, overflow: editorOverFlow }"
+      :style="{
+        height: editorHeight,
+        overflow: editorOverFlow,
+        cursor: formatType
+          ? `url(https://codechina.csdn.net/codechina/operation-work/uploads/a1b7c2a995b2320dca911e2f2ecb9b88/format.png),text`
+          : 'text'
+      }"
     >
     </textarea>
+    <transition name="slide-fade">
+      <helpDoc
+        v-if="showHelp"
+        @updateShowHelp="$emit('updateShowHelp', $event)"
+        :showHelp.sync="showHelp"
+      />
+    </transition>
   </div>
 </template>
 <script>
@@ -28,7 +41,9 @@ import {
   throttle as throttleFn
 } from "@/assets/js/utils";
 import marked from "marked";
+import helpDoc from "./help-doc";
 export default {
+  components: { helpDoc },
   props: {
     id: {
       type: String,
@@ -80,6 +95,13 @@ export default {
     selectionInfo: {
       type: Object,
       default: () => {}
+    },
+    formatType: {
+      default: ""
+    },
+    showHelp: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -139,6 +161,10 @@ export default {
     document.removeEventListener("mouseup", this.checkSelection);
   },
   computed: {
+    formatIcon() {
+      return import("@/assets/img/icon-format.png");
+      return require("@/assets/img/icon-format.png");
+    },
     emitText() {
       // return throttleFn(() => {}, this.throttleTime);
       return () => {
@@ -194,8 +220,6 @@ export default {
       this.emitText();
     },
     reSizeTextareaHeight() {
-      console.log("setHeight");
-
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const fontSize = getComputedStyle(textEl).getPropertyValue("font-size");
