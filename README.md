@@ -138,12 +138,12 @@ new MdEditor({
 
 # toolsOptions
 
-| 属性 | 说明 | 类型 | 默认值 |
-| ------ | ------ | ------ | ------ |
+| 属性 | 说明 | 类型 | 默认值 | 说明 |
+| ------ | ------ | ------ | ------ | ------ |
 | bold | 加粗 | Boolean | true
 | italic | 斜体 | Boolean | true
 | quote | 引用 | Boolean | true
-| format | 格式刷 | Boolean | true
+| format | 格式刷 | Boolean | true | 支持标题、加粗、斜体、引用、代码块、无序列表、任务列表 |
 | code | 代码块 | Boolean | true
 | link | 链接 | Boolean | true
 | ul | 无序列表 | Boolean | true
