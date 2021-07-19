@@ -6,11 +6,13 @@
 
 ### v0.6
 
-2021-07-15 v0.6更新，添加功能：
+2021-07-19 v0.6更新，添加功能：
 
-- 优化表格交互方式
+- 优化工具栏表格交互
+- 工具栏添加[格式刷](#toolsoptions)
+- 添加[md语法说明](#toolsoptions)
 - 添加代码语言选择
-- height属性
+- 添加height属性
 
 ### v0.5
 
@@ -141,6 +143,7 @@ new MdEditor({
 | bold | 加粗 | Boolean | true
 | italic | 斜体 | Boolean | true
 | quote | 引用 | Boolean | true
+| format | 格式刷 | Boolean | true
 | code | 代码块 | Boolean | true
 | link | 链接 | Boolean | true
 | ul | 无序列表 | Boolean | true
@@ -148,6 +151,7 @@ new MdEditor({
 | task | 任务列表 | Boolean | true
 | table | 表格 | Boolean | true
 | file | 上传文件 | Boolean | true
+| help | markdown语法 | Boolean | true
 | fullScreen | 全屏模式 | Boolean | true
 
 
