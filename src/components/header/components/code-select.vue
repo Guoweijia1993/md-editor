@@ -1,13 +1,15 @@
 <template>
-  <ul>
-    <li
-      @click="$emit('select', item)"
-      v-for="(item, index) in list"
-      :key="index"
-    >
-      {{ item }}
-    </li>
-  </ul>
+  <div class="code_select_container">
+    <ul>
+      <li
+        @click="$emit('select', item)"
+        v-for="(item, index) in list"
+        :key="index"
+      >
+        {{ item }}
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
 export default {
@@ -51,6 +53,19 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.code_select_container {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    pointer-events: none;
+    background: linear-gradient(to top, #fff, transparent);
+  }
+}
 ul {
   max-height: 142px;
   overflow-y: auto;
@@ -62,6 +77,7 @@ ul {
   scrollbar-color: transparent transparent;
   // scrollbar-track-color: transparent;
   // -ms-scrollbar-track-color: transparent;
+
   &::-webkit-scrollbar {
     display: none;
     width: 2px;

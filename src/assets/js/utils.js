@@ -74,7 +74,8 @@ export function initStyle({
   frameBgColor,
   contentBgColor,
   codeBgColor,
-  codeTheme
+  codeTheme,
+  helpdocColor
 }) {
   // 夜晚模式
   if (dark) {
@@ -86,6 +87,7 @@ export function initStyle({
     frameBgColor = "#222226";
     codeBgColor = "#777888";
     contentBgColor = "#222226";
+    helpdocColor = "#CCCCD8";
   }
   if (frameBgColor) {
     document.documentElement.style.setProperty(
@@ -123,6 +125,12 @@ export function initStyle({
     document.documentElement.style.setProperty(
       "--md-editor-text-color",
       textColor
+    );
+  }
+  if (helpdocColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-helpdoc-color",
+      helpdocColor
     );
   }
   if (textColorActive) {

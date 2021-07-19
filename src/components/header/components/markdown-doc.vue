@@ -25,7 +25,7 @@ export default {
 .tips {
   text-align: center;
   .doc {
-    color: #666;
+    color: var(--md-editor-text-color-active);
   }
 }
 </style>

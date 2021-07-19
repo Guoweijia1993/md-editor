@@ -5,16 +5,16 @@
         :class="['tab_item', { active: canPreview && !showPreview }]"
         @click="setShowPreview(false)"
       >
-        <span :class="['icon iconfont', `icon-bianji`]"></span>
-        <span v-if="!isMobile">编辑</span>
+        <!-- <span :class="['icon iconfont', `icon-bianji`]"></span> -->
+        <span>编辑</span>
       </div>
       <div
         v-if="canPreview"
         :class="['tab_item', { active: showPreview }]"
         @click="setShowPreview(true)"
       >
-        <span :class="['icon iconfont', `icon-yulan`]"></span>
-        <span v-if="!isMobile">预览</span>
+        <!-- <span :class="['icon iconfont', `icon-yulan`]"></span> -->
+        <span>预览</span>
       </div>
     </div>
     <div class="header_tools" v-if="!showPreview">
@@ -178,7 +178,7 @@ export default {
           name: "quote",
           icon: "yinyong",
           tip: "插入引用",
-          doc: "> 空格",
+          doc: "> 内容",
           startStr: "\n> ",
           endStr: ""
         },
@@ -214,7 +214,7 @@ export default {
           name: "ol",
           icon: "youxuliebiao",
           tip: "添加有序列表",
-          doc: "1. 空格",
+          doc: "1. 内容",
           startStr: "",
           endStr: ""
         },
@@ -229,7 +229,7 @@ export default {
           name: "task",
           icon: "renwu",
           tip: "添加任务列表",
-          doc: "- [空格]",
+          doc: "- [空格] 内容",
           startStr: "\n- [ ] ",
           endStr: ""
         },
@@ -244,7 +244,7 @@ export default {
         {
           name: "help",
           icon: "help",
-          tip: "帮助"
+          tip: "Markdown语法"
         },
         {
           name: "fullScreen",

@@ -1,6 +1,6 @@
 <template>
   <div class="help_doc">
-    <div class="container">
+    <div class="doc_container">
       <h2>
         Markdown 语法
         <span
@@ -124,7 +124,35 @@ export default {
   padding-right: 0;
   // border-radius: 4px;
   z-index: 9;
-  .container {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      var(--md-editor-content-bg-color),
+      transparent
+    );
+  }
+  &::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(
+      to top,
+      var(--md-editor-content-bg-color),
+      transparent
+    );
+  }
+  .doc_container {
     overflow-y: auto;
     padding-right: 14px;
     height: 100%;
@@ -133,20 +161,20 @@ export default {
       display: none;
     }
     h2 {
-      font-size: 18px;
-       color: #333;
+      font-size: 16px;
+      color: var(--md-editor-text-color-active);
       .icon {
         float: right;
-        margin-top: 4px;
+        margin-top: 3px;
         cursor: pointer;
         font-weight: 400;
       }
     }
     ul.list {
-      margin-top: 10px;
+      margin-top: 14px;
       li {
         font-size: 14px;
-        color: #666;
+        color: var(--md-editor-helpdoc-color);
         margin-bottom: 10px;
         .icon {
           display: inline-block;

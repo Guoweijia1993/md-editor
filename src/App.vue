@@ -315,7 +315,7 @@ export default {
             const newText = formatText(
               originalText,
               selectionInfo,
-              "\n\n![img](",
+              "\n![img](",
               `${url})\n`
             );
             _this.text = newText;
