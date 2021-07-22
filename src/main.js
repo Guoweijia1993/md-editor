@@ -22,8 +22,10 @@ function initMdEditor(obj) {
     onBlur = () => {},
     onInput = () => {},
     onSubmit = () => {},
+    renderLinks = () => {},
     placeholder,
     value,
+    disabled,
     zIndex = 2000,
     filePathRule,
     rows = 6,
@@ -56,6 +58,7 @@ function initMdEditor(obj) {
     placeholder,
     maxLength,
     zIndex,
+    disabled,
     tabSize,
     setPreview: false,
     setFullScreen: false,
@@ -105,6 +108,11 @@ function initMdEditor(obj) {
       onUpload(val, function(res) {
         callback(res);
       });
+    },
+    renderLinks({ links, callback }) {
+      renderLinks(links, function(res) {
+        callback(res);
+      });
     }
   };
   this.vEl = new Vue({
@@ -125,6 +133,13 @@ function initMdEditor(obj) {
   this.setValue = function(val) {
     props.value = (val || "") + "";
     this.vEl.$forceUpdate();
+    if (!props.setPreview) return;
+    setTimeout(() => {
+      this.toggleTab();
+    });
+    setTimeout(() => {
+      this.toggleTab();
+    });
   };
 
   this.focus = function() {
@@ -137,9 +152,19 @@ function initMdEditor(obj) {
     this.vEl.$forceUpdate();
   };
 
+  this.disable = function() {
+    props.disabled = true;
+    this.vEl.$forceUpdate();
+  };
+
+  this.enable = function() {
+    props.disabled = false;
+    this.vEl.$forceUpdate();
+  };
+
   this.toggleTab = function(setPreview) {
     if (setPreview !== "edit" && setPreview !== "preview") {
-      props.setPreview = !props.preview;
+      props.setPreview = !props.setPreview;
     } else {
       props.setPreview = setPreview === "preview";
     }

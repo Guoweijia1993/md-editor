@@ -1,6 +1,6 @@
 <template>
   <div :class="['md_header', { active: isFocus }]">
-    <div class="header_tabs">
+    <div v-if="!disabled" class="header_tabs">
       <div
         :class="['tab_item', { active: canPreview && !showPreview }]"
         @click="setShowPreview(false)"
@@ -17,7 +17,7 @@
         <span>预览</span>
       </div>
     </div>
-    <div class="header_tools" v-if="!showPreview">
+    <div class="header_tools" v-if="!disabled && !showPreview">
       <tool-button
         :ref="item.name"
         :ulNum.sync="ulNum"
@@ -72,6 +72,10 @@ export default {
     canPreview: {
       type: Boolean,
       default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     themeOptions: {
       type: Object,
@@ -151,6 +155,7 @@ export default {
       },
       formatType: "", // 格式刷类型
       lock: false,
+      scrollTop: 0,
       ulNum: 1,
       fullScreenBtn: {
         name: "fullScreen",
@@ -254,6 +259,7 @@ export default {
       ]
     };
   },
+  created() {},
   methods: {
     resetUlNum() {
       this.ulNum = 1;
@@ -305,6 +311,18 @@ export default {
     },
     setShowPreview(val) {
       this.$emit("update:showPreview", val);
+      if (val) {
+        const textEl = document.getElementById(this.id);
+        this.scrollTop = textEl.scrollTop;
+      } else {
+        this.$nextTick(() => {
+          const textEl = document.getElementById(this.id);
+          if (!textEl) return;
+          setTimeout(() => {
+            textEl.scrollTop = this.scrollTop;
+          }, 0);
+        });
+      }
     },
 
     handleUpdateText({ startStr, endStr, type, copy }) {

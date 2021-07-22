@@ -15,7 +15,7 @@
       }
       .text {
         width: 100%;
-        height: 200px;
+        /* height: 200px; */
         border: 1px solid red;
         overflow-y: auto;
         padding: 10px;
@@ -81,15 +81,22 @@ void main()
         //   aaa.remove()
         // })
         //         `,
-        value: "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
+        value:
+          "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
+        value:
+          "![img](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)",
+        value: "http://www.baidu.com",
+        disabled: false,
         themeOptions: {
           dark: false,
           borderColorActive: "#409eff",
           textColor: "#303030",
-          textColorActive: "#000",
+          // textColorActive: "#000",
           codeTheme: "atom-one-dark"
         },
-        height: 400,
+        // height: 400,
+        rows: 6,
+        height: 40,
         toolsOptions: {
           format: true,
           bold: true,
@@ -102,10 +109,11 @@ void main()
           task: true,
           table: true,
           file: true,
+          // help: false,
           fullScreen: true
         },
         zIndex: 7000,
-        maxLength: 20000,
+        // maxLength: 20000,
         showWordLimit: true,
         rows: "10",
         // height: "600",
@@ -113,7 +121,7 @@ void main()
         filePathRule: /^https:\/\/ss2\.bdstatic\.com/,
         canPreview: true,
         // canAttachFile: true,
-        placeholder: "请输入内容",
+        placeholder: "当前问题已结题，不再开放新的回答。",
         // throttle: 1000,
         // onFocus: function(res) {
         //   console.log(res);
@@ -145,13 +153,29 @@ void main()
               callback(reader.result);
             };
           });
+        },
+        renderLinks: function(val, callback) {
+          const newLinks = val.map(item => {
+            item.title = "接口返回的标题";
+            item.desc =
+              "接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述";
+            return item;
+          });
+          setTimeout(() => {
+            callback(newLinks);
+          }, 2000);
         }
       });
 
-      ee.focus();
-      document.querySelector("#a").onclick = function() {};
+      // ee.focus();
+      document.querySelector("#a").onclick = function() {
+        // ee.disable();
+        ee.setValue(
+          "![img](https://img0.baidu.com/it/u=1562265942,1137696507&fm=253&fmt=auto&app=120&f=JPEG?w=525&h=500)"
+        );
+      };
       document.querySelector("#b").onclick = function() {
-        ee.setValue("");
+        ee.enable();
       };
     </script>
   </body>

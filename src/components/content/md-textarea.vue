@@ -1,6 +1,7 @@
 <template>
   <div :class="['md_textarea', { fullScreen, isFocus }]">
     <textarea
+      spellcheck="false"
       :id="id"
       @change="$emit('update:text', textContent)"
       @input="input"
@@ -15,10 +16,13 @@
       :placeholder="placeholder"
       :maxlength="maxLength"
       :rows="rows"
+      :disabled="disabled"
       :style="{
         height: editorHeight,
         overflow: editorOverFlow,
-        cursor: formatType
+        cursor: disabled
+          ? 'not-allowed'
+          : formatType
           ? `url(https://codechina.csdn.net/codechina/operation-work/uploads/a1b7c2a995b2320dca911e2f2ecb9b88/format.png),text`
           : 'text'
       }"
@@ -38,10 +42,14 @@ import {
   getSelectionInfo,
   getPosition,
   getFilteredTags,
+  getLinkTags,
+  addLanguageClass,
   throttle as throttleFn
 } from "@/assets/js/utils";
+import eventBus from "@/assets/js/eventBus";
 import marked from "marked";
-import helpDoc from "./help-doc";
+import helpDoc from "./components/help-doc";
+import DOMPurify from "dompurify";
 export default {
   components: { helpDoc },
   props: {
@@ -65,6 +73,10 @@ export default {
       default: 1000
     },
     isFocus: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -129,7 +141,6 @@ export default {
     text: {
       immediate: true,
       handler: function(val) {
-        const cursorPoint = getPosition(this.id);
         this.textContent = val;
         this.transferMarkdown(val);
       }
@@ -161,10 +172,6 @@ export default {
     document.removeEventListener("mouseup", this.checkSelection);
   },
   computed: {
-    formatIcon() {
-      return import("@/assets/img/icon-format.png");
-      return require("@/assets/img/icon-format.png");
-    },
     emitText() {
       // return throttleFn(() => {}, this.throttleTime);
       return () => {
@@ -195,25 +202,18 @@ export default {
         }
       });
       const str = val + "";
-      // if (!str.trim()) return;
-      const html = marked(str);
-      const virtualDom = document.createElement("div");
-      virtualDom.innerHTML = html;
-      virtualDom.querySelectorAll("code").forEach(item => {
-        if (!/language-/.test(item.className)) {
-          item.className = "language-javascript";
-        }
-      });
-      const DOMPurify = require("dompurify");
+      const html = marked(str); // 解析markdown
+      const virtualDom = addLanguageClass(html); // 如果没指定语言，添加默认语言
       const cleanHtml = DOMPurify.sanitize(virtualDom.innerHTML, {
         FORBID_TAGS: ["style", "script"]
-      });
-      // console.log(html.length);
-      // console.log(cleanHtml.length);
+      }); // 去除标签
+      const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
+      // 链接转换为卡片
+      const { vDom, links } = getLinkTags(this.id, cleanHtml);
 
-      const filteredTags = getFilteredTags(html, cleanHtml);
       this.$emit("getFilteredTags", filteredTags);
       this.$emit("update:html", cleanHtml);
+      this.$emit("renderLinksHtml", { vDom, links });
     },
     input() {
       this.$emit("update:textLength", this.textContent.length);
@@ -311,6 +311,9 @@ export default {
       overflow-y: auto;
     }
   }
+  &.disabled {
+    background: var(--md-editor-content-bg-color-disabled);
+  }
 
   textarea {
     display: block;
@@ -327,6 +330,9 @@ export default {
     &::placeholder {
       color: var(--md-editor-text-color);
     }
+    // &:disabled {
+    //   background: var(--md-editor-content-bg-color-disabled);
+    // }
   }
   .icon {
     position: absolute;

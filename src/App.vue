@@ -14,11 +14,13 @@
       :toolsOptions="toolsOptions"
       :zIndex="zIndex"
       :tabSize="tabSize"
+      :disabled="disabled"
       :fullScreen.sync="fullScreen"
       :themeOptions="themeOptions"
       @upload="handleUpload"
       @getFormatType="formatType = $event"
       @updateShowHelp="showHelp = $event"
+      @renderLinks="$emit('renderLinks', $event)"
     />
     <input
       ref="mdUploadFile"
@@ -38,6 +40,7 @@
       :htmlMinHeight="htmlMinHeight"
       v-if="showPreview"
     />
+
     <markdown-editor
       :selectionInfo.sync="selectionInfo"
       :text.sync="text"
@@ -53,6 +56,7 @@
       :height="textareaHeight"
       :html.sync="html"
       :id="textareaId"
+      :disabled="disabled"
       :show-help="showHelp"
       :formatType="formatType"
       :ref="'md_textarea' + id"
@@ -61,6 +65,7 @@
       @enter="handleEnter"
       @getFilteredTags="filteredTags = $event"
       @updateShowHelp="showHelp = $event"
+      @renderLinksHtml="renderLinksHtml"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -122,6 +127,10 @@ export default {
       default: 0
     },
     setPreview: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -229,6 +238,7 @@ export default {
       handler: function(val) {
         setTimeout(() => {
           const textEl = document.getElementById(this.textareaId);
+          if (!textEl) return;
           if (val) {
             textEl.focus();
           } else {
@@ -266,6 +276,7 @@ export default {
     html: {
       immediate: false,
       handler: function(val) {
+        console.log("html update");
         const emitContent = {
           text: this.text,
           html: this.html
@@ -342,6 +353,30 @@ export default {
         text: this.text,
         html: this.html
       });
+    },
+    renderLinksHtml({ vDom, links }) {
+      new Promise((resolve, reject) => {
+        this.$emit("renderLinks", {
+          links,
+          callback: function(list) {
+            resolve(list);
+          }
+        });
+      }).then(res => {
+        console.log("返回的列表", res);
+        res.forEach(item => {
+          const linkEl = vDom.querySelector("#" + item.id);
+          linkEl.className = "md_link_card";
+          linkEl.setAttribute("target", "_blank");
+          linkEl.innerHTML = `
+          <span class="md_link_title">${item.title}</span>
+          <span class="md_link_desc">${item.desc}</span>
+          <span class="md_link_url">${item.url}</span>
+          `;
+        });
+        // return vDom.innerHTML;
+        this.html = vDom.innerHTML;
+      });
     }
   }
 };
@@ -370,6 +405,9 @@ export default {
   }
   &.active {
     border: 1px solid var(--md-editor-border-color-active);
+  }
+  &.disabled {
+    background: var(--md-editor-frame-bg-color-disabled);
   }
   .word_limit {
     position: absolute;

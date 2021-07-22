@@ -303,3 +303,30 @@ export function copyFormatRules(selection) {
 
   return formatType;
 }
+
+export function addLanguageClass(html) {
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = html;
+  virtualDom.querySelectorAll("code").forEach(item => {
+    if (!/language-/.test(item.className)) {
+      item.className = "language-javascript";
+    }
+  });
+  return virtualDom;
+}
+
+export function getLinkTags(id, html) {
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = html;
+  const links = Array.from(virtualDom.querySelectorAll("a")).map(
+    (item, index) => {
+      item.id = id + "_" + index;
+      return {
+        id: item.id,
+        title: item.innerText,
+        url: item.href
+      };
+    }
+  );
+  return { vDom: virtualDom, links };
+}

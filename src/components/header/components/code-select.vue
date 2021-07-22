@@ -3,7 +3,7 @@
     <ul>
       <li
         @click="$emit('select', item)"
-        v-for="(item, index) in list"
+        v-for="(item, index) in sortList"
         :key="index"
       >
         {{ item }}
@@ -49,6 +49,13 @@ export default {
         "XML"
       ]
     };
+  },
+  computed: {
+    sortList() {
+      return this.list.sort((a, b) => {
+        return a.charCodeAt(0) - b.charCodeAt(0);
+      });
+    }
   }
 };
 </script>
@@ -80,8 +87,6 @@ ul {
 
   &::-webkit-scrollbar {
     display: none;
-    width: 2px;
-    height: 2px;
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 1em;
