@@ -164,6 +164,8 @@ new MdEditor({
     filePathRule: /^https:\/\/csdn\.net/
 })
 
+onInput/onChange事件中会返回invalidList[]列表，内容为不符合filePathRule规则的地址
+
 ```
 
 
