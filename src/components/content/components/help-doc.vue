@@ -16,6 +16,8 @@
         </li>
       </ul>
     </div>
+    <div class="before"></div>
+    <div class="after"></div>
   </div>
 </template>
 <script>
@@ -124,8 +126,7 @@ export default {
   padding-right: 0;
   // border-radius: 4px;
   z-index: 9;
-  &::before {
-    content: "";
+  .before {
     position: absolute;
     top: 4px;
     left: 0;
@@ -138,8 +139,7 @@ export default {
       transparent
     );
   }
-  &::after {
-    content: "";
+  .after {
     pointer-events: none;
     position: absolute;
     bottom: 12px;
