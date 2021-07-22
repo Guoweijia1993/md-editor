@@ -136,7 +136,7 @@ export default {
     background: linear-gradient(
       to bottom,
       var(--md-editor-content-bg-color),
-      transparent
+      rgba(255, 255, 255, 0)
     );
   }
   .after {
@@ -149,7 +149,7 @@ export default {
     background: linear-gradient(
       to top,
       var(--md-editor-content-bg-color),
-      transparent
+      rgba(255, 255, 255, 0)
     );
   }
   .doc_container {
