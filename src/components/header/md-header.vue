@@ -360,12 +360,10 @@ export default {
         selectionEnd: ""
       });
       this.$nextTick(() => {
-        // setTimeout(() => {
         textEl.focus();
         textEl.setSelectionRange(cursorPoint + len, cursorPoint + len);
         textEl.scrollTop = scrollTop;
       });
-      // }, 0);
     }
   }
 };

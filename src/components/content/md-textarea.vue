@@ -12,6 +12,7 @@
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
       @keydown.tab.prevent="$emit('tab')"
+      @keyup="keyup"
       v-model="textContent"
       :placeholder="placeholder"
       :maxlength="maxLength"
@@ -35,6 +36,9 @@
         :showHelp.sync="showHelp"
       />
     </transition>
+    <transition name="slideup-fade">
+      <selectUser v-show="showSelectUser" :position="selectUserPosition" />
+    </transition>
   </div>
 </template>
 <script>
@@ -43,15 +47,16 @@ import {
   getPosition,
   getFilteredTags,
   getLinkTags,
+  formatText,
   addLanguageClass,
   throttle as throttleFn
 } from "@/assets/js/utils";
-import eventBus from "@/assets/js/eventBus";
 import marked from "marked";
+import selectUser from "./components/select-user";
 import helpDoc from "./components/help-doc";
 import DOMPurify from "dompurify";
 export default {
-  components: { helpDoc },
+  components: { helpDoc, selectUser },
   props: {
     id: {
       type: String,
@@ -121,7 +126,9 @@ export default {
     return {
       textContent: "",
       editorHeight: "auto",
-      editorOverFlow: "auto"
+      editorOverFlow: "auto",
+      showSelectUser: false,
+      selectUserPosition: { left: 0, top: 0 }
     };
   },
   created() {
@@ -213,26 +220,70 @@ export default {
 
       this.$emit("getFilteredTags", filteredTags);
       this.$emit("update:html", cleanHtml);
-      this.$emit("renderLinksHtml", { vDom, links });
+      if (links.length) this.$emit("renderLinksHtml", { vDom, links });
     },
     input() {
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
+      this.showSelectUser = false;
     },
-    reSizeTextareaHeight() {
+    keyup(e) {
+      if (e.key === "@") {
+        this.createSelectUserDialog();
+      }
+    },
+    createSelectUserDialog() {
+      const textEl = document.getElementById(this.id);
+      if (!textEl) return;
+      const height = getComputedStyle(textEl).getPropertyValue("height");
+      const width = getComputedStyle(textEl).getPropertyValue("width");
+      const scrollTop = textEl.scrollTop;
+      const originalText = this.textContent;
+      const cursorPoint = getPosition(this.id);
+      const selectionInfo = {
+        selectionStart: cursorPoint - 1,
+        selectionEnd: cursorPoint
+      };
+      const newText = formatText(
+        originalText,
+        selectionInfo,
+        "<span id='call_position'>",
+        "</span>"
+      );
+
+      const hideEl = this.createHideEl("clac_position_El_");
+      hideEl.style.position = "absolute";
+      hideEl.style.width = width;
+      hideEl.style.height = height;
+      hideEl.style.overflowY = "auto";
+      hideEl.style.wordBreak = "break-all";
+      hideEl.style.top = "14px";
+      hideEl.style.left = 0;
+      hideEl.style.whiteSpace = "pre-wrap";
+      hideEl.innerHTML = newText;
+      this.$nextTick(() => {
+        hideEl.scrollTop = scrollTop;
+        const pEl = document.getElementById("call_position");
+        this.selectUserPosition = {
+          left: pEl.getBoundingClientRect().left,
+          top: pEl.getBoundingClientRect().top
+        };
+        textEl.parentNode.removeChild(hideEl);
+        this.showSelectUser = true;
+      });
+    },
+    createHideEl(type) {
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const fontSize = getComputedStyle(textEl).getPropertyValue("font-size");
       const lineHeight = getComputedStyle(textEl).getPropertyValue(
         "line-height"
       );
-
       const fontFamily = getComputedStyle(textEl).getPropertyValue(
         "font-family"
       );
-      const hideElId = "hdieEl" + this.id;
+      const hideElId = type + this.id;
       let hideEl = document.getElementById(hideElId);
-
       if (!hideEl) {
         hideEl = document.createElement("div");
         textEl.parentNode.appendChild(hideEl);
@@ -241,6 +292,14 @@ export default {
       hideEl.style.fontSize = fontSize;
       hideEl.style.lineHeight = lineHeight;
       hideEl.style.fontFamily = fontFamily;
+      return hideEl;
+    },
+    reSizeTextareaHeight() {
+      const textEl = document.getElementById(this.id);
+      if (!textEl) return;
+      const fontSize = getComputedStyle(textEl).getPropertyValue("font-size");
+
+      const hideEl = this.createHideEl("clac_height_El_");
       hideEl.innerText = this.textContent;
       const contentHeight = hideEl.offsetHeight;
       this.editorHeight = this.fullScreen
@@ -324,6 +383,8 @@ export default {
     color: var(--md-editor-text-color-active);
     height: var(--md-editor-height);
     resize: none;
+    font-size: 14px;
+    word-break: break-all;
     font-family: "Menlo", -apple-system, SF UI Text, Arial, PingFang SC,
       Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei,
       SimSun;

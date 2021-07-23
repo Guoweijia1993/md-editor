@@ -9,6 +9,7 @@
       .md_container {
         /* width: 600px !important; */
         margin: 40px auto;
+        margin-top: 600px;
       }
       body {
         /* background-color: #222226; */
@@ -85,7 +86,6 @@ void main()
           "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         value:
           "![img](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)",
-        value: "http://www.baidu.com",
         disabled: false,
         themeOptions: {
           dark: false,
@@ -94,9 +94,9 @@ void main()
           // textColorActive: "#000",
           codeTheme: "atom-one-dark"
         },
-        // height: 400,
-        rows: 6,
-        height: 40,
+        height: 300,
+        // rows: 'auto',
+        // height: 40,
         toolsOptions: {
           format: true,
           bold: true,
@@ -115,7 +115,6 @@ void main()
         zIndex: 7000,
         // maxLength: 20000,
         showWordLimit: true,
-        rows: "10",
         // height: "600",
 
         filePathRule: /^https:\/\/ss2\.bdstatic\.com/,
@@ -156,7 +155,10 @@ void main()
         },
         renderLinks: function(val, callback) {
           const newLinks = val.map(item => {
-            item.title = "接口返回的标题";
+            item.title =
+              "接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题";
+            item.img =
+              "https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg";
             item.desc =
               "接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述接口返回的描述";
             return item;
