@@ -330,3 +330,8 @@ export function getLinkTags(id, html) {
   );
   return { vDom: virtualDom, links };
 }
+
+export function getLinkTitle(linkEl) {
+  const title = linkEl.innerText;
+  return /^http/.test(title) ? "" : title;
+}

@@ -86,7 +86,7 @@ import markdownHeader from "./components/header/md-header";
 import markdownFooter from "./components/footer/md-footer";
 import markdownEditor from "./components/content/md-textarea";
 import markdownPreview from "./components/content/md-preview";
-import { formatText, checktUrl } from "@/assets/js/utils";
+import { formatText, checktUrl, getLinkTitle } from "@/assets/js/utils";
 export default {
   components: {
     markdownHeader,
@@ -368,10 +368,16 @@ export default {
           const linkEl = vDom.querySelector("#" + item.id);
           linkEl.className = "md_link_card";
           linkEl.setAttribute("target", "_blank");
+          const title = getLinkTitle(linkEl);
           linkEl.innerHTML = `
-          <span class="md_link_title">${item.title}</span>
-          <span class="md_link_desc">${item.desc}</span>
-          <span class="md_link_url">${item.url}</span>
+          <span class="md_link_title">${title || item.title}</span>
+          <span class="md_flex_card">
+            <img class="md_link_img" src="${item.img}" />
+            <span class="flex-1">
+              <span class="md_link_desc">${item.desc}</span>
+              <span class="md_link_url">${item.url}</span>
+            </span>
+          </span>
           `;
         });
         // return vDom.innerHTML;
