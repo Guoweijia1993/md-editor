@@ -43,5 +43,12 @@ export default {
   height: 200px;
   background: #fff;
   border: 1px solid red;
+  box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
+  border: 1px solid var(--md-editor-border-color);
+  border-radius: 4px;
+  z-index: var(--md-editor-fullScrren-zIndex);
+  box-sizing: border-box;
+  padding: 6px 8px;
+  margin: 0;
 }
 </style>

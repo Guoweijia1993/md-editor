@@ -212,7 +212,16 @@ export default {
       const html = marked(str); // 解析markdown
       const virtualDom = addLanguageClass(html); // 如果没指定语言，添加默认语言
       const cleanHtml = DOMPurify.sanitize(virtualDom.innerHTML, {
-        FORBID_TAGS: ["style", "script"]
+        FORBID_TAGS: [
+          "style",
+          "script",
+          "select",
+          "option",
+          "input",
+          "textarea",
+          "form",
+          "button"
+        ]
       }); // 去除标签
       const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
       // 链接转换为卡片
@@ -225,11 +234,15 @@ export default {
     input() {
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
-      this.showSelectUser = false;
     },
     keyup(e) {
       if (e.key === "@") {
         this.createSelectUserDialog();
+      }
+      // console.log(e);
+
+      if (e.code === "Space" || e.code === "Enter") {
+        this.showSelectUser = false;
       }
     },
     createSelectUserDialog() {
@@ -342,6 +355,7 @@ export default {
         }
       }
       if (!fileList.length) return;
+      this.checkSelection();
       this.$emit("update:fileList", fileList);
     }
   }
