@@ -267,6 +267,7 @@ export default {
     selectUser(user) {
       const originalText = this.textContent;
       const queryInfo = this.queryInfo;
+      console.log(queryInfo);
       const cursorPosition = getPosition(this.id);
       const username = user.name + " ";
       const newText =
@@ -287,7 +288,7 @@ export default {
     },
     handleQueryUser() {
       const endPosition = getPosition(this.id);
-      const startPosition = this.queryInfo.startPosition + 1;
+      const startPosition = this.queryInfo.startPosition;
       const keyWord = this.textContent.slice(startPosition, endPosition);
       this.queryInfo.endPosition = endPosition;
 
@@ -341,8 +342,8 @@ export default {
         };
         textEl.parentNode.removeChild(hideEl);
         this.showSelectUser = true;
-        this.queryInfo.startPosition = getPosition(this.id);
-        this.queryInfo.endPosition = getPosition(this.id);
+        this.queryInfo.startPosition = getPosition(this.id) + 1;
+        this.queryInfo.endPosition = getPosition(this.id) + 1;
         this.$emit("queryUserList", this.queryInfo.keyWord);
       });
     },
