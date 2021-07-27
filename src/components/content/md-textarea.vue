@@ -8,11 +8,11 @@
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
-      @keydown.enter="$emit('enter')"
+      @keydown.stop.50="keyup"
+      @keydown.enter="handleEnter"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
       @keydown.tab.prevent="$emit('tab')"
-      @keyup="keyup"
       v-model="textContent"
       :placeholder="placeholder"
       :maxlength="maxLength"
@@ -37,7 +37,12 @@
       />
     </transition>
     <transition name="slideup-fade">
-      <selectUser v-show="showSelectUser" :position="selectUserPosition" />
+      <selectUser
+        :userList="userList"
+        v-show="showSelectUser"
+        :position="selectUserPosition"
+        @selectUser="selectUser"
+      />
     </transition>
   </div>
 </template>
@@ -52,7 +57,7 @@ import {
   throttle as throttleFn
 } from "@/assets/js/utils";
 import marked from "marked";
-import selectUser from "./components/select-user";
+import selectUser from "./components/user-select";
 import helpDoc from "./components/help-doc";
 import DOMPurify from "dompurify";
 export default {
@@ -119,6 +124,10 @@ export default {
     showHelp: {
       type: Boolean,
       default: false
+    },
+    userList: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -128,6 +137,11 @@ export default {
       editorHeight: "auto",
       editorOverFlow: "auto",
       showSelectUser: false,
+      queryInfo: {
+        startPosition: "",
+        endPosition: "",
+        keyWord: ""
+      },
       selectUserPosition: { left: 0, top: 0 }
     };
   },
@@ -173,6 +187,13 @@ export default {
           this.reSizeTextareaHeight();
         }, 0);
       }
+    },
+    showSelectUser: {
+      handler: function(val) {
+        if (!val) {
+          this.resetQueryInfo();
+        }
+      }
     }
   },
   beforeDestroy() {
@@ -197,6 +218,13 @@ export default {
         const height = textEl.offsetHeight;
         this.$emit("update:htmlMinHeight", height);
       }, 0);
+    },
+    resetQueryInfo() {
+      this.queryInfo = {
+        startPosition: "",
+        endPosition: "",
+        keyWord: ""
+      };
     },
     transferMarkdown(val) {
       marked.setOptions({
@@ -232,17 +260,47 @@ export default {
       if (links.length) this.$emit("renderLinksHtml", { vDom, links });
     },
     input() {
+      if (this.showSelectUser) this.handleQueryUser();
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
+    },
+    selectUser(user) {
+      const originalText = this.textContent;
+      const queryInfo = this.queryInfo;
+      const cursorPosition = getPosition(this.id);
+      const username = user.name + " ";
+      const newText =
+        originalText.slice(0, queryInfo.startPosition) +
+        username +
+        originalText.slice(queryInfo.endPosition);
+      this.textContent = newText;
+      this.emitText();
+      this.showSelectUser = false;
+      this.$nextTick(() => {
+        const textEl = document.getElementById(this.id);
+        textEl.setSelectionRange(
+          cursorPosition + username.length,
+          cursorPosition + username.length
+        );
+        textEl.focus();
+      });
+    },
+    handleQueryUser() {
+      const endPosition = getPosition(this.id);
+      const startPosition = this.queryInfo.startPosition + 1;
+      const keyWord = this.textContent.slice(startPosition, endPosition);
+      this.queryInfo.endPosition = endPosition;
+
+      if (endPosition < startPosition || keyWord.slice(-1) === " ") {
+        this.showSelectUser = false;
+        return;
+      }
+      this.queryInfo.keyWord = keyWord;
+      this.$emit("queryUserList", keyWord);
     },
     keyup(e) {
       if (e.key === "@") {
         this.createSelectUserDialog();
-      }
-      // console.log(e);
-
-      if (e.code === "Space" || e.code === "Enter") {
-        this.showSelectUser = false;
       }
     },
     createSelectUserDialog() {
@@ -283,6 +341,9 @@ export default {
         };
         textEl.parentNode.removeChild(hideEl);
         this.showSelectUser = true;
+        this.queryInfo.startPosition = getPosition(this.id);
+        this.queryInfo.endPosition = getPosition(this.id);
+        this.$emit("queryUserList", this.queryInfo.keyWord);
       });
     },
     createHideEl(type) {
@@ -325,6 +386,18 @@ export default {
       this.editorOverFlow =
         this.autoSize && !this.fullScreen && !this.height ? "hidden" : "auto";
       textEl.parentNode.removeChild(hideEl);
+    },
+    handleEnter() {
+      if (this.showSelectUser) {
+        const textEl = document.getElementById(this.id);
+        textEl.blur();
+        setTimeout(() => {
+          textEl.focus();
+          // this.showSelectUser = false;
+        }, 0);
+        return;
+      }
+      this.$emit("enter");
     },
     submit() {
       this.$emit("submit");
@@ -398,6 +471,7 @@ export default {
     height: var(--md-editor-height);
     resize: none;
     font-size: 14px;
+    line-height: 18px;
     word-break: break-all;
     font-family: "Menlo", -apple-system, SF UI Text, Arial, PingFang SC,
       Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei,

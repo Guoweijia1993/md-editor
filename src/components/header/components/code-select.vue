@@ -82,8 +82,7 @@ ul {
   padding-top: 4px;
   box-sizing: border-box;
   scrollbar-color: transparent transparent;
-  // scrollbar-track-color: transparent;
-  // -ms-scrollbar-track-color: transparent;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;

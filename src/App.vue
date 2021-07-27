@@ -59,6 +59,7 @@
       :disabled="disabled"
       :show-help="showHelp"
       :formatType="formatType"
+      :userList="userList"
       :ref="'md_textarea' + id"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
@@ -66,6 +67,7 @@
       @getFilteredTags="filteredTags = $event"
       @updateShowHelp="showHelp = $event"
       @renderLinksHtml="renderLinksHtml"
+      @queryUserList="queryUserList"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -214,6 +216,7 @@ export default {
       htmlMinHeight: 150,
       showHelp: false,
       textLength: "",
+      userList: [],
       selectionInfo: {
         selectorId: "",
         selectionStart: "",
@@ -228,10 +231,6 @@ export default {
         html: this.html
       });
     }, 0);
-
-    // if(this.isMobile) {
-
-    // }
   },
   watch: {
     focus: {
@@ -276,16 +275,13 @@ export default {
     html: {
       immediate: false,
       handler: function(val) {
-        console.log("html update");
         const emitContent = {
           text: this.text,
           html: this.html
         };
-
         if (this.filePathRule) {
           const checkResult = checktUrl(val, this.filePathRule);
           emitContent.invalidList = checkResult;
-          console.log(checkResult);
         }
         emitContent.filteredTags = this.filteredTags;
         this.$emit("change", emitContent);
@@ -352,6 +348,15 @@ export default {
       this.$emit("submit", {
         text: this.text,
         html: this.html
+      });
+    },
+    queryUserList(keyWord) {
+      const _this = this;
+      this.$emit("queryUserList", {
+        keyWord,
+        callback: function(list) {
+          _this.userList = list;
+        }
       });
     },
     renderLinksHtml({ vDom, links }) {

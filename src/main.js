@@ -23,6 +23,7 @@ function initMdEditor(obj) {
     onInput = () => {},
     onSubmit = () => {},
     renderLinks = () => {},
+    queryUserList = () => {},
     placeholder,
     value,
     disabled,
@@ -113,6 +114,58 @@ function initMdEditor(obj) {
       renderLinks(links, function(res) {
         callback(res);
       });
+    },
+    queryUserList({ keyWord, callback }) {
+      // queryUserList(keyWord, function(res) {
+      const list = [
+        {
+          id: 1,
+          name: "藤原拓海",
+          avatar:
+            "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 2,
+          name: "高桥凉介",
+          avatar:
+            "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 3,
+          name: "马奎斯",
+          avatar:
+            "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 4,
+          name: "王一博",
+          avatar:
+            "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 5,
+          name: "王俊凯",
+          avatar:
+            "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 6,
+          name: "易烊千玺",
+          avatar:
+            "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
+        }
+      ];
+
+      if (!keyWord) {
+        callback(list);
+        return;
+      }
+      callback(
+        list.filter(item => {
+          return item.name.includes(keyWord);
+        })
+      );
+      // });
     }
   };
   this.vEl = new Vue({

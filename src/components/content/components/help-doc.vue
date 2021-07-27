@@ -157,6 +157,7 @@ export default {
     padding-right: 14px;
     height: 100%;
     scrollbar-color: transparent transparent;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
     }
