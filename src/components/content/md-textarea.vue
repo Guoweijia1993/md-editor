@@ -53,6 +53,7 @@ import {
   getFilteredTags,
   getLinkTags,
   formatText,
+  rerender,
   addLanguageClass,
   throttle as throttleFn
 } from "@/assets/js/utils";
@@ -156,6 +157,8 @@ export default {
       handler: function(val) {
         if (val) {
           this.resetPreviewMinHeight();
+        } else {
+          this.showSelectUser = false;
         }
       }
     },
@@ -227,6 +230,7 @@ export default {
       };
     },
     transferMarkdown(val) {
+      rerender();
       marked.setOptions({
         breaks: true,
         gfm: true,
@@ -267,7 +271,6 @@ export default {
     selectUser(user) {
       const originalText = this.textContent;
       const queryInfo = this.queryInfo;
-      console.log(queryInfo);
       const cursorPosition = getPosition(this.id);
       const username = user.name + " ";
       const newText =
@@ -296,6 +299,7 @@ export default {
         this.showSelectUser = false;
         return;
       }
+
       this.queryInfo.keyWord = keyWord;
       this.$emit("queryUserList", keyWord);
     },
@@ -313,7 +317,7 @@ export default {
       const originalText = this.textContent;
       const cursorPoint = getPosition(this.id);
       const selectionInfo = {
-        selectionStart: cursorPoint - 1,
+        selectionStart: cursorPoint,
         selectionEnd: cursorPoint
       };
       const newText = formatText(
@@ -337,8 +341,10 @@ export default {
         hideEl.scrollTop = scrollTop;
         const pEl = document.getElementById("call_position");
         this.selectUserPosition = {
-          left: pEl.getBoundingClientRect().left,
-          top: pEl.getBoundingClientRect().top
+          left: pEl.offsetLeft,
+          top: pEl.offsetTop - textEl.scrollTop
+          // left: pEl.getBoundingClientRect().left,
+          // top: pEl.getBoundingClientRect().top
         };
         textEl.parentNode.removeChild(hideEl);
         this.showSelectUser = true;
@@ -472,7 +478,7 @@ export default {
     height: var(--md-editor-height);
     resize: none;
     font-size: 14px;
-    line-height: 18px;
+    line-height: 1.625;
     word-break: break-all;
     font-family: "Menlo", -apple-system, SF UI Text, Arial, PingFang SC,
       Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei,

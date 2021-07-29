@@ -25,7 +25,7 @@
         :fullScreen="fullScreen"
         @setFullScreen="$emit('update:fullScreen', $event)"
         @updateText="handleUpdateText"
-        @upload="$emit('upload')"
+        @upload="$emit('upload', $event)"
         @setFormatType="setFormatType"
         @updateShowHelp="$emit('updateShowHelp', $event)"
         :class="{ active: item.name === 'format' && formatType }"
@@ -224,9 +224,16 @@ export default {
           endStr: ""
         },
         {
-          name: "file",
+          name: "img",
           icon: "tupian",
           tip: "上传图片",
+          startStr: "",
+          endStr: ""
+        },
+        {
+          name: "file",
+          icon: "wenjian",
+          tip: "上传附件",
           startStr: "",
           endStr: ""
         },

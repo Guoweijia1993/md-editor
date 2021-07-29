@@ -158,8 +158,11 @@ export default {
           this.$emit("updateText", { startStr: `\n${ulNum++}. `, endStr: "" });
           this.$emit("update:ulNum", ulNum);
           break;
+        case "img":
+          this.$emit("upload", "img");
+          break;
         case "file":
-          this.$emit("upload");
+          this.$emit("upload", "file");
           break;
         case "fullScreen":
           this.$emit("setFullScreen", true);

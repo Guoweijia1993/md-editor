@@ -1,3 +1,4 @@
+import marked from "marked";
 // 获取选中文本信息
 
 export function getSelectionInfo(selectorId) {
@@ -314,24 +315,54 @@ export function addLanguageClass(html) {
   });
   return virtualDom;
 }
-
 export function getLinkTags(id, html) {
   const virtualDom = document.createElement("div");
   virtualDom.innerHTML = html;
-  const links = Array.from(virtualDom.querySelectorAll("a")).map(
-    (item, index) => {
-      item.id = id + "_" + index;
-      return {
-        id: item.id,
-        title: item.innerText,
-        url: item.href
-      };
-    }
-  );
+  const links = Array.from(
+    virtualDom.querySelectorAll("a:not([download])")
+  ).map((item, index) => {
+    item.id = id + "_" + index;
+    return {
+      id: item.id,
+      title: item.innerText,
+      url: item.href
+    };
+  });
   return { vDom: virtualDom, links };
 }
 
 export function getLinkTitle(linkEl) {
   const title = linkEl.innerText;
   return /^http/.test(title) ? "" : title;
+}
+
+export function rerender() {
+  const renderer = {
+    image(href, title, text) {
+      if (href === null) {
+        return text;
+      }
+      // ![file](...)渲染文件，只可以下载
+      if (text === "file") {
+        return `<a href="${href}" class="md_file_card md_flex_card" download target="_blank">
+          <span class="md_file_img icon iconfont icon-doc"></span>
+          <span class="flex-1">
+            <span class="md_file_title">${title}</span>
+            <span class="md_file_desc">16.6KB</span>
+          </span>
+          <span class="md_file_controls">
+          <span class="md_file_download icon iconfont icon-xiazai"></span>
+          </span>
+        </a>`;
+      }
+      // ![img](...)渲染图片
+      let out = '<img src="' + href + '" alt="' + text + '"';
+      if (title) {
+        out += ' title="' + title + '"';
+      }
+      out += "/>";
+      return out;
+    }
+  };
+  marked.use({ renderer });
 }

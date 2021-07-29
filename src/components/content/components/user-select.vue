@@ -43,8 +43,8 @@ export default {
     position: {
       immediate: true,
       handler: function({ left, top }) {
-        this.left = left + 14;
-        this.top = top + 20;
+        this.left = left + 12;
+        this.top = top + 40;
       }
     }
   },
@@ -63,9 +63,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .md_select_container {
-  position: relative;
-  position: fixed;
-
+  position: absolute;
   background: #fff;
   box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
   border: 1px solid var(--md-editor-border-color);

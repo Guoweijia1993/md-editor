@@ -106,8 +106,13 @@ function initMdEditor(obj) {
       onSubmit(val);
     },
     upload({ val, callback }) {
+      console.log(val);
+
       onUpload(val, function(res) {
-        callback(res);
+        callback({
+          url: res,
+          file: val
+        });
       });
     },
     renderLinks({ links, callback }) {

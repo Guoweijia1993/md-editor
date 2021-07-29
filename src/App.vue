@@ -200,6 +200,37 @@ export default {
       const height = this.height;
       if (!height) return 0;
       return height - 83;
+    },
+    uploadImgCallBack() {
+      const _this = this;
+      return function({ url, file: { name } }) {
+        const originalText = _this.text;
+        const selectionInfo = _this.selectionInfo;
+        const newText = formatText(
+          originalText,
+          selectionInfo,
+          "\n![img](",
+          `${url} '${name}')\n`
+        );
+        _this.text = newText;
+        _this.$refs.mdUploadFile.value = "";
+      };
+    },
+    uploadFileCallBack() {
+      const _this = this;
+      return function({ url, file: { name } }) {
+        // url = "http://www.baidu.com";
+        const originalText = _this.text;
+        const selectionInfo = _this.selectionInfo;
+        const newText = formatText(
+          originalText,
+          selectionInfo,
+          "\n![file](",
+          `${url} '${name}')\n`
+        );
+        _this.text = newText;
+        _this.$refs.mdUploadFile.value = "";
+      };
     }
   },
   data() {
@@ -207,6 +238,7 @@ export default {
       fullScreen: false,
       isFocus: false,
       showPreview: false,
+      uploadType: "img",
       fileList: [],
       filteredTags: [],
       text: "",
@@ -312,29 +344,22 @@ export default {
       immediate: false,
       deep: true,
       handler: function(val) {
-        const _this = this;
+        const uploadType = this.uploadType;
         if (!val.length) return;
         this.$emit("upload", {
           val: val[0],
-          callback: function(url) {
-            const originalText = _this.text;
-            const selectionInfo = _this.selectionInfo;
-            const newText = formatText(
-              originalText,
-              selectionInfo,
-              "\n![img](",
-              `${url})\n`
-            );
-            _this.text = newText;
-            _this.$refs.mdUploadFile.value = "";
-          }
+          callback:
+            uploadType === "img"
+              ? this.uploadImgCallBack
+              : this.uploadFileCallBack
         });
         this.fileList = [];
       }
     }
   },
   methods: {
-    handleUpload() {
+    handleUpload(type) {
+      this.uploadType = type;
       this.$refs.mdUploadFile.click();
       document.getElementById(this.textareaId).focus();
     },
@@ -394,16 +419,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .md_container {
-  // width: 100%;
   background: var(--md-editor-frame-bg-color);
-  // margin: 200px auto;
   border: 1px solid var(--md-editor-border-color);
   border-radius: 4px;
   padding: 10px 16px;
   box-sizing: border-box;
   transition: border 0.3s;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden; // 注释为了显示@用户的弹窗
   &.fullScreen {
     position: fixed;
     top: 0;
