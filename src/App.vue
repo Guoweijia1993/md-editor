@@ -396,8 +396,12 @@ export default {
         console.log("返回的列表", res);
         res.forEach(item => {
           const linkEl = vDom.querySelector("#" + item.id);
+          const url = item.csdn
+            ? "https://link.csdn.net/?target=" + item.url
+            : item.url;
           linkEl.className = "md_link_card";
           linkEl.setAttribute("target", "_blank");
+          linkEl.setAttribute("href", url);
           const title = getLinkTitle(linkEl);
           linkEl.innerHTML = `
           <span class="md_link_title">${title || item.title}</span>

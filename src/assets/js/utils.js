@@ -29,7 +29,7 @@ export const throttle = function(fn, wait) {
     }
   };
 };
-
+// 获取光标的位置
 export const getPosition = function(selectorId) {
   const element = document.getElementById(selectorId);
   if (!element) return 0;
@@ -336,33 +336,11 @@ export function getLinkTitle(linkEl) {
   return /^http/.test(title) ? "" : title;
 }
 
-export function rerender() {
-  const renderer = {
-    image(href, title, text) {
-      if (href === null) {
-        return text;
-      }
-      // ![file](...)渲染文件，只可以下载
-      if (text === "file") {
-        return `<a href="${href}" class="md_file_card md_flex_card" download target="_blank">
-          <span class="md_file_img icon iconfont icon-doc"></span>
-          <span class="flex-1">
-            <span class="md_file_title">${title}</span>
-            <span class="md_file_desc">16.6KB</span>
-          </span>
-          <span class="md_file_controls">
-          <span class="md_file_download icon iconfont icon-xiazai"></span>
-          </span>
-        </a>`;
-      }
-      // ![img](...)渲染图片
-      let out = '<img src="' + href + '" alt="' + text + '"';
-      if (title) {
-        out += ' title="' + title + '"';
-      }
-      out += "/>";
-      return out;
-    }
-  };
-  marked.use({ renderer });
+export function preventDefault(id) {
+  const textEl = document.getElementById(id);
+  textEl.blur();
+  setTimeout(() => {
+    textEl.focus();
+  }, 0);
+  return;
 }

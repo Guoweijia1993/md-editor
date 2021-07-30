@@ -8,7 +8,9 @@
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
-      @keydown.stop.50="keyup"
+      @keydown.stop.50="handleCallUser"
+      @keydown.stop.up.prevent="changeActiveUserIndex('up')"
+      @keydown.stop.down.prevent="changeActiveUserIndex('down')"
       @keydown.enter="handleEnter"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
@@ -39,9 +41,10 @@
     <transition name="slideup-fade">
       <selectUser
         :userList="userList"
+        :activeUserIndex.sync="activeUserIndex"
         v-show="showSelectUser"
         :position="selectUserPosition"
-        @selectUser="selectUser"
+        @selectUser="handleSelectUser"
       />
     </transition>
   </div>
@@ -50,19 +53,16 @@
 import {
   getSelectionInfo,
   getPosition,
-  getFilteredTags,
-  getLinkTags,
-  formatText,
-  rerender,
-  addLanguageClass,
+  preventDefault,
   throttle as throttleFn
 } from "@/assets/js/utils";
-import marked from "marked";
 import selectUser from "./components/user-select";
 import helpDoc from "./components/help-doc";
-import DOMPurify from "dompurify";
+import renderMix from "./mixins/render-mixins";
+import selectUserMix from "./mixins/select-user-mixins";
 export default {
   components: { helpDoc, selectUser },
+  mixins: [renderMix, selectUserMix],
   props: {
     id: {
       type: String,
@@ -143,6 +143,7 @@ export default {
         endPosition: "",
         keyWord: ""
       },
+      activeUserIndex: 0,
       selectUserPosition: { left: 0, top: 0 }
     };
   },
@@ -158,7 +159,9 @@ export default {
         if (val) {
           this.resetPreviewMinHeight();
         } else {
-          this.showSelectUser = false;
+          setTimeout(() => {
+            // this.showSelectUser = false;
+          }, 200);
         }
       }
     },
@@ -214,6 +217,22 @@ export default {
     }
   },
   methods: {
+    changeActiveUserIndex(type) {
+      if (this.showSelectUser) {
+        const max = this.userList.length;
+        if (type === "down") {
+          this.activeUserIndex++;
+          if (this.activeUserIndex >= max) {
+            this.activeUserIndex = 0;
+          }
+        } else {
+          this.activeUserIndex--;
+          if (this.activeUserIndex < 0) {
+            this.activeUserIndex = max - 1;
+          }
+        }
+      }
+    },
     resetPreviewMinHeight() {
       setTimeout(() => {
         const textEl = document.getElementById(this.id);
@@ -229,129 +248,10 @@ export default {
         keyWord: ""
       };
     },
-    transferMarkdown(val) {
-      rerender();
-      marked.setOptions({
-        breaks: true,
-        gfm: true,
-        langPrefix: "language-",
-        highlight: function(code, lang, callback) {
-          let html = require("highlight.js").highlightAuto(code).value;
-          return html;
-        }
-      });
-      const str = val + "";
-      const html = marked(str); // 解析markdown
-      const virtualDom = addLanguageClass(html); // 如果没指定语言，添加默认语言
-      const cleanHtml = DOMPurify.sanitize(virtualDom.innerHTML, {
-        FORBID_TAGS: [
-          "style",
-          "script",
-          "select",
-          "option",
-          "input",
-          "textarea",
-          "form",
-          "button"
-        ]
-      }); // 去除标签
-      const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
-      // 链接转换为卡片
-      const { vDom, links } = getLinkTags(this.id, cleanHtml);
-
-      this.$emit("getFilteredTags", filteredTags);
-      this.$emit("update:html", cleanHtml);
-      if (links.length) this.$emit("renderLinksHtml", { vDom, links });
-    },
     input() {
       if (this.showSelectUser) this.handleQueryUser();
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
-    },
-    selectUser(user) {
-      const originalText = this.textContent;
-      const queryInfo = this.queryInfo;
-      const cursorPosition = getPosition(this.id);
-      const username = user.name + " ";
-      const newText =
-        originalText.slice(0, queryInfo.startPosition) +
-        username +
-        originalText.slice(queryInfo.endPosition);
-      this.textContent = newText;
-      this.emitText();
-      this.showSelectUser = false;
-      this.$nextTick(() => {
-        const textEl = document.getElementById(this.id);
-        textEl.setSelectionRange(
-          cursorPosition + username.length,
-          cursorPosition + username.length
-        );
-        textEl.focus();
-      });
-    },
-    handleQueryUser() {
-      const endPosition = getPosition(this.id);
-      const startPosition = this.queryInfo.startPosition;
-      const keyWord = this.textContent.slice(startPosition, endPosition);
-      this.queryInfo.endPosition = endPosition;
-
-      if (endPosition < startPosition || keyWord.slice(-1) === " ") {
-        this.showSelectUser = false;
-        return;
-      }
-
-      this.queryInfo.keyWord = keyWord;
-      this.$emit("queryUserList", keyWord);
-    },
-    keyup(e) {
-      if (e.key === "@") {
-        this.createSelectUserDialog();
-      }
-    },
-    createSelectUserDialog() {
-      const textEl = document.getElementById(this.id);
-      if (!textEl) return;
-      const height = getComputedStyle(textEl).getPropertyValue("height");
-      const width = getComputedStyle(textEl).getPropertyValue("width");
-      const scrollTop = textEl.scrollTop;
-      const originalText = this.textContent;
-      const cursorPoint = getPosition(this.id);
-      const selectionInfo = {
-        selectionStart: cursorPoint,
-        selectionEnd: cursorPoint
-      };
-      const newText = formatText(
-        originalText,
-        selectionInfo,
-        "<span id='call_position'>",
-        "</span>"
-      );
-
-      const hideEl = this.createHideEl("clac_position_El_");
-      hideEl.style.position = "absolute";
-      hideEl.style.width = width;
-      hideEl.style.height = height;
-      hideEl.style.overflowY = "auto";
-      hideEl.style.wordBreak = "break-all";
-      hideEl.style.top = "14px";
-      hideEl.style.left = 0;
-      hideEl.style.whiteSpace = "pre-wrap";
-      hideEl.innerHTML = newText;
-      this.$nextTick(() => {
-        hideEl.scrollTop = scrollTop;
-        const pEl = document.getElementById("call_position");
-        this.selectUserPosition = {
-          left: pEl.offsetLeft,
-          top: pEl.offsetTop - textEl.scrollTop
-          // left: pEl.getBoundingClientRect().left,
-          // top: pEl.getBoundingClientRect().top
-        };
-        textEl.parentNode.removeChild(hideEl);
-        this.showSelectUser = true;
-        this.queryInfo.startPosition = getPosition(this.id) + 1;
-        this.queryInfo.endPosition = getPosition(this.id) + 1;
-        this.$emit("queryUserList", this.queryInfo.keyWord);
-      });
     },
     createHideEl(type) {
       const textEl = document.getElementById(this.id);
@@ -394,14 +294,11 @@ export default {
         this.autoSize && !this.fullScreen && !this.height ? "hidden" : "auto";
       textEl.parentNode.removeChild(hideEl);
     },
-    handleEnter() {
+    handleEnter(e) {
       if (this.showSelectUser) {
-        const textEl = document.getElementById(this.id);
-        textEl.blur();
-        setTimeout(() => {
-          textEl.focus();
-          // this.showSelectUser = false;
-        }, 0);
+        const activeUser = this.userList[this.activeUserIndex];
+        this.handleSelectUser(activeUser);
+        e.preventDefault();
         return;
       }
       this.$emit("enter");

@@ -3,11 +3,12 @@
     class="md_select_container"
     :style="{ left: this.left + 'px', top: this.top + 'px' }"
   >
-    <ul v-show="userList.length" class="md_select_user">
+    <ul v-show="list.length" class="md_select_user">
       <li
         @click="selectUser(item)"
-        v-for="(item, index) in userList"
+        v-for="(item, index) in list"
         :key="index"
+        :class="[{ active: isActive(index) }]"
       >
         <img class="md_select_user_avatar" :src="item.avatar" />
         <div class="md_select_user_info">
@@ -16,8 +17,8 @@
         </div>
       </li>
     </ul>
-    <div v-show="userList.length" class="after"></div>
-    <div v-show="!userList.length" class="md_select_no_data">
+    <div v-show="list.length" class="after"></div>
+    <div v-show="!list.length" class="md_select_no_data">
       轻敲空格完成输入
     </div>
   </div>
@@ -37,6 +38,24 @@ export default {
     userList: {
       type: Array,
       default: () => []
+    },
+    activeUserIndex: {
+      type: Number,
+      default: 0
+    }
+  },
+  computed: {
+    list() {
+      const list = this.userList;
+      if (!list.length) return [];
+      return list.map((item, index) => {
+        if (index === 0) {
+          item.active = true;
+        } else {
+          item.active = false;
+        }
+        return item;
+      });
     }
   },
   watch: {
@@ -57,6 +76,9 @@ export default {
   methods: {
     selectUser(user) {
       this.$emit("selectUser", user);
+    },
+    isActive(index) {
+      return index === this.activeUserIndex;
     }
   }
 };
@@ -86,12 +108,6 @@ export default {
   .md_select_user {
     max-height: 214px;
     width: 180px;
-    // background: #fff;
-    // box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
-    // border: 1px solid var(--md-editor-border-color);
-    // border-radius: 4px;
-    // z-index: var(--md-editor-fullScrren-zIndex);
-    // margin: 0;
     padding: 6px 0;
     box-sizing: border-box;
     overflow-y: auto;
@@ -115,7 +131,8 @@ export default {
       box-sizing: border-box;
       padding: 6px 8px;
       cursor: pointer;
-      &:hover {
+      &:hover,
+      &.active {
         background: #f5f7fa;
       }
       // & + li {

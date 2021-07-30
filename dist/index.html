@@ -145,7 +145,7 @@ void main()
           new Promise((res, rej) => {
             setTimeout(() => {
               res(file);
-            }, 2000);
+            }, 1000);
           }).then(res => {
             var reader = new FileReader();
             reader.readAsDataURL(res);
@@ -156,6 +156,7 @@ void main()
         },
         renderLinks: function(val, callback) {
           const newLinks = val.map(item => {
+            item.csdn = true;
             item.title =
               "接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题接口返回的标题";
             item.img =
@@ -166,8 +167,8 @@ void main()
           });
           setTimeout(() => {
             callback(newLinks);
-          }, 2000);
-        },
+          }, 1000);
+        }
         // queryUserList: function(val, callback) {
         //   const list = [
         //     {
