@@ -67,6 +67,11 @@ export default {
           }
           out += "/>";
           return out;
+        },
+        text(text) {
+          const newText = text.replace(/(@.+? )/g, `<span class="md_call_user">$1</span>`);
+
+          return newText;
         }
       };
       marked.use({ renderer });

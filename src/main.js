@@ -144,20 +144,30 @@ function initMdEditor(obj) {
         {
           id: 4,
           name: "王一博",
+          url: "https://weibo.com/u/5492443184",
           avatar:
             "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
         },
         {
           id: 5,
           name: "王俊凯",
+          url: "https://weibo.com/tfwangjunkai",
           avatar:
             "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
         },
         {
           id: 6,
           name: "易烊千玺",
+          url: "https://weibo.com/tfyiyangqianxi",
           avatar:
             "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
+        },
+        {
+          id: 7,
+          name: "白敬亭",
+          url: "https://weibo.com/u/2112496475",
+          avatar:
+            "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"
         }
       ];
 

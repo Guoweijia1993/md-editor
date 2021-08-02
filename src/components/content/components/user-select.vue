@@ -8,6 +8,7 @@
         @click="selectUser(item)"
         v-for="(item, index) in list"
         :key="index"
+        :id="userItemId(index)"
         :class="[{ active: isActive(index) }]"
       >
         <img class="md_select_user_avatar" :src="item.avatar" />
@@ -79,6 +80,9 @@ export default {
     },
     isActive(index) {
       return index === this.activeUserIndex;
+    },
+    userItemId(index) {
+      return "md_user_id_" + index;
     }
   }
 };
@@ -115,6 +119,7 @@ export default {
     scrollbar-width: none;
     margin: 0 !important;
     list-style: none !important;
+    scroll-behavior: smooth;
     &::-webkit-scrollbar {
       display: none;
     }

@@ -1,6 +1,6 @@
 <template>
   <div :class="['md_header', { active: isFocus }]">
-    <div v-if="!disabled" class="header_tabs">
+    <div :class="['header_tabs', { disabled }]">
       <div
         :class="['tab_item', { active: canPreview && !showPreview }]"
         @click="setShowPreview(false)"
@@ -17,7 +17,7 @@
         <span>预览</span>
       </div>
     </div>
-    <div class="header_tools" v-if="!disabled && !showPreview">
+    <div :class="['header_tools', { disabled }]" v-if="!showPreview">
       <tool-button
         :ref="item.name"
         :ulNum.sync="ulNum"
@@ -393,6 +393,10 @@ export default {
     font-size: 14px;
     // padding-bottom: 10px;
     box-sizing: border-box;
+    &.disabled {
+      pointer-events: none;
+      opacity: var(--md-editor-disabled-opacity);
+    }
     .tab_item {
       color: var(--md-editor-text-color);
       cursor: pointer;
@@ -446,6 +450,10 @@ export default {
     align-items: center;
     // padding-bottom: 10px;
     box-sizing: border-box;
+    &.disabled {
+      pointer-events: none;
+      opacity: var(--md-editor-disabled-opacity);
+    }
   }
 }
 </style>

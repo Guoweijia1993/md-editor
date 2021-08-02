@@ -16,19 +16,20 @@ export default {
       this.$nextTick(() => {
         const textEl = document.getElementById(this.id);
         textEl.setSelectionRange(
-          cursorPosition + username.length,
-          cursorPosition + username.length
+          cursorPosition + username.length - queryInfo.keyWord.length,
+          cursorPosition + username.length - queryInfo.keyWord.length
         );
         textEl.focus();
       });
     },
-    handleQueryUser() {
+    handleQueryUser(e) {
       const endPosition = getPosition(this.id);
       const startPosition = this.queryInfo.startPosition;
       const keyWord = this.textContent.slice(startPosition, endPosition);
       this.queryInfo.endPosition = endPosition;
-
-      if (endPosition < startPosition || keyWord.slice(-1) === " ") {
+      console.log(e, e.data);
+      if (endPosition < startPosition || (e.returnValue && e.data === " ")) {
+        // if (endPosition < startPosition || keyWord.slice(-1) === " ") {
         this.showSelectUser = false;
         return;
       }
@@ -72,8 +73,12 @@ export default {
       this.$nextTick(() => {
         hideEl.scrollTop = scrollTop;
         const pEl = document.getElementById("call_position");
+        const frameWidth = textEl.parentNode.offsetWidth;
         this.selectUserPosition = {
-          left: pEl.offsetLeft,
+          left:
+            pEl.offsetLeft < frameWidth * (2 / 3)
+              ? pEl.offsetLeft
+              : pEl.offsetLeft - 200,
           top: pEl.offsetTop - textEl.scrollTop
           // left: pEl.getBoundingClientRect().left,
           // top: pEl.getBoundingClientRect().top
@@ -83,6 +88,10 @@ export default {
         this.queryInfo.startPosition = getPosition(this.id) + 1;
         this.queryInfo.endPosition = getPosition(this.id) + 1;
         this.$emit("queryUserList", this.queryInfo.keyWord);
+        this.$nextTick(() => {
+          const list = textEl.parentNode.querySelector(".md_select_user");
+          if (list) list.scrollTo(0, 0);
+        });
       });
     }
   }

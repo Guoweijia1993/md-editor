@@ -9,8 +9,8 @@
       @blur="setFocus(false)"
       @paste="pasteFile"
       @keydown.stop.50="handleCallUser"
-      @keydown.stop.up.prevent="changeActiveUserIndex('up')"
-      @keydown.stop.down.prevent="changeActiveUserIndex('down')"
+      @keydown.stop.up="changeActiveUserIndex($event, 'up')"
+      @keydown.stop.down="changeActiveUserIndex($event, 'down')"
       @keydown.enter="handleEnter"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
@@ -20,6 +20,7 @@
       :maxlength="maxLength"
       :rows="rows"
       :disabled="disabled"
+      :class="{ disabled }"
       :style="{
         height: editorHeight,
         overflow: editorOverFlow,
@@ -160,7 +161,7 @@ export default {
           this.resetPreviewMinHeight();
         } else {
           setTimeout(() => {
-            // this.showSelectUser = false;
+            this.showSelectUser = false;
           }, 200);
         }
       }
@@ -217,19 +218,32 @@ export default {
     }
   },
   methods: {
-    changeActiveUserIndex(type) {
+    changeActiveUserIndex(event, type) {
       if (this.showSelectUser) {
+        event.preventDefault();
         const max = this.userList.length;
         if (type === "down") {
           this.activeUserIndex++;
           if (this.activeUserIndex >= max) {
             this.activeUserIndex = 0;
           }
+          const index = this.activeUserIndex;
+          if (index % 3 === 0) {
+            document
+              .getElementById("md_user_id_" + this.activeUserIndex)
+              .parentNode.scrollTo(0, 56 * index);
+            // .scrollIntoView({ behavior: "smooth" });
+          }
         } else {
           this.activeUserIndex--;
           if (this.activeUserIndex < 0) {
             this.activeUserIndex = max - 1;
           }
+          const index = this.activeUserIndex;
+          document
+            .getElementById("md_user_id_" + this.activeUserIndex)
+            .parentNode.scrollTo(0, 56 * index);
+          // .scrollIntoView({ behavior: "smooth" });
         }
       }
     },
@@ -248,8 +262,8 @@ export default {
         keyWord: ""
       };
     },
-    input() {
-      if (this.showSelectUser) this.handleQueryUser();
+    input(e) {
+      if (this.showSelectUser) this.handleQueryUser(e);
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
     },
@@ -382,6 +396,9 @@ export default {
       SimSun;
     &::placeholder {
       color: var(--md-editor-text-color);
+    }
+    &.disabled {
+      opacity: var(--md-editor-disabled-opacity);
     }
     // &:disabled {
     //   background: var(--md-editor-content-bg-color-disabled);

@@ -405,10 +405,10 @@ export default {
           const title = getLinkTitle(linkEl);
           linkEl.innerHTML = `
           <span class="md_link_title">${title || item.title}</span>
+              <span class="md_link_desc">${item.desc}</span>
           <span class="md_flex_card">
             <img class="md_link_img" src="${item.img}" />
             <span class="flex-1">
-              <span class="md_link_desc">${item.desc}</span>
               <span class="md_link_url">${item.url}</span>
             </span>
           </span>
