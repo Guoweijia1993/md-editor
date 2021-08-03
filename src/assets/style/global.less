@@ -65,7 +65,13 @@ textarea {
   }
 }
 
-.md_call_user {
+a.md_call_user {
   color: var(--md-editor-border-color-active);
   cursor: pointer;
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--md-editor-border-color-active);
+      opacity: 0.8;
+    }
+  }
 }

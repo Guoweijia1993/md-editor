@@ -22,8 +22,8 @@ function initMdEditor(obj) {
     onBlur = () => {},
     onInput = () => {},
     onSubmit = () => {},
-    renderLinks = () => {},
-    queryUserList = () => {},
+    renderLinks,
+    queryUserList,
     placeholder,
     value,
     disabled,
@@ -116,71 +116,72 @@ function initMdEditor(obj) {
       });
     },
     renderLinks({ links, callback }) {
+      if (!renderLinks) return callback(links);
       renderLinks(links, function(res) {
         callback(res);
       });
     },
     queryUserList({ keyWord, callback }) {
-      // queryUserList(keyWord, function(res) {
-      const list = [
-        {
-          id: 1,
-          name: "藤原拓海",
-          avatar:
-            "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 2,
-          name: "高桥凉介",
-          avatar:
-            "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 3,
-          name: "马奎斯",
-          avatar:
-            "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 4,
-          name: "王一博",
-          url: "https://weibo.com/u/5492443184",
-          avatar:
-            "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 5,
-          name: "王俊凯",
-          url: "https://weibo.com/tfwangjunkai",
-          avatar:
-            "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 6,
-          name: "易烊千玺",
-          url: "https://weibo.com/tfyiyangqianxi",
-          avatar:
-            "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
-        },
-        {
-          id: 7,
-          name: "白敬亭",
-          url: "https://weibo.com/u/2112496475",
-          avatar:
-            "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"
-        }
-      ];
+      if (!queryUserList) return callback(false); // 返回false则不触发@弹窗
+      queryUserList(keyWord, function(res) {
+        // const list = [
+        //   {
+        //     id: 1,
+        //     name: "藤原拓海",
+        //     avatar:
+        //       "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 2,
+        //     name: "高桥凉介",
+        //     avatar:
+        //       "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 3,
+        //     name: "马奎斯",
+        //     avatar:
+        //       "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 4,
+        //     name: "王一博",
+        //     url: "https://weibo.com/u/5492443184",
+        //     avatar:
+        //       "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 5,
+        //     name: "王俊凯",
+        //     url: "https://weibo.com/tfwangjunkai",
+        //     avatar:
+        //       "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 6,
+        //     name: "易烊千玺",
+        //     url: "https://weibo.com/tfyiyangqianxi",
+        //     avatar:
+        //       "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
+        //   },
+        //   {
+        //     id: 7,
+        //     name: "白敬亭",
+        //     url: "https://weibo.com/u/2112496475",
+        //     avatar:
+        //       "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"
+        //   }
+        // ];
+        // callback(res);
 
-      if (!keyWord) {
-        callback(list);
-        return;
-      }
-      callback(
-        list.filter(item => {
-          return item.name.includes(keyWord);
-        })
-      );
-      // });
+        const list = res;
+        if (!keyWord) return callback(list);
+        callback(
+          list.filter(item => {
+            return item.nickname.includes(keyWord);
+          })
+        );
+      });
     }
   };
   this.vEl = new Vue({

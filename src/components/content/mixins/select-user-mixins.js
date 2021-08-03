@@ -5,7 +5,7 @@ export default {
       const originalText = this.textContent;
       const queryInfo = this.queryInfo;
       const cursorPosition = getPosition(this.id);
-      const username = user.name + " ";
+      const username = user.nickname + " ";
       const newText =
         originalText.slice(0, queryInfo.startPosition) +
         username +
@@ -79,20 +79,29 @@ export default {
             pEl.offsetLeft < frameWidth * (2 / 3)
               ? pEl.offsetLeft
               : pEl.offsetLeft - 200,
-          top: pEl.offsetTop - textEl.scrollTop
+          tozp: pEl.offsetTop - textEl.scrollTop
           // left: pEl.getBoundingClientRect().left,
           // top: pEl.getBoundingClientRect().top
         };
         textEl.parentNode.removeChild(hideEl);
-        this.showSelectUser = true;
         this.queryInfo.startPosition = getPosition(this.id) + 1;
         this.queryInfo.endPosition = getPosition(this.id) + 1;
         this.$emit("queryUserList", this.queryInfo.keyWord);
         this.$nextTick(() => {
-          const list = textEl.parentNode.querySelector(".md_select_user");
-          if (list) list.scrollTo(0, 0);
+          const userList = this.userList;
+          if (userList === false) return;
+          this.showSelectUser = true;
+          this.$nextTick(() => {
+            const list = textEl.parentNode.querySelector(".md_select_user");
+            if (list) list.scrollTo(0, 0);
+          });
         });
       });
+    },
+    getUserByName(name) {
+      const userList = this.userList;
+      if (!userList.length) return "";
+      return userList.find(item => item.nickname === name);
     }
   }
 };

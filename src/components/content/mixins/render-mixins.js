@@ -1,7 +1,8 @@
 import {
   getFilteredTags,
   getLinkTags,
-  addLanguageClass
+  addLanguageClass,
+  addLinkTarget
 } from "@/assets/js/utils";
 import marked from "marked";
 import DOMPurify from "dompurify";
@@ -36,12 +37,14 @@ export default {
       const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
       // 链接转换为卡片
       const { vDom, links } = getLinkTags(this.id, cleanHtml);
-
+      const { callUserList, userHtml } = addLinkTarget(cleanHtml);
+      this.$emit("callUserList", callUserList);
       this.$emit("getFilteredTags", filteredTags);
-      this.$emit("update:html", cleanHtml);
+      this.$emit("update:html", userHtml);
       if (links.length) this.$emit("renderLinksHtml", { vDom, links });
     },
     rerender() {
+      const _this = this;
       const renderer = {
         image(href, title, text) {
           if (href === null) {
@@ -56,7 +59,7 @@ export default {
                 <span class="md_file_desc">16.6KB</span>
               </span>
               <span class="md_file_controls">
-              <a href="${href}" download target="_blank" class="md_file_download icon iconfont icon-xiazai"></a>
+              <a href="${href}" type="file" download class="md_file_download icon iconfont icon-xiazai"></a>
               </span>
             </div>`;
           }
@@ -69,8 +72,11 @@ export default {
           return out;
         },
         text(text) {
-          const newText = text.replace(/(@.+? )/g, `<span class="md_call_user">$1</span>`);
-
+          const newText = text.replace(/(@.+? )/g, function(val) {
+            const user = _this.getUserByName(val.slice(1).trim());
+            return `<a type="user" data-user="${user &&
+              user.username}" href="${user && user.url}" class="md_call_user">${val}</a>`;
+          });
           return newText;
         }
       };

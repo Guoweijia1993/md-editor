@@ -13,7 +13,7 @@
       >
         <img class="md_select_user_avatar" :src="item.avatar" />
         <div class="md_select_user_info">
-          <div class="md_select_user_name">{{ item.name }}</div>
+          <div class="md_select_user_name">{{ item.nickname }}</div>
           <div class="md_select_user_desc">最近回答过类似问题</div>
         </div>
       </li>
@@ -37,8 +37,8 @@ export default {
       }
     },
     userList: {
-      type: Array,
-      default: () => []
+      type: [Array, Boolean],
+      default: false
     },
     activeUserIndex: {
       type: Number,

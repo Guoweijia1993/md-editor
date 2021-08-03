@@ -128,8 +128,8 @@ export default {
       default: false
     },
     userList: {
-      type: Array,
-      default: () => []
+      type: [Boolean, Array],
+      default: false
     }
   },
 

@@ -315,11 +315,24 @@ export function addLanguageClass(html) {
   });
   return virtualDom;
 }
+export function addLinkTarget(html) {
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = html;
+  const userList = [];
+  Array.from(virtualDom.querySelectorAll("a[href]")).forEach(item => {
+    item.setAttribute("target", "_blank");
+    if (item.getAttribute("type") === "user") {
+      userList.push(item.dataset.user);
+    }
+  });
+  const list = Array.from(new Set(userList)); // 去重
+  return { callUserList: list, userHtml: virtualDom.innerHTML };
+}
 export function getLinkTags(id, html) {
   const virtualDom = document.createElement("div");
   virtualDom.innerHTML = html;
   const links = Array.from(
-    virtualDom.querySelectorAll("a:not([download])")
+    virtualDom.querySelectorAll("a:not([download],[type=user])")
   ).map((item, index) => {
     item.id = id + "_" + index;
     return {
@@ -334,6 +347,22 @@ export function getLinkTags(id, html) {
 export function getLinkTitle(linkEl) {
   const title = linkEl.innerText;
   return /^http/.test(title) ? "" : title;
+}
+
+export function renderLinkCard(title, item) {
+  return `
+  <span class="md_link_title">${title || item.title || ""}</span>
+  ${item.desc ? `<span class="md_link_desc">${item.desc}</span>` : ""}
+  <span class="md_flex_card">
+  ${
+    item.img
+      ? `<img class="md_link_img" src="${item.img}" />`
+      : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
+  }
+    <span class="flex-1">
+      <span class="md_link_url">${item.url}</span>
+    </span>
+  </span>`;
 }
 
 export function preventDefault(id) {

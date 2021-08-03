@@ -68,6 +68,7 @@
       @updateShowHelp="showHelp = $event"
       @renderLinksHtml="renderLinksHtml"
       @queryUserList="queryUserList"
+      @callUserList="callUserList = $event"
       v-else
     />
     <div v-if="maxLength && showWordLimit && !showPreview" class="word_limit">
@@ -88,7 +89,12 @@ import markdownHeader from "./components/header/md-header";
 import markdownFooter from "./components/footer/md-footer";
 import markdownEditor from "./components/content/md-textarea";
 import markdownPreview from "./components/content/md-preview";
-import { formatText, checktUrl, getLinkTitle } from "@/assets/js/utils";
+import {
+  formatText,
+  checktUrl,
+  getLinkTitle,
+  renderLinkCard
+} from "@/assets/js/utils";
 export default {
   components: {
     markdownHeader,
@@ -248,7 +254,8 @@ export default {
       htmlMinHeight: 150,
       showHelp: false,
       textLength: "",
-      userList: [],
+      userList: false,
+      callUserList: [],
       selectionInfo: {
         selectorId: "",
         selectionStart: "",
@@ -314,6 +321,9 @@ export default {
         if (this.filePathRule) {
           const checkResult = checktUrl(val, this.filePathRule);
           emitContent.invalidList = checkResult;
+        }
+        if (this.callUserList.length) {
+          emitContent.callUserList = this.callUserList;
         }
         emitContent.filteredTags = this.filteredTags;
         this.$emit("change", emitContent);
@@ -395,6 +405,7 @@ export default {
       }).then(res => {
         console.log("返回的列表", res);
         res.forEach(item => {
+          item.csdn = true;
           const linkEl = vDom.querySelector("#" + item.id);
           const url = item.csdn
             ? "https://link.csdn.net/?target=" + item.url
@@ -403,16 +414,7 @@ export default {
           linkEl.setAttribute("target", "_blank");
           linkEl.setAttribute("href", url);
           const title = getLinkTitle(linkEl);
-          linkEl.innerHTML = `
-          <span class="md_link_title">${title || item.title}</span>
-              <span class="md_link_desc">${item.desc}</span>
-          <span class="md_flex_card">
-            <img class="md_link_img" src="${item.img}" />
-            <span class="flex-1">
-              <span class="md_link_url">${item.url}</span>
-            </span>
-          </span>
-          `;
+          linkEl.innerHTML = renderLinkCard(title, item);
         });
         // return vDom.innerHTML;
         this.html = vDom.innerHTML;
