@@ -1,5 +1,10 @@
 import { getPosition, formatText } from "@/assets/js/utils";
 export default {
+  data() {
+    return {
+      allUserList: []
+    };
+  },
   methods: {
     handleSelectUser(user) {
       const originalText = this.textContent;
@@ -27,7 +32,7 @@ export default {
       const startPosition = this.queryInfo.startPosition;
       const keyWord = this.textContent.slice(startPosition, endPosition);
       this.queryInfo.endPosition = endPosition;
-      console.log(e, e.data);
+
       if (endPosition < startPosition || (e.returnValue && e.data === " ")) {
         // if (endPosition < startPosition || keyWord.slice(-1) === " ") {
         this.showSelectUser = false;
@@ -41,8 +46,7 @@ export default {
     //   // console.log('aaa');
     //   // console.log(e);
     //   // alert(e.key)
-      
-      
+
     //   if (e.key === "@" || (e.key === "Process" && e.code === "Digit2")) {
     //     this.createSelectUserDialog();
     //   }
@@ -95,6 +99,9 @@ export default {
         this.$nextTick(() => {
           const userList = this.userList;
           if (userList === false) return;
+          if (this.queryInfo.keyWord === "") {
+            this.allUserList = userList;
+          }
           this.showSelectUser = true;
           this.$nextTick(() => {
             const list = textEl.parentNode.querySelector(".md_select_user");
@@ -107,9 +114,9 @@ export default {
       });
     },
     getUserByName(name) {
-      const userList = this.userList;
+      const userList = this.allUserList;
       if (!userList.length) return "";
-      return userList.find(item => item.nickname === name);
+      return userList.find((item) => item.nickname === name);
     }
   }
 };
