@@ -191,11 +191,18 @@ export function removeBlankLine(val) {
 
 // 获取被过滤掉的标签
 export function getFilteredTags(oldStr, newStr) {
-  if (oldStr.length - newStr.length === 0) return [];
-  const filteredStr = oldStr.replace(newStr.trim(), "");
+  // if (oldStr.length - newStr.length === 0) return [];
+  // const filteredStr = oldStr.replace(newStr.trim(), "");
+  // console.log(11, filteredStr);
   const virtualDom = document.createElement("div");
-  virtualDom.innerHTML = filteredStr;
-  const filteredTags = Array.from(virtualDom.getElementsByTagName("*"));
+  virtualDom.innerHTML = oldStr;
+  const oldTags = Array.from(virtualDom.getElementsByTagName("*"));
+  virtualDom.innerHTML = newStr;
+  const newTags = Array.from(virtualDom.getElementsByTagName("*"));
+
+  // 待优化
+  const filteredTags = new Array(oldTags.length - newTags.length).fill(0);
+
   return filteredTags;
 }
 // 格式刷的规则
@@ -332,7 +339,7 @@ export function getLinkTags(id, html) {
   const virtualDom = document.createElement("div");
   virtualDom.innerHTML = html;
   const links = Array.from(
-    virtualDom.querySelectorAll("a:not([download],[type=user])")
+    virtualDom.querySelectorAll("a:not([download])")
   ).map((item, index) => {
     item.id = id + "_" + index;
     return {

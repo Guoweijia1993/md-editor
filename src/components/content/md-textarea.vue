@@ -8,7 +8,6 @@
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
-      @keydown.stop.50="handleCallUser"
       @keydown.stop.up="changeActiveUserIndex($event, 'up')"
       @keydown.stop.down="changeActiveUserIndex($event, 'down')"
       @keydown.enter="handleEnter"
@@ -155,6 +154,12 @@ export default {
     this.resetPreviewMinHeight();
   },
   watch: {
+    // userList: {
+    //   handler: function(val) {
+    //     if (!val.length) return;
+    //     this.activeUserIndex = 0;
+    //   }
+    // },
     isFocus: {
       handler: function(val) {
         if (val) {
@@ -228,10 +233,19 @@ export default {
             this.activeUserIndex = 0;
           }
           const index = this.activeUserIndex;
-          if (index % 3 === 0) {
+          const activeItem = document.getElementById("md_user_id_" + index);
+          const activeTop =
+            activeItem.offsetTop - activeItem.parentNode.scrollTop;
+
+          if (index === 0) {
             document
-              .getElementById("md_user_id_" + this.activeUserIndex)
-              .parentNode.scrollTo(0, 56 * index);
+              .getElementById("md_user_id_" + index)
+              .parentNode.scrollTo(0, 0);
+          }
+          if (index > 3 && activeTop > 126) {
+            document
+              .getElementById("md_user_id_" + index)
+              .parentNode.scrollTo(0, 40 * (index - 3));
             // .scrollIntoView({ behavior: "smooth" });
           }
         } else {
@@ -240,9 +254,20 @@ export default {
             this.activeUserIndex = max - 1;
           }
           const index = this.activeUserIndex;
-          document
-            .getElementById("md_user_id_" + this.activeUserIndex)
-            .parentNode.scrollTo(0, 56 * index);
+          const activeItem = document.getElementById("md_user_id_" + index);
+          const activeTop =
+            activeItem.offsetTop - activeItem.parentNode.scrollTop;
+          if (index === max - 1) {
+            activeItem.parentNode.scrollTo(
+              0,
+              activeItem.parentNode.scrollHeight
+            );
+          }
+          if (activeTop < 46) {
+            document
+              .getElementById("md_user_id_" + this.activeUserIndex)
+              .parentNode.scrollTo(0, 40 * index);
+          }
           // .scrollIntoView({ behavior: "smooth" });
         }
       }
@@ -263,6 +288,9 @@ export default {
       };
     },
     input(e) {
+      if (e.data === "@") {
+        this.createSelectUserDialog();
+      }
       if (this.showSelectUser) this.handleQueryUser(e);
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();

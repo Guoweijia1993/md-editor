@@ -1,13 +1,17 @@
+#md_link_card,
 .md_link_card {
   display: block;
-  padding: 6px 16px;
+  padding: 8px 16px;
   box-sizing: border-box;
   border-radius: 4px;
   border: 1px solid var(--md-editor-border-color);
   background: #f5f7fa;
   transition: border 0.3s;
   margin: 4px 0;
-  // max-width: 640px;
+  max-width: 640px;
+  * {
+    line-height: 1;
+  }
   @media (any-hover: hover) {
     &:hover {
       border: 1px solid var(--md-editor-border-color-active);
@@ -35,7 +39,7 @@
     font-size: 14px;
     line-height: 20px;
     color: var(--md-editor-text-color);
-    margin: 6px 0;
+    margin: 6px 0 8px;
     line-height: 20px;
     overflow: hidden;
     display: -webkit-box;
@@ -52,6 +56,7 @@
   }
 }
 
+#md_file_card,
 .md_file_card {
   display: block;
   padding: 10px 16px;
@@ -62,6 +67,9 @@
   transition: border 0.3s;
   max-width: 400px;
   margin: 4px 0;
+  * {
+    line-height: 1;
+  }
   @media (any-hover: hover) {
     &:hover {
       border: 1px solid var(--md-editor-border-color-active);
@@ -76,6 +84,8 @@
     color: var(--md-editor-border-color-active);
   }
   .md_file_download {
+    width: unset;
+    height: unset;
     font-size: 14px;
     padding: 8px;
     box-sizing: border-box;

@@ -326,6 +326,7 @@ export default {
           emitContent.callUserList = this.callUserList;
         }
         emitContent.filteredTags = this.filteredTags;
+
         this.$emit("change", emitContent);
         this.$emit("input", emitContent);
       }
@@ -410,13 +411,13 @@ export default {
           const url = item.csdn
             ? "https://link.csdn.net/?target=" + item.url
             : item.url;
+          linkEl.id = "md_link_card";
           linkEl.className = "md_link_card";
           linkEl.setAttribute("target", "_blank");
           linkEl.setAttribute("href", url);
           const title = getLinkTitle(linkEl);
           linkEl.innerHTML = renderLinkCard(title, item);
         });
-        // return vDom.innerHTML;
         this.html = vDom.innerHTML;
       });
     }

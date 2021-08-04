@@ -14,7 +14,7 @@
         <img class="md_select_user_avatar" :src="item.avatar" />
         <div class="md_select_user_info">
           <div class="md_select_user_name">{{ item.nickname }}</div>
-          <div class="md_select_user_desc">最近回答过类似问题</div>
+          <!-- <div class="md_select_user_desc">最近回答过类似问题</div> -->
         </div>
       </li>
     </ul>
@@ -110,11 +110,12 @@ export default {
     );
   }
   .md_select_user {
-    max-height: 214px;
+    max-height: 196px;
     width: 180px;
     padding: 6px 0;
     box-sizing: border-box;
     overflow-y: auto;
+    overflow-x: hidden;
     scrollbar-color: transparent transparent;
     scrollbar-width: none;
     margin: 0 !important;
@@ -134,9 +135,13 @@ export default {
     li {
       display: flex;
       box-sizing: border-box;
-      padding: 6px 8px;
+      padding: 4px 8px;
       cursor: pointer;
-      &:hover,
+      @media (any-hover: hover) {
+        &:hover {
+          background: #f5f7fa;
+        }
+      }
       &.active {
         background: #f5f7fa;
       }
@@ -144,8 +149,8 @@ export default {
       //   margin-top: 10px;
       // }
       .md_select_user_avatar {
-        width: 44px;
-        height: 44px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         object-fit: cover;
         margin-right: 8px;
@@ -158,6 +163,10 @@ export default {
         align-items: flex-start;
         .md_select_user_name {
           font-size: 14px;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
           color: var(--md-editor-text-color-active);
         }
         .md_select_user_desc {

@@ -28,7 +28,6 @@ export default {
           "script",
           "select",
           "option",
-          "input",
           "textarea",
           "form",
           "button"
@@ -52,15 +51,17 @@ export default {
           }
           // ![file](...)渲染文件，只可以下载
           if (text === "file") {
-            return `<div class="md_file_card md_flex_card">
-              <span class="md_file_img icon iconfont icon-doc"></span>
-              <span class="flex-1">
-                <span class="md_file_title">${title}</span>
-                <span class="md_file_desc">16.6KB</span>
-              </span>
-              <span class="md_file_controls">
-              <a href="${href}" type="file" download class="md_file_download icon iconfont icon-xiazai"></a>
-              </span>
+            return `<div id="md_file_card" class="md_file_card">
+              <div class="md_flex_card">
+                <span class="md_file_img icon iconfont icon-doc"></span>
+                <span class="flex-1">
+                  <span class="md_file_title">${title}</span>
+                  <span class="md_file_desc">16.6KB</span>
+                </span>
+                <span class="md_file_controls">
+                <a href="${href}" type="file" download class="md_file_download icon iconfont icon-xiazai"></a>
+                </span>
+              </div>
             </div>`;
           }
           // ![img](...)渲染图片
@@ -72,10 +73,10 @@ export default {
           return out;
         },
         text(text) {
-          const newText = text.replace(/(@.+? )/g, function(val) {
+          const newText = text.replace(/(\@\S+\s{0,1})/g, function(val) {
             const user = _this.getUserByName(val.slice(1).trim());
-            return `<a type="user" data-user="${user &&
-              user.username}" href="${user && user.url}" class="md_call_user">${val}</a>`;
+            return `<a type="user" download data-user="${user &&
+              user.username}" href="${(user && user.url) || "javascript:void(0)"}" class="md_call_user">${val}</a>`;
           });
           return newText;
         }

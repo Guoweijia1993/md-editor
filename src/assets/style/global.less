@@ -66,12 +66,15 @@ textarea {
 }
 
 a.md_call_user {
-  color: var(--md-editor-border-color-active);
-  cursor: pointer;
-  @media (any-hover: hover) {
-    &:hover {
-      color: var(--md-editor-border-color-active);
-      opacity: 0.8;
+  color: var(--md-editor-text-color-active) !important;
+  &[href] {
+    color: var(--md-editor-border-color-active) !important;
+    cursor: pointer;
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--md-editor-border-color-active) !important;
+        opacity: 0.8;
+      }
     }
   }
 }

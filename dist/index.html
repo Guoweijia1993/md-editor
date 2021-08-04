@@ -35,45 +35,45 @@
       const ee = new MdEditor({
         el: "#app", // required
         value: `\`\`\`java
-#include "stdio.h"
-void main()
-{
-    /*
-        完数：所有的因子相加等于这个数本身
-        6=1+2+3
-    */
-    int i,j,a,b,c;
-    printf("1000以内的完数如下：\n");
-    for(i=6;i<=1000;i++)
-    {
-           a=0;
-           //求i对应的所有的因子
-        for(j=2;j<=i;j++)
-        {
-            if(i%j==0)
-            {
-                a+=i/j;
-            }
-        }
-        if(i==a){
-            //该循环语句的作用就是打印结果
-            for(j=2;j<=i;j++)
-            {
-                if(i%j==0)
-                {
-                    if(i==j){
-                        printf("%d",i/j);    
-                    }else{
-                        printf("%d+",i/j);
-                    }
-                }
-            }
-            printf("=%d\n",i);
-        }
-    }
-}
-\`\`\`
-        `,
+      #include "stdio.h"
+      void main()
+      {
+          /*
+              完数：所有的因子相加等于这个数本身
+              6=1+2+3
+          */
+          int i,j,a,b,c;
+          printf("1000以内的完数如下：\n");
+          for(i=6;i<=1000;i++)
+          {
+                 a=0;
+                 //求i对应的所有的因子
+              for(j=2;j<=i;j++)
+              {
+                  if(i%j==0)
+                  {
+                      a+=i/j;
+                  }
+              }
+              if(i==a){
+                  //该循环语句的作用就是打印结果
+                  for(j=2;j<=i;j++)
+                  {
+                      if(i%j==0)
+                      {
+                          if(i==j){
+                              printf("%d",i/j);
+                          }else{
+                              printf("%d+",i/j);
+                          }
+                      }
+                  }
+                  printf("=%d\n",i);
+              }
+          }
+      }
+      \`\`\`
+              `,
         //         value: `
         // ![pic](https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg=40x40)
         //         `,
@@ -85,8 +85,9 @@ void main()
         value:
           "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         value:
-          "![file](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg '附件')\n[](https://ask.csdn.net/questions/7483791)",
-        value: "当前问题已结题，不再开放新的回答。",
+          "![](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg '')",
+        // value: "当前问题已结题，不再开放新的回答。",
+        // value: "",
         disabled: false,
         themeOptions: {
           dark: false,
@@ -95,7 +96,7 @@ void main()
           // textColorActive: "#000",
           codeTheme: "atom-one-dark"
         },
-        height: 300,
+        height: 400,
         // rows: 'auto',
         // height: 40,
         toolsOptions: {
@@ -167,51 +168,69 @@ void main()
           setTimeout(() => {
             callback(newLinks);
           }, 1000);
-        }
-        // queryUserList: function(val, callback) {
-        //   const list = [
-        //     {
-        //       id: 1,
-        //       name: "藤原拓海",
-        //       avatar:
-        //         "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
-        //     },
-        //     {
-        //       id: 2,
-        //       name: "高桥凉介",
-        //       avatar:
-        //         "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
-        //     },
-        //     {
-        //       id: 3,
-        //       name: "马奎斯",
-        //       avatar:
-        //         "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
-        //     },
-        //     {
-        //       id: 4,
-        //       name: "王一博",
-        //       avatar:
-        //         "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
-        //     },
-        //     {
-        //       id: 5,
-        //       name: "王俊凯",
-        //       avatar:
-        //         "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
-        //     }
-        //   ];
+        },
+        queryUserList: function(val, callback) {
+          const list = [
+            {
+              id: 1,
+              nickname: "藤原拓海",
+              username: 'cpongo1',
+              url: "https://weibo.com/u/5492443184",
+              avatar:
+                "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 2,
+              nickname: "高桥凉介",
+              username: 'cpongo2',
+              url: "https://weibo.com/u/5492443184",
+              avatar:
+                "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 3,
+              nickname: "马奎斯",
+              username: 'cpongo3',
+              url: "https://weibo.com/u/5492443184",
+              avatar:
+                "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 4,
+              nickname: "王一博",
+              username: 'cpongo4',
+              url: "https://weibo.com/u/5492443184",
+              avatar:
+                "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 5,
+              nickname: "王俊凯",
+              username: 'cpongo5',
+              url: "https://weibo.com/tfwangjunkai",
+              avatar:
+                "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 6,
+              nickname: "易烊千玺",
+              username: 'cpongo6',
+              url: "https://weibo.com/tfyiyangqianxi",
+              avatar:
+                "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              id: 7,
+              nickname: "白敬亭",
+              username: 'cpongo7',
+              url: "https://weibo.com/u/2112496475",
+              avatar:
+                "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"
+            }
+          ];
 
-        //   if (!val) {
-        //     callback(list);
-        //     return;
-        //   }
-        //   callback(
-        //     list.filter(item => {
-        //       return item.name.includes(val);
-        //     })
-        //   );
-        // }
+          callback(list);
+        }
       });
       // ee.focus();
       document.querySelector("#a").onclick = function() {

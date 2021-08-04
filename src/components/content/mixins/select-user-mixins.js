@@ -37,11 +37,16 @@ export default {
       this.queryInfo.keyWord = keyWord;
       this.$emit("queryUserList", keyWord);
     },
-    handleCallUser(e) {
-      if (e.key === "@") {
-        this.createSelectUserDialog();
-      }
-    },
+    // handleCallUser(e) {
+    //   // console.log('aaa');
+    //   // console.log(e);
+    //   // alert(e.key)
+      
+      
+    //   if (e.key === "@" || (e.key === "Process" && e.code === "Digit2")) {
+    //     this.createSelectUserDialog();
+    //   }
+    // },
     createSelectUserDialog() {
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
@@ -79,7 +84,7 @@ export default {
             pEl.offsetLeft < frameWidth * (2 / 3)
               ? pEl.offsetLeft
               : pEl.offsetLeft - 200,
-          tozp: pEl.offsetTop - textEl.scrollTop
+          top: pEl.offsetTop - textEl.scrollTop
           // left: pEl.getBoundingClientRect().left,
           // top: pEl.getBoundingClientRect().top
         };
@@ -93,7 +98,10 @@ export default {
           this.showSelectUser = true;
           this.$nextTick(() => {
             const list = textEl.parentNode.querySelector(".md_select_user");
-            if (list) list.scrollTo(0, 0);
+            if (list) {
+              this.activeUserIndex = 0;
+              list.scrollTo(0, 0);
+            }
           });
         });
       });
