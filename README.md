@@ -1,4 +1,4 @@
-# Awesome-Markdown-Editor
+# C Markdown 编辑器
 
 一款Markdown编辑器组件，支持使用markodwn语法来编写文档，同时支持图片上传等功能（当前版本仅支持单文件上传）
 
@@ -12,7 +12,7 @@
 - 支持@指定用户[queryUserList](#queryuserlist)
 - 支持网址渲染成卡片样式[renderLinks](#renderlinks)
 - 优化标签过滤规则
-- 添加[disable属性](#toolsoptions)
+- 添加[disabled属性](#toolsoptions)
 
 ### v0.6
 
@@ -114,6 +114,7 @@ new MdEditor({
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canPreview | 是否开启预览 | Boolean | true
+| disabled | 是否禁用 | Boolean | false
 | placeholder | placeholder | String | "请输入内容"
 | onLoad | 编辑器实例化 | Function | function(res) {} [示例](#onload)
 | onInput | 输入事件 | Function | function(res) {} [示例](#oninput)
