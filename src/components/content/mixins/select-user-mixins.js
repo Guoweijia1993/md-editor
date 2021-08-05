@@ -5,6 +5,21 @@ export default {
       allUserList: []
     };
   },
+  mounted() {
+    setTimeout(() => {
+      const text = this.text;
+      if (/(\@\S+\s{0,1})/g.test(text)) {
+        this.$emit("queryUserList", "");
+        this.$nextTick(() => {
+          const userList = this.userList;
+          this.allUserList = userList;
+          this.$nextTick(() => {
+            this.transferMarkdown(text);
+          });
+        });
+      }
+    }, 0);
+  },
   methods: {
     handleSelectUser(user) {
       const originalText = this.textContent;
@@ -42,16 +57,12 @@ export default {
       this.queryInfo.keyWord = keyWord;
       this.$emit("queryUserList", keyWord);
     },
-    // handleCallUser(e) {
-    //   // console.log('aaa');
-    //   // console.log(e);
-    //   // alert(e.key)
-
-    //   if (e.key === "@" || (e.key === "Process" && e.code === "Digit2")) {
-    //     this.createSelectUserDialog();
-    //   }
-    // },
-    createSelectUserDialog() {
+    handleCallUser(e) {
+      if (e.key === "@" || (e.key === "Process" && e.code === "Digit2")) {
+        this.createSelectUserDialog();
+      }
+    },
+    createSelectUserDialog(type) {
       const textEl = document.getElementById(this.id);
       if (!textEl) return;
       const height = getComputedStyle(textEl).getPropertyValue("height");
@@ -95,6 +106,10 @@ export default {
         textEl.parentNode.removeChild(hideEl);
         this.queryInfo.startPosition = getPosition(this.id) + 1;
         this.queryInfo.endPosition = getPosition(this.id) + 1;
+        if (type === "android") {
+          this.queryInfo.startPosition--;
+          this.queryInfo.endPosition--;
+        }
         this.$emit("queryUserList", this.queryInfo.keyWord);
         this.$nextTick(() => {
           const userList = this.userList;
@@ -116,7 +131,7 @@ export default {
     getUserByName(name) {
       const userList = this.allUserList;
       if (!userList.length) return "";
-      return userList.find((item) => item.nickname === name);
+      return userList.find(item => item.nickname === name);
     }
   }
 };

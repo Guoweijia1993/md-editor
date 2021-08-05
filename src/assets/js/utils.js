@@ -76,7 +76,8 @@ export function initStyle({
   contentBgColor,
   codeBgColor,
   codeTheme,
-  helpdocColor
+  helpdocColor,
+  itemActiveBgColor
 }) {
   // 夜晚模式
   if (dark) {
@@ -89,11 +90,18 @@ export function initStyle({
     codeBgColor = "#777888";
     contentBgColor = "#222226";
     helpdocColor = "#CCCCD8";
+    itemActiveBgColor = "#777888";
   }
   if (frameBgColor) {
     document.documentElement.style.setProperty(
       "--md-editor-frame-bg-color",
       frameBgColor
+    );
+  }
+  if (itemActiveBgColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-item-active-bg-color",
+      itemActiveBgColor
     );
   }
   if (contentBgColor) {
@@ -143,19 +151,19 @@ export function initStyle({
   if (codeTheme) {
     switch (codeTheme) {
       case "dark":
-        import("@/assets/style/code/dark.css");
+        import("@/assets/style/code/dark.less");
         break;
       case "light":
-        import("@/assets/style/code/lightfair.css");
+        import("@/assets/style/code/lightfair.less");
         break;
       case "atom-one-dark":
-        import("@/assets/style/code/atom-one-dark.css");
+        import("@/assets/style/code/atom-one-dark.less");
         break;
       default:
         break;
     }
   } else {
-    import("@/assets/style/code/lightfair.css");
+    import("@/assets/style/code/lightfair.less");
   }
 }
 
@@ -180,6 +188,13 @@ export function checktUrl(val, rule) {
 export function checkBoswer() {
   const agent = navigator.userAgent.match(
     /(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i
+  );
+  return agent !== null;
+}
+
+export function isAndroid() {
+  const agent = navigator.userAgent.match(
+    /(Android)/i
   );
   return agent !== null;
 }

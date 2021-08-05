@@ -25,6 +25,7 @@
   </div>
 </template>
 <script>
+import { throttle as throttleFn } from "@/assets/js/utils";
 export default {
   props: {
     position: {
@@ -48,6 +49,8 @@ export default {
   computed: {
     list() {
       const list = this.userList;
+      console.log("list", list);
+
       if (!list.length) return [];
       return list.map((item, index) => {
         if (index === 0) {
@@ -57,6 +60,9 @@ export default {
         }
         return item;
       });
+    },
+    throttle() {
+      return throttleFn();
     }
   },
   watch: {
@@ -76,7 +82,12 @@ export default {
   },
   methods: {
     selectUser(user) {
-      this.$emit("selectUser", user);
+      console.log(this.throttle);
+
+      this.throttle(() => {
+        console.log(111);
+        this.$emit("selectUser", user);
+      }, 1000);
     },
     isActive(index) {
       return index === this.activeUserIndex;
@@ -90,7 +101,7 @@ export default {
 <style lang="less" scoped>
 .md_select_container {
   position: absolute;
-  background: #fff;
+  background: var(--md-editor-content-bg-color);
   box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
   border: 1px solid var(--md-editor-border-color);
   border-radius: 4px;
@@ -139,11 +150,11 @@ export default {
       cursor: pointer;
       @media (any-hover: hover) {
         &:hover {
-          background: #f5f7fa;
+          background: var(--md-editor-item-active-bg-color);
         }
       }
       &.active {
-        background: #f5f7fa;
+        background: var(--md-editor-item-active-bg-color);
       }
       // & + li {
       //   margin-top: 10px;

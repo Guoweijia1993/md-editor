@@ -5,6 +5,8 @@
       :id="id"
       @change="$emit('update:text', textContent)"
       @input="input"
+      @keydown.stop.50="handleCallUser"
+      @keydown.stop.229="handleCallUser"
       @focus="setFocus(true)"
       @blur="setFocus(false)"
       @paste="pasteFile"
@@ -53,7 +55,7 @@
 import {
   getSelectionInfo,
   getPosition,
-  preventDefault,
+  isAndroid,
   throttle as throttleFn
 } from "@/assets/js/utils";
 import selectUser from "./components/user-select";
@@ -288,8 +290,8 @@ export default {
       };
     },
     input(e) {
-      if (e.data === "@") {
-        this.createSelectUserDialog();
+      if (isAndroid() && e.data === "@") {
+        this.createSelectUserDialog("android");
       }
       if (this.showSelectUser) this.handleQueryUser(e);
       this.$emit("update:textLength", this.textContent.length);

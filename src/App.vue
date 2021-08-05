@@ -324,6 +324,8 @@ export default {
         }
         if (this.callUserList.length) {
           emitContent.callUserList = this.callUserList;
+        } else {
+          emitContent.callUserList = [];
         }
         emitContent.filteredTags = this.filteredTags;
 
