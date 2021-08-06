@@ -8,7 +8,7 @@
       @keydown.stop.50="handleCallUser"
       @keydown.stop.229="handleCallUser"
       @focus="setFocus(true)"
-      @blur="setFocus(false)"
+      @blur="blur"
       @paste="pasteFile"
       @keydown.stop.up="changeActiveUserIndex($event, 'up')"
       @keydown.stop.down="changeActiveUserIndex($event, 'down')"
@@ -296,6 +296,10 @@ export default {
       if (this.showSelectUser) this.handleQueryUser(e);
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
+    },
+    blur() {
+      this.renderUserTags()
+      this.setFocus(false);
     },
     createHideEl(type) {
       const textEl = document.getElementById(this.id);

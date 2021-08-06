@@ -25,7 +25,6 @@
   </div>
 </template>
 <script>
-import { throttle as throttleFn } from "@/assets/js/utils";
 export default {
   props: {
     position: {
@@ -49,8 +48,6 @@ export default {
   computed: {
     list() {
       const list = this.userList;
-      console.log("list", list);
-
       if (!list.length) return [];
       return list.map((item, index) => {
         if (index === 0) {
@@ -60,9 +57,6 @@ export default {
         }
         return item;
       });
-    },
-    throttle() {
-      return throttleFn();
     }
   },
   watch: {
@@ -77,16 +71,17 @@ export default {
   data() {
     return {
       left: 0,
-      top: 0
+      top: 0,
+      selectDisable: false
     };
   },
   methods: {
     selectUser(user) {
-      console.log(this.throttle);
-
-      this.throttle(() => {
-        console.log(111);
-        this.$emit("selectUser", user);
+      if (this.selectDisable) return;
+      this.selectDisable = true;
+      this.$emit("selectUser", user);
+      setTimeout(() => {
+        this.selectDisable = false;
       }, 1000);
     },
     isActive(index) {

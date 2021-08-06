@@ -204,7 +204,7 @@ export default {
           icon: "lianjie",
           tip: "添加链接",
           doc: "[标题](链接)",
-          startStr: "[链接标题](",
+          startStr: "[](",
           endStr: ")"
         },
         {

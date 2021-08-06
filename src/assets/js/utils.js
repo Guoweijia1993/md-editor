@@ -77,7 +77,8 @@ export function initStyle({
   codeBgColor,
   codeTheme,
   helpdocColor,
-  itemActiveBgColor
+  itemActiveBgColor,
+  linkCardBgColor
 }) {
   // 夜晚模式
   if (dark) {
@@ -91,6 +92,13 @@ export function initStyle({
     contentBgColor = "#222226";
     helpdocColor = "#CCCCD8";
     itemActiveBgColor = "#777888";
+    linkCardBgColor = "#222226";
+  }
+  if (linkCardBgColor) {
+    document.documentElement.style.setProperty(
+      "--md-editor-link-card-bg-color",
+      linkCardBgColor
+    );
   }
   if (frameBgColor) {
     document.documentElement.style.setProperty(
@@ -193,9 +201,7 @@ export function checkBoswer() {
 }
 
 export function isAndroid() {
-  const agent = navigator.userAgent.match(
-    /(Android)/i
-  );
+  const agent = navigator.userAgent.match(/(Android)/i);
   return agent !== null;
 }
 // 去除头部空格行
@@ -374,11 +380,15 @@ export function getLinkTitle(linkEl) {
 export function renderLinkCard(title, item) {
   return `
   <span class="md_link_title">${title || item.title || ""}</span>
-  ${item.desc ? `<span class="md_link_desc">${item.desc}</span>` : ""}
+  ${
+    item.description
+      ? `<span class="md_link_desc">${item.description}</span>`
+      : ""
+  }
   <span class="md_flex_card">
   ${
-    item.img
-      ? `<img class="md_link_img" src="${item.img}" />`
+    item.icon
+      ? `<img class="md_link_img" src="${item.icon}" />`
       : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
   }
     <span class="flex-1">

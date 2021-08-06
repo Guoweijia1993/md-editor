@@ -5,8 +5,9 @@ export default {
       allUserList: []
     };
   },
-  mounted() {
-    setTimeout(() => {
+  methods: {
+    renderUserTags() {
+      if (this.showSelectUser) return;
       const text = this.text;
       if (/(\@\S+\s{0,1})/g.test(text)) {
         this.$emit("queryUserList", "");
@@ -18,9 +19,7 @@ export default {
           });
         });
       }
-    }, 0);
-  },
-  methods: {
+    },
     handleSelectUser(user) {
       const originalText = this.textContent;
       const queryInfo = this.queryInfo;

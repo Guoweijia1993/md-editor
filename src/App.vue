@@ -406,7 +406,6 @@ export default {
           }
         });
       }).then(res => {
-        console.log("返回的列表", res);
         res.forEach(item => {
           item.csdn = true;
           const linkEl = vDom.querySelector("#" + item.id);

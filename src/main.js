@@ -178,7 +178,7 @@ function initMdEditor(obj) {
         if (!keyWord) return callback(list);
         callback(
           list.filter(item => {
-            return item.nickname.includes(keyWord);
+            return item.nickname.toLowerCase().includes(keyWord.toLowerCase());
           })
         );
       });
