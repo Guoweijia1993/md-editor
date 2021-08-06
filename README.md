@@ -1,8 +1,18 @@
-# C Markdown 编辑器
+# Awesome-Markdown-Editor
 
 一款Markdown编辑器组件，支持使用markodwn语法来编写文档，同时支持图片上传等功能（当前版本仅支持单文件上传）
 
 ## 更新记录
+
+
+### v0.7
+
+2021-08-05 v0.7更新，添加功能：
+
+- 支持@指定用户[queryUserList](#queryuserlist)
+- 支持网址渲染成卡片样式[renderLinks](#renderlinks)
+- 优化标签过滤规则
+- 添加[disabled属性](#toolsoptions)
 
 ### v0.6
 
@@ -104,6 +114,7 @@ new MdEditor({
 | themeOptions | 主题颜色配置 | Object | [themeOptions](#themeoptions)
 | toolsOptions | 顶部工具栏配置 | Object | [toolsOptions](#toolsoptions)
 | canPreview | 是否开启预览 | Boolean | true
+| disabled | 是否禁用 | Boolean | false
 | placeholder | placeholder | String | "请输入内容"
 | onLoad | 编辑器实例化 | Function | function(res) {} [示例](#onload)
 | onInput | 输入事件 | Function | function(res) {} [示例](#oninput)
@@ -112,6 +123,8 @@ new MdEditor({
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
 | onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
 | onsubmit | 快捷键函数 | Function | function(file, callback) {} [示例](#onsubmit)
+| queryUserList | @用户列表查询函数 | Function | function(keyword), callback) {} [示例](#queryuserlist)
+| renderLinks | 把链接渲染成卡片样式 | Function | function(list)), callback) {} [示例](#renderlinks)
 
 # 方法
 
@@ -263,6 +276,70 @@ new MdEditor({
         callback(url)
     }
 })
+```
+
+# queryUserList
+
+按下@键时触发此函数，通过回传用户列表可生成用户选择弹窗
+
+```js
+new MdEditor({
+    ...,
+     queryUserList: function(val, callback) {
+          const list = [
+            {
+              nickname: "王一博",
+              username: 'cpongo4',
+              url: "https://weibo.com/u/5492443184",
+              avatar:
+                "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              nickname: "王俊凯",
+              username: 'cpongo5',
+              url: "https://weibo.com/tfwangjunkai",
+              avatar:
+                "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              nickname: "易烊千玺",
+              username: 'cpongo6',
+              url: "https://weibo.com/tfyiyangqianxi",
+              avatar:
+                "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
+            },
+            {
+              nickname: "白敬亭",
+              username: 'cpongo7',
+              url: "https://weibo.com/u/2112496475",
+              avatar:
+                "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"
+            }
+          ];
+
+          callback(list);
+        }
+})
+```
+
+# renderLinks
+
+通过返回的链接信息把链接渲染成卡片样式
+
+```js
+renderLinks: function(val, callback) {
+          const newLinks = val.map(item => {
+            item.title =
+              "指定的可执行文件cmd.exe未能运行，某某函数不正确-后端-CSDN问答";
+            item.icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+            item.description =
+              "CSDN问答为您找到指定的可执行文件cmd.exe未能运行，某某函数不正确相关问题答案，如果想了解更多关于指定的可执行文件cmd.exe未能运行，某某函数不正确 asp.net、c# 技术问题等相关问答，请访问CSDN问答。";
+            return item;
+          });
+
+         callback(newLinks);
+
+        },
 ```
 
 # getValue
