@@ -190,7 +190,14 @@ export function checktUrl(val, rule) {
   hideEl.style.display = "none";
   hideEl.innerHTML = val;
   const imgList = Array.from(hideEl.getElementsByTagName("img"));
-  return imgList.filter(item => !rule.test(item.src)).map(item => item.src);
+  // const icoRule = /http[s]:\/\/.+\.ico/;
+  return imgList.filter(item => {
+    // return !rule.test(item.src) && !icoRule.test(item.src);
+    return (
+      !rule.test(item.src) &&
+      item.getAttribute("referrerpolicy") !== "no-referrer"
+    );
+  });
 }
 
 export function checkBoswer() {
@@ -362,7 +369,7 @@ export function getLinkTags(id, html) {
   const links = Array.from(
     virtualDom.querySelectorAll("a:not([download])")
   ).map((item, index) => {
-    item.id = id + "_" + index;
+    item.id = id + "_" + new Date().getTime() + "_" + index;
     return {
       id: item.id,
       title: item.innerText,
@@ -372,23 +379,23 @@ export function getLinkTags(id, html) {
   return { vDom: virtualDom, links };
 }
 
-export function getLinkTitle(linkEl) {
-  const title = linkEl.innerText;
-  return /^http/.test(title) ? "" : title;
+export function getLinkTitle(linkEl, item) {
+  const originTitle = linkEl.innerText;
+  const titleEl = Array.from(linkEl.getElementsByClassName("md_link_title"));
+  if (titleEl.length) return item.title || titleEl[0].innerText;
+  return /^http/.test(originTitle) ? "" : originTitle;
 }
 
 export function renderLinkCard(title, item) {
   return `
   <span class="md_link_title">${title || item.title || ""}</span>
-  ${
-    item.description
-      ? `<span class="md_link_desc">${item.description}</span>`
-      : ""
-  }
+  ${`<span class="md_link_desc" style="${
+    item.description ? "" : "margin: 0px 0 2px"
+  }">${item.description || ""}</span>`}
   <span class="md_flex_card">
   ${
     item.icon
-      ? `<img class="md_link_img" src="${item.icon}" />`
+      ? `<img class="md_link_img" referrerpolicy="no-referrer" id="md_link_img" src="${item.icon}" />`
       : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
   }
     <span class="flex-1">

@@ -85,7 +85,7 @@
         value:
           "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         value:
-          "![](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg '')",
+          "[1](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)",
         // value: "当前问题已结题，不再开放新的回答。",
         // value: "",
         disabled: false,
@@ -110,6 +110,7 @@
           ol: true,
           task: true,
           table: true,
+          img: true,
           file: true,
           // help: false,
           fullScreen: true
@@ -156,33 +157,39 @@
           });
         },
         renderLinks: function(val, callback) {
-          const newLinks = val.map(item => {
-            item.csdn = true;
-            item.title =
-              "指定的可执行文件cmd.exe未能运行，某某函数不正确-后端-CSDN问答";
-            item.img = "https://g.csdnimg.cn/static/logo/favicon32.ico";
-            item.desc =
-              "CSDN问答为您找到指定的可执行文件cmd.exe未能运行，某某函数不正确相关问题答案，如果想了解更多关于指定的可执行文件cmd.exe未能运行，某某函数不正确 asp.net、c# 技术问题等相关问答，请访问CSDN问答。";
-            return item;
-          });
           setTimeout(() => {
-            callback(newLinks);
+            val[0].title = "111111";
+            val[0].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+            callback(val);
           }, 1000);
+
+          setTimeout(() => {
+            val[1].title = "2222222";
+            val[1].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+
+            callback(val);
+          }, 2000);
+          setTimeout(() => {
+            val[1].title = "333333333";
+            val[1].icon = "https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg";
+
+            callback(val);
+          }, 3000);
         },
         queryUserList: function(val, callback) {
           const list = [
             {
               id: 1,
-              nickname: "藤原拓海",
-              username: 'cpongo1',
+              nickname: "cpongo1",
+              username: "cpongo1",
               url: "https://weibo.com/u/5492443184",
               avatar:
                 "https://img2.baidu.com/it/u=2380211986,3979961921&fm=26&fmt=auto&gp=0.jpg"
             },
             {
               id: 2,
-              nickname: "高桥凉介",
-              username: 'cpongo2',
+              nickname: "CPongo2",
+              username: "cpongo2",
               url: "https://weibo.com/u/5492443184",
               avatar:
                 "https://img0.baidu.com/it/u=777620324,2343967729&fm=26&fmt=auto&gp=0.jpg"
@@ -190,7 +197,7 @@
             {
               id: 3,
               nickname: "马奎斯",
-              username: 'cpongo3',
+              username: "cpongo3",
               url: "https://weibo.com/u/5492443184",
               avatar:
                 "https://img2.baidu.com/it/u=1297316011,1869565258&fm=26&fmt=auto&gp=0.jpg"
@@ -198,7 +205,7 @@
             {
               id: 4,
               nickname: "王一博",
-              username: 'cpongo4',
+              username: "cpongo4",
               url: "https://weibo.com/u/5492443184",
               avatar:
                 "https://img2.baidu.com/it/u=298051053,3773223854&fm=26&fmt=auto&gp=0.jpg"
@@ -206,7 +213,7 @@
             {
               id: 5,
               nickname: "王俊凯",
-              username: 'cpongo5',
+              username: "cpongo5",
               url: "https://weibo.com/tfwangjunkai",
               avatar:
                 "https://img1.baidu.com/it/u=2378425879,2273515018&fm=26&fmt=auto&gp=0.jpg"
@@ -214,7 +221,7 @@
             {
               id: 6,
               nickname: "易烊千玺",
-              username: 'cpongo6',
+              username: "cpongo6",
               url: "https://weibo.com/tfyiyangqianxi",
               avatar:
                 "https://img0.baidu.com/it/u=2227200088,1939721201&fm=26&fmt=auto&gp=0.jpg"
@@ -222,7 +229,7 @@
             {
               id: 7,
               nickname: "白敬亭",
-              username: 'cpongo7',
+              username: "cpongo7",
               url: "https://weibo.com/u/2112496475",
               avatar:
                 "https://img1.baidu.com/it/u=3265411836,2089649447&fm=11&fmt=auto&gp=0.jpg"

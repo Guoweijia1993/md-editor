@@ -230,13 +230,13 @@ export default {
           startStr: "",
           endStr: ""
         },
-        // {
-        //   name: "file",
-        //   icon: "wenjian",
-        //   tip: "上传附件",
-        //   startStr: "",
-        //   endStr: ""
-        // },
+        {
+          name: "file",
+          icon: "wenjian",
+          tip: "上传附件",
+          startStr: "",
+          endStr: ""
+        },
         {
           name: "task",
           icon: "renwu",

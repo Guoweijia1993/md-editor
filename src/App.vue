@@ -398,28 +398,27 @@ export default {
       });
     },
     renderLinksHtml({ vDom, links }) {
-      new Promise((resolve, reject) => {
-        this.$emit("renderLinks", {
-          links,
-          callback: function(list) {
-            resolve(list);
-          }
-        });
-      }).then(res => {
-        res.forEach(item => {
-          item.csdn = true;
-          const linkEl = vDom.querySelector("#" + item.id);
-          const url = item.csdn
-            ? "https://link.csdn.net/?target=" + item.url
-            : item.url;
-          linkEl.id = "md_link_card";
-          linkEl.className = "md_link_card";
-          linkEl.setAttribute("target", "_blank");
-          linkEl.setAttribute("href", url);
-          const title = getLinkTitle(linkEl);
-          linkEl.innerHTML = renderLinkCard(title, item);
-        });
-        this.html = vDom.innerHTML;
+      const _this = this;
+      this.$emit("renderLinks", {
+        links,
+        callback: function(list) {
+          list.forEach(item => {
+            // item.csdn = true;
+            const linkEl = vDom.querySelector("#" + item.id);
+            if (!linkEl) return;
+            const url = item.csdn
+              ? "https://link.csdn.net/?target=" + item.url
+              : item.url;
+            // linkEl.id = "md_link_card";
+            linkEl.className = "md_link_card";
+            linkEl.setAttribute("target", "_blank");
+            linkEl.setAttribute("href", url);
+            const title = getLinkTitle(linkEl, item);
+
+            linkEl.innerHTML = renderLinkCard(title, item);
+          });
+          _this.html = vDom.innerHTML;
+        }
       });
     }
   }

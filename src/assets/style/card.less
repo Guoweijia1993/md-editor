@@ -20,10 +20,12 @@
   span {
     color: var(--md-editor-text-color-active);
   }
-  .md_link_img {
+  .md_link_img,
+  #md_link_img {
     height: 14px !important;
     line-height: 14px !important;
-    margin-right: 10px;
+    margin: 0 !important;
+    margin-right: 8px !important;
     border-radius: 2px;
   }
   .md_link_title {
@@ -39,8 +41,8 @@
     font-size: 14px;
     line-height: 20px;
     color: var(--md-editor-text-color);
-    margin: 6px 0 8px;
     line-height: 20px;
+    margin: 6px 0 8px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -48,6 +50,7 @@
   }
   .md_link_url {
     font-size: 13px;
+    line-height: 1.2 !important;
     color: var(--md-editor-border-color-active);
     overflow: hidden;
     display: -webkit-box;
