@@ -1,4 +1,6 @@
 import marked from "marked";
+import videojs from "video.js";
+import "video.js/dist/video-js.min.css";
 // 获取选中文本信息
 
 export function getSelectionInfo(selectorId) {
@@ -411,4 +413,56 @@ export function preventDefault(id) {
     textEl.focus();
   }, 0);
   return;
+}
+
+export async function renderVideo(id, html) {
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = html;
+  document.body.appendChild(virtualDom);
+  const videoList = Array.from(virtualDom.getElementsByTagName("video"));
+
+  const newHtml = await new Promise((resolve, rej) => {
+    videoList.forEach(item => {
+      console.log(item);
+      item.setAttribute("controls", "controls");
+    });
+    setTimeout(() => {
+      const newHtml = virtualDom.innerHTML;
+      resolve(newHtml);
+      // document.body.removeChild(virtualDom);
+    }, 5000);
+  });
+  console.log(newHtml);
+  // if (newHtml) {
+  return newHtml;
+  // }
+}
+
+// 获取方法参数名
+export function getParameterName(fn) {
+  if (typeof fn !== "object" && typeof fn !== "function") return;
+  const COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
+  const DEFAULT_PARAMS = /=[^,)]+/gm;
+  const FAT_ARROWS = /=>.*$/gm;
+  let code = fn.prototype ? fn.prototype.constructor.toString() : fn.toString();
+  code = code
+    .replace(COMMENTS, "")
+    .replace(FAT_ARROWS, "")
+    .replace(DEFAULT_PARAMS, "");
+  let result = code
+    .slice(code.indexOf("(") + 1, code.indexOf(")"))
+    .match(/([^\s,]+)/g);
+  return result === null ? [] : result;
+}
+
+export function getfilesize(size) {
+  if (!size || isNaN(size)) return size;
+  var num = 1024.0; //byte
+  if (size < num) return size + "B";
+  if (size < Math.pow(num, 2)) return (size / num).toFixed(2) + "K"; //kb
+  if (size < Math.pow(num, 3))
+    return (size / Math.pow(num, 2)).toFixed(2) + "M"; //M
+  if (size < Math.pow(num, 4))
+    return (size / Math.pow(num, 3)).toFixed(2) + "G"; //G
+  return (size / Math.pow(num, 4)).toFixed(2) + "T"; //T
 }

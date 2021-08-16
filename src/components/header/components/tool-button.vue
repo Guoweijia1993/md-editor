@@ -164,6 +164,12 @@ export default {
         case "file":
           this.$emit("upload", "file");
           break;
+        case "video":
+          this.$emit("upload", "video");
+          break;
+        case "file":
+          this.$emit("upload", "file");
+          break;
         case "fullScreen":
           this.$emit("setFullScreen", true);
           break;
@@ -218,7 +224,8 @@ export default {
     &.icon-lianjie {
       font-size: 16px;
     }
-    &.icon-help {
+    &.icon-help,
+    &.icon-wenjian {
       font-size: 19px;
     }
   }

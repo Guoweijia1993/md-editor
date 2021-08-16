@@ -85,7 +85,7 @@
         value:
           "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         value:
-          "[1](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)",
+          "![video](http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4 '1.jpg')\n![video](http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4 '1.jpg')\n![video](http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4 '1.jpg')",
         // value: "当前问题已结题，不再开放新的回答。",
         // value: "",
         disabled: false,
@@ -143,7 +143,13 @@
         onSubmit: function(res) {
           console.log(res);
         },
-        onUpload: function(file, callback) {
+        onUpload: function(file, type, callback) {
+          console.log(type);
+          if (type === "video") {
+            callback("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            return;
+          }
+
           new Promise((res, rej) => {
             setTimeout(() => {
               res(file);
@@ -156,26 +162,27 @@
             };
           });
         },
-        renderLinks: function(val, callback) {
-          setTimeout(() => {
-            val[0].title = "111111";
-            val[0].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
-            callback(val);
-          }, 1000);
+        // renderLinks: function(val, callback) {
+        //   setTimeout(() => {
+        //     val[0].title = "111111";
+        //     val[0].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+        //     callback(val);
+        //   }, 1000);
 
-          setTimeout(() => {
-            val[1].title = "2222222";
-            val[1].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+        //   setTimeout(() => {
+        //     val[1].title = "2222222";
+        //     val[1].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
 
-            callback(val);
-          }, 2000);
-          setTimeout(() => {
-            val[1].title = "333333333";
-            val[1].icon = "https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg";
+        //     callback(val);
+        //   }, 2000);
+        //   setTimeout(() => {
+        //     val[1].title = "333333333";
+        //     val[1].icon =
+        //       "https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg";
 
-            callback(val);
-          }, 3000);
-        },
+        //     callback(val);
+        //   }, 3000);
+        // },
         queryUserList: function(val, callback) {
           const list = [
             {

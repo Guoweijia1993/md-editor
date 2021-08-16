@@ -10,7 +10,6 @@
   </div>
 </template>
 <script>
-import marked from "marked";
 export default {
   data() {
     return {};
@@ -32,7 +31,7 @@ export default {
       default: 0
     },
     html: {
-      type: String,
+      type: [String, Promise],
       default: ""
     },
     fullScreen: {

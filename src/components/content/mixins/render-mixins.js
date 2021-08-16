@@ -2,13 +2,15 @@ import {
   getFilteredTags,
   getLinkTags,
   addLanguageClass,
-  addLinkTarget
+  addLinkTarget,
+  renderVideo,
+  getfilesize
 } from "@/assets/js/utils";
 import marked from "marked";
 import DOMPurify from "dompurify";
 export default {
   methods: {
-    transferMarkdown(val) {
+    async transferMarkdown(val) {
       this.rerender();
       marked.setOptions({
         breaks: true,
@@ -37,9 +39,10 @@ export default {
       // 链接转换为卡片
       const { vDom, links } = getLinkTags(this.id, cleanHtml);
       const { callUserList, userHtml } = addLinkTarget(cleanHtml);
+      const videoHtml = await renderVideo(this.id, userHtml);
       this.$emit("callUserList", callUserList);
       this.$emit("getFilteredTags", filteredTags);
-      this.$emit("update:html", userHtml);
+      this.$emit("update:html", videoHtml);
       if (links.length) this.$emit("renderLinksHtml", { vDom, links });
     },
     rerender() {
@@ -49,20 +52,34 @@ export default {
           if (href === null) {
             return text;
           }
+          const size = title.split(" ").pop();
+          const name = title
+            .split(" ")
+            .slice(0, -1)
+            .join(" ");
           // ![file](...)渲染文件，只可以下载
           if (text === "file") {
             return `<div id="md_file_card" class="md_file_card">
               <div class="md_flex_card">
                 <span class="md_file_img icon iconfont icon-doc"></span>
                 <span class="flex-1">
-                  <span class="md_file_title">${title}</span>
-                  <span class="md_file_desc">16.6KB</span>
+                  <span class="md_file_title">${name}</span>
+                  <span class="md_file_desc">${getfilesize(size)}</span>
                 </span>
                 <span class="md_file_controls">
                 <a href="${href}" type="file" download class="md_file_download icon iconfont icon-xiazai"></a>
                 </span>
               </div>
             </div>`;
+          }
+          if (text === "video") {
+            return `<video
+                class="video-js"
+                controls
+                preload="auto"
+                data-setup='{}'>
+              <source src="${href}" type="video/mp4"></source>
+            </video>`;
           }
           // ![img](...)渲染图片
           let out = '<img src="' + href + '" alt="' + text + '"';

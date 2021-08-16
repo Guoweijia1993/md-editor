@@ -224,14 +224,28 @@ export default {
     },
     uploadFileCallBack() {
       const _this = this;
-      return function({ url, file: { name } }) {
-        // url = "http://www.baidu.com";
+      return function({ url, file: { name, size } }) {
         const originalText = _this.text;
         const selectionInfo = _this.selectionInfo;
         const newText = formatText(
           originalText,
           selectionInfo,
           "\n![file](",
+          `${url} '${name} ${size}')\n`
+        );
+        _this.text = newText;
+        _this.$refs.mdUploadFile.value = "";
+      };
+    },
+    uploadVideoCallBack() {
+      const _this = this;
+      return function({ url, file: { name } }) {
+        const originalText = _this.text;
+        const selectionInfo = _this.selectionInfo;
+        const newText = formatText(
+          originalText,
+          selectionInfo,
+          "\n![video](",
           `${url} '${name}')\n`
         );
         _this.text = newText;
@@ -361,9 +375,12 @@ export default {
         if (!val.length) return;
         this.$emit("upload", {
           val: val[0],
+          type: uploadType,
           callback:
             uploadType === "img"
               ? this.uploadImgCallBack
+              : uploadType === "video"
+              ? this.uploadVideoCallBack
               : this.uploadFileCallBack
         });
         this.fileList = [];

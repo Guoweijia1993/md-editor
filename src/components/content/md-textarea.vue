@@ -71,7 +71,7 @@ export default {
       default: ""
     },
     html: {
-      type: String,
+      type: [String, Promise],
       default: ""
     },
     htmlMinHeight: {
@@ -298,7 +298,7 @@ export default {
       this.emitText();
     },
     blur() {
-      this.renderUserTags()
+      this.renderUserTags();
       this.setFocus(false);
     },
     createHideEl(type) {
