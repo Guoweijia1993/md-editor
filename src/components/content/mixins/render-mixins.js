@@ -52,13 +52,13 @@ export default {
           if (href === null) {
             return text;
           }
-          const size = title.split(" ").pop();
-          const name = title
-            .split(" ")
-            .slice(0, -1)
-            .join(" ");
           // ![file](...)渲染文件，只可以下载
           if (text === "file") {
+            const size = title.split(" ").pop();
+            const name = title
+              .split(" ")
+              .slice(0, -1)
+              .join(" ");
             return `<div id="md_file_card" class="md_file_card">
               <div class="md_flex_card">
                 <span class="md_file_img icon iconfont icon-doc"></span>
@@ -89,7 +89,22 @@ export default {
           out += "/>";
           return out;
         },
+        link(href, title, text) {
+          console.log(href, title, text);
+
+          if (href === null) {
+            return text;
+          }
+
+          let out = '<a href="' + href + '"';
+          if (title) {
+            out += ' title="' + title + '"';
+          }
+          out += ">" + text + "</a>";
+          return out;
+        },
         text(text) {
+
           const newText = text.replace(/(\@\S+\s{0,1})/g, function(val) {
             const user = _this.getUserByName(val.slice(1).trim());
             return `<a type="user" download data-user="${user &&
