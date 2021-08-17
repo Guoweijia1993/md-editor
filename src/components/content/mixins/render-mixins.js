@@ -72,15 +72,15 @@ export default {
               </div>
             </div>`;
           }
-          if (text === "video") {
-            return `<video
-                class="video-js"
-                controls
-                preload="auto"
-                data-setup='{}'>
-              <source src="${href}" type="video/mp4"></source>
-            </video>`;
-          }
+        //   if (text === "video") {
+        //     return `<video
+        //         class="video-js"
+        //         controls
+        //         preload="auto"
+        //         data-setup='{}'>
+        //       <source src="${href}" type="video/mp4"></source>
+        //     </video>`;
+        //   }
           // ![img](...)渲染图片
           let out = '<img src="' + href + '" alt="' + text + '"';
           if (title) {
@@ -89,20 +89,20 @@ export default {
           out += "/>";
           return out;
         },
-        link(href, title, text) {
-          console.log(href, title, text);
+        // link(href, title, text) {
+        //   console.log(href, title, text);
 
-          if (href === null) {
-            return text;
-          }
+        //   if (href === null) {
+        //     return text;
+        //   }
 
-          let out = '<a href="' + href + '"';
-          if (title) {
-            out += ' title="' + title + '"';
-          }
-          out += ">" + text + "</a>";
-          return out;
-        },
+        //   let out = '<a href="' + href + '"';
+        //   if (title) {
+        //     out += ' title="' + title + '"';
+        //   }
+        //   out += ">" + text + "</a>";
+        //   return out;
+        // },
         text(text) {
 
           const newText = text.replace(/(\@\S+\s{0,1})/g, function(val) {

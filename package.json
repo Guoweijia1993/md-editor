@@ -1,7 +1,7 @@
 {
   "name": "markdown-editor",
   "description": " A open source markdown editor of csdn codechina team contributed",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "publisher": "guoweijia",
   "scripts": {
     "start": "webpack serve --mode=development",

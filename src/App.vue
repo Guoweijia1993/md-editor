@@ -231,7 +231,7 @@ export default {
           originalText,
           selectionInfo,
           "\n![file](",
-          `${url} '${name} ${size}')\n`
+          `${url.replace(/\s/g, "%20")} '${name} ${size}')\n`
         );
         _this.text = newText;
         _this.$refs.mdUploadFile.value = "";

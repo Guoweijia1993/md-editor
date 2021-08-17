@@ -1,6 +1,6 @@
 import marked from "marked";
-import videojs from "video.js";
-import "video.js/dist/video-js.min.css";
+// import videojs from "video.js";
+// import "video.js/dist/video-js.min.css";
 // 获取选中文本信息
 
 export function getSelectionInfo(selectorId) {
