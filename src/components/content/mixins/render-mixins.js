@@ -67,7 +67,7 @@ export default {
                   <span class="md_file_desc">${getfilesize(size)}</span>
                 </span>
                 <span class="md_file_controls">
-                <a href="${href}" type="file" download class="md_file_download icon iconfont icon-xiazai"></a>
+                <a href="${href}" type="file" download="${name}" class="md_file_download icon iconfont icon-xiazai"></a>
                 </span>
               </div>
             </div>`;
