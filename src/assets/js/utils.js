@@ -415,28 +415,25 @@ export function preventDefault(id) {
   return;
 }
 
-export async function renderVideo(id, html) {
-  const virtualDom = document.createElement("div");
-  virtualDom.innerHTML = html;
-  document.body.appendChild(virtualDom);
-  const videoList = Array.from(virtualDom.getElementsByTagName("video"));
+// export async function renderVideo(id, html) {
+//   const virtualDom = document.createElement("div");
+//   virtualDom.innerHTML = html;
+//   document.body.appendChild(virtualDom);
+//   const videoList = Array.from(virtualDom.getElementsByTagName("video"));
 
-  const newHtml = await new Promise((resolve, rej) => {
-    videoList.forEach(item => {
-      console.log(item);
-      item.setAttribute("controls", "controls");
-    });
-    setTimeout(() => {
-      const newHtml = virtualDom.innerHTML;
-      resolve(newHtml);
-      // document.body.removeChild(virtualDom);
-    }, 5000);
-  });
-  console.log(newHtml);
-  // if (newHtml) {
-  return newHtml;
-  // }
-}
+//   const newHtml = await new Promise((resolve, rej) => {
+//     videoList.forEach(item => {
+//       console.log(item);
+//       item.setAttribute("controls", "controls");
+//     });
+//     setTimeout(() => {
+//       const newHtml = virtualDom.innerHTML;
+//       resolve(newHtml);
+//       document.body.removeChild(virtualDom);
+//     }, 5000);
+//   });
+//   return newHtml;
+// }
 
 // 获取方法参数名
 export function getParameterName(fn) {

@@ -237,13 +237,13 @@ export default {
           startStr: "",
           endStr: ""
         },
-        {
-          name: "video",
-          icon: "shipin",
-          tip: "上传视频",
-          startStr: "",
-          endStr: ""
-        },
+        // {
+        //   name: "video",
+        //   icon: "shipin",
+        //   tip: "上传视频",
+        //   startStr: "",
+        //   endStr: ""
+        // },
         {
           name: "task",
           icon: "renwu",

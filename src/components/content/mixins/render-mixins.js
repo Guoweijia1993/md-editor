@@ -39,10 +39,10 @@ export default {
       // 链接转换为卡片
       const { vDom, links } = getLinkTags(this.id, cleanHtml);
       const { callUserList, userHtml } = addLinkTarget(cleanHtml);
-      const videoHtml = await renderVideo(this.id, userHtml);
+      // const videoHtml = await renderVideo(this.id, userHtml);
       this.$emit("callUserList", callUserList);
       this.$emit("getFilteredTags", filteredTags);
-      this.$emit("update:html", videoHtml);
+      this.$emit("update:html", userHtml);
       if (links.length) this.$emit("renderLinksHtml", { vDom, links });
     },
     rerender() {
