@@ -398,6 +398,7 @@ export default {
     },
     upload(e) {
       this.fileList = Array.from(e.target.files);
+      this.$refs.mdUploadFile.value = "";
     },
     submit() {
       this.$emit("submit", {

@@ -85,9 +85,9 @@
         value:
           "## edswgdfgdfgdfg\n**dfgdfgdfg**\n_ergdfgdfg_\n> ergergdfg\n```\nwefgdfsfdgdf\n```\n- efwefsdfsdf\n\n\nsdgfdfgdfgdfg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg\n\n\nedrfgdfgdfg\n\n\n\nergergergergerg\nergergergerg",
         value:
-          "![img](https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg)",
+          "[link](https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg)",
         // value: "当前问题已结题，不再开放新的回答。",
-        // value: "(http://www.baidu.com)\n（http://www.baidu.com）",
+        value: "(http://www.baidu.com)\n（http://www.baidu.com）",
         disabled: false,
         themeOptions: {
           dark: false,
@@ -144,12 +144,11 @@
           console.log(res);
         },
         onUpload: function(file, type, callback) {
-          console.log(type);
+          
           if (type === "video") {
             callback("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
             return;
           }
-
           new Promise((res, rej) => {
             setTimeout(() => {
               res(file);

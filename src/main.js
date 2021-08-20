@@ -2,12 +2,7 @@ import Vue from "vue";
 import App from "./App";
 import Vtip from "vtip";
 import "vtip/lib/index.min.css";
-import {
-  initStyle,
-  setzIndex,
-  isNotEmpty,
-  getParameterName
-} from "@/assets/js/utils";
+import { initStyle, setzIndex, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
 Vue.use(Vtip.directive);
 
@@ -111,22 +106,12 @@ function initMdEditor(obj) {
       onSubmit(val);
     },
     upload({ val, type, callback }) {
-      const params = getParameterName(onUpload);
-      if (!params.includes("type")) {
-        onUpload(val, function(res) {
-          callback({
-            url: res,
-            file: val
-          });
+      onUpload(val, type, function(res) {
+        callback({
+          url: res,
+          file: val
         });
-      } else {
-        onUpload(val, type, function(res) {
-          callback({
-            url: res,
-            file: val
-          });
-        });
-      }
+      });
     },
     renderLinks({ links, callback }) {
       if (!renderLinks) return callback(links);

@@ -19,6 +19,14 @@
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
   <div
+    v-else-if="info.name === 'video'"
+    @click="handleTool(info.name, info.startStr, info.endStr)"
+    v-tip.bottom="videoOptions"
+    class="tool_button"
+  >
+    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+  </div>
+  <div
     v-else
     v-tip.bottom="options"
     @click="handleTool(info.name, info.startStr, info.endStr)"
@@ -31,10 +39,11 @@
 <script>
 import { checkBoswer } from "@/assets/js/utils";
 import codeSelect from "./code-select";
+import videoSelect from "./video-select";
 import tableSelect from "./table-select";
 import markdownDoc from "./markdown-doc";
 export default {
-  components: { codeSelect, tableSelect },
+  components: { codeSelect, tableSelect, videoSelect },
   props: {
     info: {
       type: Object,
@@ -93,6 +102,23 @@ export default {
         customComponent: codeSelect,
         customClass: "codeSelectDialog",
         width: 110,
+        customListeners: {
+          select: val => {
+            this.closeTips();
+            const lang = val.toLowerCase().replace(/-/, "");
+            this.handleTool("code", "\n```" + lang + "\n", "\n\n\n```");
+          }
+        },
+        zIndex: parseInt(this.zIndex) + 1,
+        theme: this.darkMode ? "dark" : "light"
+      };
+    },
+    videoOptions() {
+      return {
+        // content: this.info.tip,
+        customComponent: videoSelect,
+        customClass: "videoSelectDialog",
+        width: 80,
         customListeners: {
           select: val => {
             this.closeTips();

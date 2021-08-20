@@ -72,15 +72,15 @@ export default {
               </div>
             </div>`;
           }
-        //   if (text === "video") {
-        //     return `<video
-        //         class="video-js"
-        //         controls
-        //         preload="auto"
-        //         data-setup='{}'>
-        //       <source src="${href}" type="video/mp4"></source>
-        //     </video>`;
-        //   }
+          //   if (text === "video") {
+          //     return `<video
+          //         class="video-js"
+          //         controls
+          //         preload="auto"
+          //         data-setup='{}'>
+          //       <source src="${href}" type="video/mp4"></source>
+          //     </video>`;
+          //   }
           // ![img](...)渲染图片
           let out = '<img src="' + href + '" alt="' + text + '"';
           if (title) {
@@ -89,22 +89,33 @@ export default {
           out += "/>";
           return out;
         },
-        // link(href, title, text) {
-        //   console.log(href, title, text);
+        link(href, title, text) {
+          console.log(href, title, text);
 
-        //   if (href === null) {
-        //     return text;
-        //   }
+          if (href === null) {
+            return text;
+          }
+          let invalidText = "";
+          if (href === text) {
+            const invalidRule = /[）】}\]]*$/;
+            if (href.match(invalidRule)) {
+              invalidText = href.match(invalidRule)[0];
+              href = href.replace(invalidRule, "");
+              text = href;
+            }
+          }
 
-        //   let out = '<a href="' + href + '"';
-        //   if (title) {
-        //     out += ' title="' + title + '"';
-        //   }
-        //   out += ">" + text + "</a>";
-        //   return out;
-        // },
+          let out = '<a href="' + href + '"';
+          if (title) {
+            out += ' title="' + title + '"';
+          }
+          out += ">" + text + "</a>";
+          if (invalidText) {
+            out += invalidText;
+          }
+          return out;
+        },
         text(text) {
-
           const newText = text.replace(/(\@\S+\s{0,1})/g, function(val) {
             const user = _this.getUserByName(val.slice(1).trim());
             return `<a type="user" download data-user="${user &&
