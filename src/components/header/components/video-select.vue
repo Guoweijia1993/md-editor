@@ -20,8 +20,7 @@ export default {
 ul {
   max-height: 142px;
   overflow-y: auto;
-  margin-top: 2px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   padding-top: 4px;
   box-sizing: border-box;
   scrollbar-color: transparent transparent;

@@ -252,6 +252,13 @@ export default {
           endStr: ""
         },
         {
+          name: "loading",
+          icon: "loading",
+          tip: "上传视频",
+          startStr: "",
+          endStr: ""
+        },
+        {
           name: "task",
           icon: "renwu",
           tip: "添加任务列表",

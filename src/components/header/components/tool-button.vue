@@ -2,6 +2,10 @@
   <div v-if="isMobile" @click="mobileClick" class="tool_button">
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
+  <div v-else-if="info.name === 'loading'" class="tool_button">
+    <span :class="['icon loading iconfont', `icon-${info.icon}`]"> </span>
+    <span class="percent">{{ percent }}</span>
+  </div>
   <div
     v-else-if="info.name === 'code'"
     @click="handleTool(info.name, info.startStr, info.endStr)"
@@ -83,7 +87,17 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      percent: 0
+    };
+  },
+  created() {
+    setInterval(() => {
+      this.percent++;
+      if (this.percent >= 100) {
+        this.percent = 0;
+      }
+    }, 100);
   },
   computed: {
     darkMode() {
@@ -247,14 +261,30 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
 .tool_button {
   padding: 0 8px 8px;
   box-sizing: border-box;
   cursor: pointer;
+  position: relative;
   &.active {
     .icon {
       color: var(--md-editor-border-color-active);
     }
+  }
+  .percent {
+    font-size: 12px;
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
   }
   .icon {
     font-size: 18px;
@@ -268,6 +298,9 @@ export default {
       &:hover {
         color: var(--md-editor-border-color-active);
       }
+    }
+    &.loading {
+      animation: rotate 3s linear infinite;
     }
 
     &.icon-quxiaoquanping_o {
