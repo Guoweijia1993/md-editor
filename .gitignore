@@ -4,3 +4,4 @@ node_modules/*
 *.css
 package-lock.json
 *.LICENSE.*
+*.zip

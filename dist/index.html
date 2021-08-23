@@ -88,6 +88,7 @@
           "[link](https://img2.baidu.com/it/u=3681880960,455182084&fm=26&fmt=auto&gp=0.jpg)",
         // value: "当前问题已结题，不再开放新的回答。",
         value: "(http://www.baidu.com)\n（http://www.baidu.com）",
+        value: "",
         disabled: false,
         themeOptions: {
           dark: false,
@@ -144,7 +145,6 @@
           console.log(res);
         },
         onUpload: function(file, type, callback) {
-          
           if (type === "video") {
             callback("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
             return;
@@ -161,27 +161,13 @@
             };
           });
         },
-        // renderLinks: function(val, callback) {
-        //   setTimeout(() => {
-        //     val[0].title = "111111";
-        //     val[0].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
-        //     callback(val);
-        //   }, 1000);
-
-        //   setTimeout(() => {
-        //     val[1].title = "2222222";
-        //     val[1].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
-
-        //     callback(val);
-        //   }, 2000);
-        //   setTimeout(() => {
-        //     val[1].title = "333333333";
-        //     val[1].icon =
-        //       "https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg)\n[](https://img2.baidu.com/it/u=4025475678,645544065&fm=26&fmt=auto&gp=0.jpg";
-
-        //     callback(val);
-        //   }, 3000);
-        // },
+        renderLinks: function(val, callback) {
+          setTimeout(() => {
+            // val[0].title = "111111";
+            val[0].icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
+            callback(val);
+          }, 0);
+        },
         queryUserList: function(val, callback) {
           const list = [
             {
