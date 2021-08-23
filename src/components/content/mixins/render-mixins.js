@@ -72,15 +72,13 @@ export default {
               </div>
             </div>`;
           }
-          //   if (text === "video") {
-          //     return `<video
-          //         class="video-js"
-          //         controls
-          //         preload="auto"
-          //         data-setup='{}'>
-          //       <source src="${href}" type="video/mp4"></source>
-          //     </video>`;
-          //   }
+          if (text === "video") {
+            return `<video
+                  class="video-js"
+                  controls
+                  src="${href}"
+                   />`;
+          }
           // ![img](...)渲染图片
           let out = '<img src="' + href + '" alt="' + text + '"';
           if (title) {

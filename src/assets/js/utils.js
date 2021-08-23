@@ -385,12 +385,26 @@ export function getLinkTitle(linkEl, item) {
   const originTitle = linkEl.innerText;
   const titleEl = Array.from(linkEl.getElementsByClassName("md_link_title"));
   if (titleEl.length) return item.title || titleEl[0].innerText;
-  return /^http/.test(originTitle) ? "" : originTitle;
+  return /^(http|www)/.test(originTitle) ? "" : originTitle;
+}
+
+export function removeLinkHeadAndEnd(link) {
+  if (!link) return "";
+  return link.replace(/^https?:\/\//, "").replace(/\/$/, "");
 }
 
 export function renderLinkCard(title, item) {
+  console.log(item.title);
+  console.log(item.url);
+
   return `
-  <span class="md_link_title">${title || item.title || ""}</span>
+  ${
+    removeLinkHeadAndEnd(item.title) === removeLinkHeadAndEnd(item.url)
+      ? ""
+      : `
+    <span class="md_link_title">${title || item.title || ""}</span>
+    `
+  }
   ${`<span class="md_link_desc" style="${
     item.description ? "" : "margin: 0px 0 2px"
   }">${item.description || ""}</span>`}

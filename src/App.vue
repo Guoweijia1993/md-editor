@@ -245,7 +245,7 @@ export default {
         const newText = formatText(
           originalText,
           selectionInfo,
-          "\n![video](",
+          "![video](",
           `${url} '${name}')\n`
         );
         _this.text = newText;

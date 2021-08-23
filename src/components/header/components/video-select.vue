@@ -1,8 +1,8 @@
 <template>
   <div class="video_select_container">
     <ul>
-      <li>上传视频</li>
-      <li>插入视频</li>
+      <li @click="$emit('addVideo', 'upload')">上传视频</li>
+      <li @click="$emit('addVideo', 'link')">插入视频</li>
     </ul>
   </div>
 </template>
@@ -42,6 +42,7 @@ ul {
     cursor: pointer;
     height: 24px;
     line-height: 24px;
+    text-align: center;
     &:hover {
       color: var(--md-editor-border-color-active);
     }

@@ -118,12 +118,20 @@ export default {
         // content: this.info.tip,
         customComponent: videoSelect,
         customClass: "videoSelectDialog",
-        width: 80,
+        width: 72,
         customListeners: {
-          select: val => {
+          addVideo: val => {
             this.closeTips();
-            const lang = val.toLowerCase().replace(/-/, "");
-            this.handleTool("code", "\n```" + lang + "\n", "\n\n\n```");
+            switch (val) {
+              case "link":
+                this.handleTool("code", "![video](", ")\n");
+                break;
+              case "upload":
+                this.$emit("upload", "video");
+                break;
+              default:
+                break;
+            }
           }
         },
         zIndex: parseInt(this.zIndex) + 1,
