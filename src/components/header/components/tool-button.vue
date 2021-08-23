@@ -11,6 +11,13 @@
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
   <div
+    v-else-if="info.name === 'headline'"
+    v-tip.bottom="headlineOptions"
+    class="tool_button"
+  >
+    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+  </div>
+  <div
     v-else-if="info.name === 'table'"
     @click="handleTool(info.name, info.startStr, info.endStr)"
     v-tip.bottom="tableOptions"
@@ -42,8 +49,9 @@ import codeSelect from "./code-select";
 import videoSelect from "./video-select";
 import tableSelect from "./table-select";
 import markdownDoc from "./markdown-doc";
+import headlineSelect from "./headline-select";
 export default {
-  components: { codeSelect, tableSelect, videoSelect },
+  components: { codeSelect, tableSelect, videoSelect, headlineSelect },
   props: {
     info: {
       type: Object,
@@ -138,6 +146,24 @@ export default {
         theme: this.darkMode ? "dark" : "light"
       };
     },
+    headlineOptions() {
+      return {
+        content: this.info.tip,
+        customComponent: headlineSelect,
+        customClass: "headlineSelectDialog",
+        width: 110,
+        customListeners: {
+          select: val => {
+            this.closeTips();
+            const lang = "#".repeat(val + 1);
+            this.handleTool("code", "\n" + lang + " ", "\n");
+          }
+        },
+        zIndex: parseInt(this.zIndex) + 1,
+        theme: this.darkMode ? "dark" : "light"
+      };
+    },
+
     tableOptions() {
       return {
         content: this.info.tip,

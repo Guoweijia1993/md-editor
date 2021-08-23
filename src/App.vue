@@ -216,7 +216,7 @@ export default {
           originalText,
           selectionInfo,
           "\n![img](",
-          `${url} '${name}')\n`
+          `${url} '=600 #left')\n`
         );
         _this.text = newText;
         _this.$refs.mdUploadFile.value = "";

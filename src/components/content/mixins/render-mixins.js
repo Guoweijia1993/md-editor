@@ -77,19 +77,41 @@ export default {
                   class="video-js"
                   controls
                   src="${href}"
-                   />`;
+                   ></video>`;
           }
           // ![img](...)渲染图片
           let out = '<img src="' + href + '" alt="' + text + '"';
           if (title) {
-            out += ' title="' + title + '"';
+            const reg_title = /(\%([\u4E00-\u9FA5\w.]+)\s??)/;
+            const reg_align = /(\#([a-zA-Z]+)\s??)/;
+            const reg_width = /(\=(\d+)\*?\s??)/;
+            const reg_height = /([\*|x](\d+)\s??)/;
+
+            if (reg_title.exec(title)) {
+              var t = reg_title.exec(title)[2];
+              out += ' title="' + t + '"';
+            }
+
+            if (reg_align.exec(title)) {
+              var a = reg_align.exec(title)[2];
+              if (a === "center") {
+                out += 'style="display:block;margin: 0 auto;"';
+              }
+              out += ' align="' + a + '"';
+            }
+            if (reg_width.exec(title)) {
+              var w = reg_width.exec(title)[2];
+              out += ' width="' + w + 'px"';
+            }
+            if (reg_height.exec(title)) {
+              var h = reg_height.exec(title)[2];
+              out += ' height="' + h + 'px"';
+            }
           }
           out += "/>";
           return out;
         },
         link(href, title, text) {
-          console.log(href, title, text);
-
           if (href === null) {
             return text;
           }

@@ -68,7 +68,22 @@ export default {
         },
         {
           title: "图片",
-          doc: '![alt](url "title")',
+          doc: "![alt](url)",
+          icon: "tupian"
+        },
+        {
+          title: "图片大小",
+          doc: '![alt](url "=300x200")',
+          icon: "tupian"
+        },
+        {
+          title: "图片位置",
+          doc: '![alt](url "#left")',
+          icon: "tupian"
+        },
+        {
+          title: "图片名称",
+          doc: '![alt](url "%title")',
           icon: "tupian"
         },
         {

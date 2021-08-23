@@ -164,6 +164,13 @@ export default {
       },
       toolButtonList: [
         {
+          name: "headline",
+          icon: "biaoti",
+          tip: "添加标题",
+          startStr: "\n",
+          endStr: "\n"
+        },
+        {
           name: "bold",
           icon: "bold",
           tip: "粗体",
