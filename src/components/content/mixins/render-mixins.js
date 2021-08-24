@@ -73,14 +73,14 @@ export default {
             </div>`;
           }
           if (text === "video") {
-            return `<video
+            return `<p class="md_video"><video
                   class="video-js"
-                  controls
+                  preload="none"
                   src="${href}"
-                   ></video>`;
+                   ></video></p>`;
           }
           // ![img](...)渲染图片
-          let out = '<img src="' + href + '" alt="' + text + '"';
+          let out = '<p class="md_img_container"><img src="' + href + '" alt="' + text + '"';
           if (title) {
             const reg_title = /(\%([\u4E00-\u9FA5\w.]+)\s??)/;
             const reg_align = /(\#([a-zA-Z]+)\s??)/;
@@ -95,7 +95,7 @@ export default {
             if (reg_align.exec(title)) {
               var a = reg_align.exec(title)[2];
               if (a === "center") {
-                out += 'style="display:block;margin: 0 auto;"';
+                out += 'style="display:inline-block;"';
               }
               out += ' align="' + a + '"';
             }
@@ -108,7 +108,7 @@ export default {
               out += ' height="' + h + 'px"';
             }
           }
-          out += "/>";
+          out += "/></p>";
           return out;
         },
         link(href, title, text) {

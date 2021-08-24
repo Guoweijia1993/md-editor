@@ -146,7 +146,22 @@
         },
         onUpload: function(file, type, callback) {
           if (type === "video") {
-            callback("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            let time = 0;
+            const timeObj = setInterval(() => {
+              time++;
+              if (time >= 100) {
+                callback("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+                clearInterval(timeObj);
+                return;
+              }
+              // if (time === 30) {
+              //   callback(0);
+              //   clearInterval(timeObj);
+              //   return;
+              // }
+
+              callback(time);
+            }, 10);
             return;
           }
           new Promise((res, rej) => {

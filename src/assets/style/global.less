@@ -56,6 +56,27 @@ textarea {
   opacity: 0;
 }
 
+.loading-enter-active {
+  transition: all 0.2s ease;
+}
+.loading-leave-active {
+  transition: all 0.2s ease;
+}
+.loading-enter
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translate3d(0, 4px, 0);
+  opacity: 0;
+}
+
+.loading-leave-to {
+  transform: translate3d(0, -4px, 0);
+  opacity: 0;
+}
+
+.md_img_container {
+  text-align: center;
+}
+
 .md_flex_card {
   display: flex;
   justify-content: space-between;

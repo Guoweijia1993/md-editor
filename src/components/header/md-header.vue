@@ -36,6 +36,7 @@
         :zIndex="zIndex"
         :themeOptions="themeOptions"
         :selectionInfo="selectionInfo"
+        :uploadPercent="uploadPercent"
       />
     </div>
   </div>
@@ -100,6 +101,10 @@ export default {
     selectionInfo: {
       type: Object,
       default: () => {}
+    },
+    uploadPercent: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -251,13 +256,13 @@ export default {
           startStr: "",
           endStr: ""
         },
-        {
-          name: "loading",
-          icon: "loading",
-          tip: "上传视频",
-          startStr: "",
-          endStr: ""
-        },
+        // {
+        //   name: "loading",
+        //   icon: "loading",
+        //   tip: "上传中",
+        //   startStr: "",
+        //   endStr: ""
+        // },
         {
           name: "task",
           icon: "renwu",
@@ -289,6 +294,19 @@ export default {
   },
   created() {},
   methods: {
+    loading(type, percent) {
+      const list = this.toolButtonList;
+      switch (type) {
+        case "video":
+          list.find(item => item.name === type).icon =
+            parseInt(percent) === 100 || parseInt(percent) === 0
+              ? "shipin"
+              : "loading";
+          break;
+        default:
+          break;
+      }
+    },
     resetUlNum() {
       this.ulNum = 1;
     },

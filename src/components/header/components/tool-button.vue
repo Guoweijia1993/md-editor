@@ -2,10 +2,19 @@
   <div v-if="isMobile" @click="mobileClick" class="tool_button">
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
-  <div v-else-if="info.name === 'loading'" class="tool_button">
-    <span :class="['icon loading iconfont', `icon-${info.icon}`]"> </span>
-    <span class="percent">{{ percent }}</span>
-  </div>
+  <transition-group
+    style="position:relative"
+    name="loading"
+    v-else-if="info.icon === 'loading'"
+  >
+    <div key="loading" class="tool_button loading_button">
+      <span class="circle">
+        <span class="loading"></span>
+        <span class="percent">{{ uploadPercent + "%" }}</span>
+      </span>
+      <!-- <span :class="['icon loading iconfont', `icon-${info.icon}`]"> </span> -->
+    </div>
+  </transition-group>
   <div
     v-else-if="info.name === 'code'"
     @click="handleTool(info.name, info.startStr, info.endStr)"
@@ -29,14 +38,16 @@
   >
     <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
   </div>
-  <div
-    v-else-if="info.name === 'video'"
-    @click="handleTool(info.name, info.startStr, info.endStr)"
-    v-tip.bottom="videoOptions"
-    class="tool_button"
-  >
-    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
-  </div>
+  <transition-group name="loading" v-else-if="info.name === 'video'">
+    <div
+      key="video"
+      @click="handleTool(info.name, info.startStr, info.endStr)"
+      v-tip.bottom="videoOptions"
+      class="tool_button"
+    >
+      <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+    </div>
+  </transition-group>
   <div
     v-else
     v-tip.bottom="options"
@@ -84,21 +95,16 @@ export default {
     ulNum: {
       type: Number,
       default: 1
+    },
+    uploadPercent: {
+      type: Number,
+      default: 0
     }
   },
   data() {
-    return {
-      percent: 0
-    };
+    return {};
   },
-  created() {
-    setInterval(() => {
-      this.percent++;
-      if (this.percent >= 100) {
-        this.percent = 0;
-      }
-    }, 100);
-  },
+
   computed: {
     darkMode() {
       return this.themeOptions && this.themeOptions.dark;
@@ -263,10 +269,10 @@ export default {
 <style lang="less" scoped>
 @keyframes rotate {
   from {
-    transform: rotate(0deg);
+    transform: translateY(-50%) rotate(0deg);
   }
   to {
-    transform: rotate(359deg);
+    transform: translateY(-50%) rotate(359deg);
   }
 }
 .tool_button {
@@ -274,18 +280,49 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   position: relative;
+  line-height: 1;
+  overflow: hidden;
   &.active {
     .icon {
       color: var(--md-editor-border-color-active);
     }
   }
-  .percent {
-    font-size: 12px;
-    position: absolute;
-    top: 2px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
+  &.loading_button {
+    padding: 0 2px 8px;
   }
+  .circle {
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+    border: 1px solid var(--md-editor-border-color-active);
+    border-radius: 10px;
+    vertical-align: text-bottom;
+    position: relative;
+    box-sizing: border-box;
+    .loading {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 18px;
+      height: 6px;
+      background: #fff;
+      animation: rotate 3s linear infinite;
+      transform-origin: 0 50%;
+      border-radius: 10px;
+    }
+    .percent {
+      font-size: 12px;
+      line-height: 15px;
+      position: absolute;
+      z-index: 99;
+      top: 50%;
+      left: 50%;
+      color: var(--md-editor-border-color-active);
+      transform: translate(-50%, -50%) scale(0.8);
+      white-space: nowrap;
+    }
+  }
+
   .icon {
     font-size: 18px;
     color: var(--md-editor-text-color);
@@ -299,10 +336,10 @@ export default {
         color: var(--md-editor-border-color-active);
       }
     }
-    &.loading {
-      animation: rotate 3s linear infinite;
-    }
-
+    // &.loading {
+    //   animation: rotate 3s linear infinite;
+    //   color: var(--md-editor-border-color-active);
+    // }
     &.icon-quxiaoquanping_o {
       font-size: 24px;
       margin: 0 -4px;

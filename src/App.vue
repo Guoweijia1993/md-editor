@@ -17,6 +17,7 @@
       :disabled="disabled"
       :fullScreen.sync="fullScreen"
       :themeOptions="themeOptions"
+      :uploadPercent="uploadPercent"
       @upload="handleUpload"
       @getFormatType="formatType = $event"
       @updateShowHelp="showHelp = $event"
@@ -240,16 +241,25 @@ export default {
     uploadVideoCallBack() {
       const _this = this;
       return function({ url, file: { name } }) {
-        const originalText = _this.text;
-        const selectionInfo = _this.selectionInfo;
-        const newText = formatText(
-          originalText,
-          selectionInfo,
-          "![video](",
-          `${url} '${name}')\n`
+        if (isNaN(parseInt(url))) {
+          const originalText = _this.text;
+          const selectionInfo = _this.selectionInfo;
+          const newText = formatText(
+            originalText,
+            selectionInfo,
+            "![video](",
+            `${url})\n`
+          );
+          _this.text = newText;
+          _this.$refs.mdUploadFile.value = "";
+          _this.uploadPercent = 100;
+        } else {
+          _this.uploadPercent = parseInt(url);
+        }
+        _this.$refs["md_header" + _this.id].loading(
+          "video",
+          _this.uploadPercent
         );
-        _this.text = newText;
-        _this.$refs.mdUploadFile.value = "";
       };
     }
   },
@@ -267,6 +277,7 @@ export default {
       formatType: "",
       htmlMinHeight: 150,
       showHelp: false,
+      uploadPercent: 0,
       textLength: "",
       userList: false,
       callUserList: [],

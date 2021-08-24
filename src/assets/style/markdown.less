@@ -10,8 +10,28 @@
 .md_preview {
   font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, WenQuanYi Micro Hei, sans-serif, SimHei, SimSun;
-  video {
-    display: block;
+  .md_video {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    video {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    &::after {
+      cursor: not-allowed;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      content: "";
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6) url("@/assets/img/play.svg")
+        center/cover no-repeat;
+    }
   }
   img {
     max-width: 100%;

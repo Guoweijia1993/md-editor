@@ -41,9 +41,11 @@ export default {
   },
   mounted() {
     this.addClass();
+    this.addControls();
   },
   updated() {
     this.addClass();
+    this.addControls();
   },
   methods: {
     addClass() {
@@ -52,6 +54,15 @@ export default {
         if (!previewDomList.length) return;
         previewDomList.forEach(item => {
           item.className += " md_hljs";
+        });
+      }, 0);
+    },
+    addControls() {
+      setTimeout(() => {
+        const videoDomList = document.querySelectorAll(".md_preview video");
+        if (!videoDomList.length) return;
+        videoDomList.forEach(item => {
+          item.setAttribute("preload", "auto");
         });
       }, 0);
     }
