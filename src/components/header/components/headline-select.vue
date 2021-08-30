@@ -32,7 +32,7 @@ export default {
         {
           title: "四级标题",
           icon: "sijibiaoti"
-        },
+        }
         // {
         //   title: "五级标题",
         //   icon: "wujibiaoti"
@@ -87,7 +87,7 @@ ul {
     line-height: 24px;
     .iconfont {
       display: inline-block;
-      vertical-align: bottom;
+      vertical-align: middle;
     }
     &:hover {
       color: var(--md-editor-border-color-active);
