@@ -230,7 +230,9 @@ export default {
           _this.text = newText;
           _this.$refs.mdUploadFile.value = "";
           _this.uploadImgPercent = 100;
+          _this.$refs["md_textarea" + _this.id].waiting = false;
         } else {
+          _this.$refs["md_textarea" + _this.id].waiting = true;
           _this.uploadImgPercent = parseInt(url);
         }
         _this.$refs["md_header" + _this.id].loading(

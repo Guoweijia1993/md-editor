@@ -27,6 +27,8 @@
         overflow: editorOverFlow,
         cursor: disabled
           ? 'not-allowed'
+          : waiting
+          ? 'wait'
           : formatType
           ? `url(https://codechina.csdn.net/codechina/operation-work/uploads/a1b7c2a995b2320dca911e2f2ecb9b88/format.png),text`
           : 'text'
@@ -145,6 +147,7 @@ export default {
         endPosition: "",
         keyWord: ""
       },
+      waiting: false,
       activeUserIndex: 0,
       selectUserPosition: { left: 0, top: 0 }
     };
