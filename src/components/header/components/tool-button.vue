@@ -10,11 +10,19 @@
     <div key="loading" class="tool_button loading_button">
       <span class="circle">
         <span class="loading"></span>
-        <span class="percent">{{ uploadPercent + "%" }}</span>
+        <span class="percent">{{ info.percent + "%" }}</span>
       </span>
       <!-- <span :class="['icon loading iconfont', `icon-${info.icon}`]"> </span> -->
     </div>
   </transition-group>
+  <div
+    class="tool_button"
+    @click="info.click"
+    v-tip.bottom="info.tip"
+    v-else-if="info.register"
+  >
+    <img :src="info.icon" alt="" />
+  </div>
   <div
     v-else-if="info.name === 'code'"
     @click="handleTool(info.name, info.startStr, info.endStr)"
@@ -48,15 +56,17 @@
       <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
     </div>
   </transition-group>
-  <div
-    v-else
-    v-tip.bottom="options"
-    @click="handleTool(info.name, info.startStr, info.endStr)"
-    @dblclick="handleDbClick(info.name)"
-    class="tool_button"
-  >
-    <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
-  </div>
+  <transition-group name="loading" v-else>
+    <div
+      key="tool"
+      v-tip.bottom="options"
+      @click="handleTool(info.name, info.startStr, info.endStr)"
+      @dblclick="handleDbClick(info.name)"
+      class="tool_button"
+    >
+      <span :class="['icon iconfont', `icon-${info.icon}`]"></span>
+    </div>
+  </transition-group>
 </template>
 <script>
 import { checkBoswer } from "@/assets/js/utils";
@@ -95,10 +105,6 @@ export default {
     ulNum: {
       type: Number,
       default: 1
-    },
-    uploadPercent: {
-      type: Number,
-      default: 0
     }
   },
   data() {
@@ -322,7 +328,11 @@ export default {
       white-space: nowrap;
     }
   }
-
+  img {
+    width: 18px;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
   .icon {
     font-size: 18px;
     color: var(--md-editor-text-color);
@@ -355,7 +365,7 @@ export default {
       font-size: 16px;
     }
     &.icon-help,
-    &.icon-wenjian {
+    &.icon-file {
       font-size: 19px;
     }
   }

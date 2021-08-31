@@ -17,7 +17,9 @@
       :disabled="disabled"
       :fullScreen.sync="fullScreen"
       :themeOptions="themeOptions"
-      :uploadPercent="uploadPercent"
+      :uploadImgPercent="uploadImgPercent"
+      :uploadVideoPercent="uploadVideoPercent"
+      :registerTools="registerTools"
       @upload="handleUpload"
       @getFormatType="formatType = $event"
       @updateShowHelp="showHelp = $event"
@@ -166,6 +168,11 @@ export default {
       type: Object,
       default: () => {}
     },
+    // 自定义工具栏
+    registerTools: {
+      type: Array,
+      default: () => []
+    },
     // 行高度
     rows: {
       type: [Number, String],
@@ -211,16 +218,25 @@ export default {
     uploadImgCallBack() {
       const _this = this;
       return function({ url, file: { name } }) {
-        const originalText = _this.text;
-        const selectionInfo = _this.selectionInfo;
-        const newText = formatText(
-          originalText,
-          selectionInfo,
-          "\n![img](",
-          `${url} "=600 #left")\n`
+        if (isNaN(parseInt(url))) {
+          const originalText = _this.text;
+          const selectionInfo = _this.selectionInfo;
+          const newText = formatText(
+            originalText,
+            selectionInfo,
+            "\n![img](",
+            `${url} "=600 #left")\n`
+          );
+          _this.text = newText;
+          _this.$refs.mdUploadFile.value = "";
+          _this.uploadImgPercent = 100;
+        } else {
+          _this.uploadImgPercent = parseInt(url);
+        }
+        _this.$refs["md_header" + _this.id].loading(
+          "img",
+          _this.uploadImgPercent
         );
-        _this.text = newText;
-        _this.$refs.mdUploadFile.value = "";
       };
     },
     uploadFileCallBack() {
@@ -252,13 +268,13 @@ export default {
           );
           _this.text = newText;
           _this.$refs.mdUploadFile.value = "";
-          _this.uploadPercent = 100;
+          _this.uploadVideoPercent = 100;
         } else {
-          _this.uploadPercent = parseInt(url);
+          _this.uploadVideoPercent = parseInt(url);
         }
         _this.$refs["md_header" + _this.id].loading(
           "video",
-          _this.uploadPercent
+          _this.uploadVideoPercent
         );
       };
     }
@@ -277,7 +293,9 @@ export default {
       formatType: "",
       htmlMinHeight: 150,
       showHelp: false,
-      uploadPercent: 0,
+      uploadImgPercent: 0,
+      uploadFlePercent: 0,
+      uploadVideoPercent: 0,
       textLength: "",
       userList: false,
       callUserList: [],

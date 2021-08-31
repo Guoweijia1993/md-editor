@@ -1,6 +1,6 @@
 <template>
   <div class="upload_files" @click="$refs.mdUploadFile.click()">
-    <span class="icon iconfont icon-tupian"></span>
+    <span class="icon iconfont icon-img"></span>
     <input
       ref="mdUploadFile"
       class="md_upload"

@@ -36,7 +36,6 @@
         :zIndex="zIndex"
         :themeOptions="themeOptions"
         :selectionInfo="selectionInfo"
-        :uploadPercent="uploadPercent"
       />
     </div>
   </div>
@@ -86,6 +85,10 @@ export default {
       type: Object,
       default: () => {}
     },
+    registerTools: {
+      type: Array,
+      default: () => []
+    },
     zIndex: {
       type: [String, Number],
       default: ""
@@ -101,10 +104,6 @@ export default {
     selectionInfo: {
       type: Object,
       default: () => {}
-    },
-    uploadPercent: {
-      type: Number,
-      default: 0
     }
   },
   computed: {
@@ -124,7 +123,6 @@ export default {
   watch: {
     fullScreen: {
       handler: function(val) {
-        // console.log(val);
         if (val) {
           this.toolButtonList.pop();
           this.toolButtonList.push(this.cancelFullScreenBtn);
@@ -147,6 +145,20 @@ export default {
     formatType: {
       handler: function(val) {
         this.$emit("getFormatType", val);
+      }
+    },
+    registerTools: {
+      handler: function(val) {
+        const list = this.toolButtonList;
+        const tableIndex = list.findIndex(item => item.name === "table");
+        this.toolButtonList.splice(
+          tableIndex,
+          0,
+          ...val.map(item => {
+            item.register = true;
+            return item;
+          })
+        );
       }
     }
   },
@@ -237,21 +249,21 @@ export default {
         },
         {
           name: "img",
-          icon: "tupian",
+          icon: "img",
           tip: "上传图片",
           startStr: "",
           endStr: ""
         },
         {
           name: "file",
-          icon: "wenjian",
+          icon: "file",
           tip: "上传附件",
           startStr: "",
           endStr: ""
         },
         {
           name: "video",
-          icon: "shipin",
+          icon: "video",
           tip: "上传视频",
           startStr: "",
           endStr: ""
@@ -296,16 +308,10 @@ export default {
   methods: {
     loading(type, percent) {
       const list = this.toolButtonList;
-      switch (type) {
-        case "video":
-          list.find(item => item.name === type).icon =
-            parseInt(percent) === 100 || parseInt(percent) === 0
-              ? "shipin"
-              : "loading";
-          break;
-        default:
-          break;
-      }
+      const item = list.find(item => item.name === type);
+      this.$set(item, "percent", percent);
+      item.icon =
+        parseInt(percent) === 100 || parseInt(percent) === 0 ? type : "loading";
     },
     resetUlNum() {
       this.ulNum = 1;
