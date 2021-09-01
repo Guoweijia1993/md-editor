@@ -8,7 +8,7 @@ module.exports = {
   },
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
-    host: '0.0.0.0',
+    host: 'live.csdn.net',
     open: true
   },
   resolve: {

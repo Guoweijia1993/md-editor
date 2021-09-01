@@ -80,7 +80,12 @@ export default {
                    ></video></p>`;
           }
           // ![img](...)渲染图片
-          let out = '<p class="md_img_container"><img src="' + href + '" alt="' + text + '"';
+          let out =
+            '<p class="md_img_container"><img src="' +
+            href +
+            '" alt="' +
+            text +
+            '"';
           if (title) {
             const reg_title = /(\%([\u4E00-\u9FA5\w.]+)\s??)/;
             const reg_align = /(\#([a-zA-Z]+)\s??)/;
@@ -136,11 +141,15 @@ export default {
           return out;
         },
         text(text) {
-          const newText = text.replace(/(\@\S+\s{0,1})/g, function(val) {
-            const user = _this.getUserByName(val.slice(1).trim());
-            return `<a type="user" download data-user="${user &&
-              user.username}" href="${(user && user.url) || "javascript:void(0)"}" class="md_call_user">${val}</a>`;
-          });
+          const newText = text
+            .replace(/(\@\S+\s{0,1})/g, function(val) {
+              const user = _this.getUserByName(val.slice(1).trim());
+              return `<a type="user" download data-user="${user &&
+                user.username}" href="${(user && user.url) || "javascript:void(0)"}" class="md_call_user">${val}</a>`;
+            })
+            .replace(/^\s{2,3}(.+)/, function(val) {
+              return `<span style="display:inline-block;text-indent:2em;">${val}</span>`;
+            });
           return newText;
         }
       };
