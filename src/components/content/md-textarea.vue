@@ -10,8 +10,10 @@
       @focus="setFocus(true)"
       @blur="blur"
       @paste="pasteFile"
-      @keydown.stop.up="changeActiveUserIndex($event, 'up')"
-      @keydown.stop.down="changeActiveUserIndex($event, 'down')"
+      @keydown.stop.left="handlePointMove"
+      @keydown.stop.right="handlePointMove"
+      @keydown.stop.up="changeActiveSelectIndex($event, 'up')"
+      @keydown.stop.down="changeActiveSelectIndex($event, 'down')"
       @keydown.enter="handleEnter"
       @keydown.meta.enter.exact="submit"
       @keydown.ctrl.enter.exact="submit"
@@ -42,15 +44,23 @@
         :showHelp.sync="showHelp"
       />
     </transition>
-    <transition name="slideup-fade">
+    <transition-group name="slideup-fade">
       <selectUser
+        key="selectUser"
         :userList="userList"
         :activeUserIndex.sync="activeUserIndex"
         v-show="showSelectUser"
         :position="selectUserPosition"
         @selectUser="handleSelectUser"
       />
-    </transition>
+      <selectLinkType
+        key="selectLinkType"
+        :activeLinkTypeIndex.sync="activeLinkTypeIndex"
+        :position="selectLinkTypePosition"
+        v-show="showSelectLinkType"
+        @selectLinkType="handleSelectLinkType"
+      />
+    </transition-group>
   </div>
 </template>
 <script>
@@ -60,13 +70,15 @@ import {
   isAndroid,
   throttle as throttleFn
 } from "@/assets/js/utils";
-import selectUser from "./components/user-select";
-import helpDoc from "./components/help-doc";
+import selectUser from "./components/user-select.vue";
+import selectLinkType from "./components/link-type-select.vue";
+import helpDoc from "./components/help-doc.vue";
 import renderMix from "./mixins/render-mixins";
 import selectUserMix from "./mixins/select-user-mixins";
+import selectLinkTypeMix from "./mixins/select-link-type-mixins";
 export default {
-  components: { helpDoc, selectUser },
-  mixins: [renderMix, selectUserMix],
+  components: { helpDoc, selectUser, selectLinkType },
+  mixins: [renderMix, selectUserMix, selectLinkTypeMix],
   props: {
     id: {
       type: String,
@@ -142,6 +154,7 @@ export default {
       editorHeight: "auto",
       editorOverFlow: "auto",
       showSelectUser: false,
+      showSelectLinkType: false,
       queryInfo: {
         startPosition: "",
         endPosition: "",
@@ -149,7 +162,9 @@ export default {
       },
       waiting: false,
       activeUserIndex: 0,
-      selectUserPosition: { left: 0, top: 0 }
+      activeLinkTypeIndex: 0,
+      selectUserPosition: { left: 0, top: 0 },
+      selectLinkTypePosition: { left: 0, top: 0 }
     };
   },
   created() {
@@ -172,6 +187,7 @@ export default {
         } else {
           setTimeout(() => {
             this.showSelectUser = false;
+            this.showSelectLinkType = false;
           }, 200);
         }
       }
@@ -228,7 +244,7 @@ export default {
     }
   },
   methods: {
-    changeActiveUserIndex(event, type) {
+    changeActiveSelectIndex(event, type) {
       if (this.showSelectUser) {
         event.preventDefault();
         const max = this.userList.length;
@@ -275,6 +291,20 @@ export default {
           }
           // .scrollIntoView({ behavior: "smooth" });
         }
+      } else if (this.showSelectLinkType) {
+        event.preventDefault();
+        const max = 3;
+        if (type === "down") {
+          this.activeLinkTypeIndex++;
+          if (this.activeLinkTypeIndex >= max) {
+            this.activeLinkTypeIndex = 0;
+          }
+        } else {
+          this.activeLinkTypeIndex--;
+          if (this.activeLinkTypeIndex < 0) {
+            this.activeLinkTypeIndex = max - 1;
+          }
+        }
       }
     },
     resetPreviewMinHeight() {
@@ -297,6 +327,9 @@ export default {
         this.createSelectUserDialog("android");
       }
       if (this.showSelectUser) this.handleQueryUser(e);
+      if (this.showSelectLinkType) {
+        this.showSelectLinkType = false;
+      }
       this.$emit("update:textLength", this.textContent.length);
       this.emitText();
     },
@@ -345,10 +378,20 @@ export default {
         this.autoSize && !this.fullScreen && !this.height ? "hidden" : "auto";
       textEl.parentNode.removeChild(hideEl);
     },
+    handlePointMove() {
+      if (this.showSelectLinkType) {
+        this.showSelectLinkType = false;
+        return;
+      }
+    },
     handleEnter(e) {
       if (this.showSelectUser) {
         const activeUser = this.userList[this.activeUserIndex];
         this.handleSelectUser(activeUser);
+        e.preventDefault();
+        return;
+      } else if (this.showSelectLinkType) {
+        this.handleSelectLinkType(this.activeLinkTypeIndex);
         e.preventDefault();
         return;
       }
@@ -379,6 +422,19 @@ export default {
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") !== -1) {
           fileList.push(items[i].getAsFile());
+          break;
+        }
+        if (items[i].type.indexOf("text") !== -1) {
+          items[i].getAsString(str => {
+            if (
+              !/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/.test(
+                str
+              )
+            )
+              return;
+            this.createSelectLinkTypeDialog();
+          });
+
           break;
         }
       }

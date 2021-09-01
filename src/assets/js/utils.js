@@ -1,6 +1,3 @@
-import marked from "marked";
-// import videojs from "video.js";
-// import "video.js/dist/video-js.min.css";
 // 获取选中文本信息
 
 export function getSelectionInfo(selectorId) {
@@ -372,9 +369,11 @@ export function getLinkTags(id, html) {
     virtualDom.querySelectorAll("a:not([download])")
   ).map((item, index) => {
     item.id = id + "_" + new Date().getTime() + "_" + index;
+    const linkType = item.getAttribute("data-type");
     return {
       id: item.id,
       title: item.innerText,
+      linkType,
       url: item.href
     };
   });
@@ -394,30 +393,40 @@ export function removeLinkHeadAndEnd(link) {
 }
 
 export function renderLinkCard(title, item) {
-  console.log(item.title);
-  console.log(item.url);
-
-  return `
-  ${
-    removeLinkHeadAndEnd(item.title) === removeLinkHeadAndEnd(item.url)
-      ? ""
-      : `
-    <span class="md_link_title">${title || item.title || ""}</span>
-    `
+  const linkType = item.linkType;
+  let content;
+  switch (linkType) {
+    case "1":
+      content = `<span class="md_link_url">${item.title}</span>`;
+      break;
+    case "2":
+      content = `<span class="md_link_url">${item.url}</span>`;
+      break;
+    default:
+      content = `<div class="md_link_card">
+      ${
+        removeLinkHeadAndEnd(item.title) === removeLinkHeadAndEnd(item.url)
+          ? ""
+          : `
+        <span class="md_link_title">${title || item.title || ""}</span>
+        `
+      }
+      ${`<span class="md_link_desc" style="${
+        item.description ? "" : "margin: 0px 0 2px"
+      }">${item.description || ""}</span>`}
+      <span class="md_flex_card">
+      ${
+        item.icon
+          ? `<img class="md_link_img" referrerpolicy="no-referrer" id="md_link_img" src="${item.icon}" />`
+          : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
+      }
+        <span class="flex-1">
+          <span class="md_link_url">${item.url}</span>
+        </span>
+      </span></div>`;
+      break;
   }
-  ${`<span class="md_link_desc" style="${
-    item.description ? "" : "margin: 0px 0 2px"
-  }">${item.description || ""}</span>`}
-  <span class="md_flex_card">
-  ${
-    item.icon
-      ? `<img class="md_link_img" referrerpolicy="no-referrer" id="md_link_img" src="${item.icon}" />`
-      : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
-  }
-    <span class="flex-1">
-      <span class="md_link_url">${item.url}</span>
-    </span>
-  </span>`;
+  return content;
 }
 
 export function preventDefault(id) {
@@ -428,26 +437,6 @@ export function preventDefault(id) {
   }, 0);
   return;
 }
-
-// export async function renderVideo(id, html) {
-//   const virtualDom = document.createElement("div");
-//   virtualDom.innerHTML = html;
-//   document.body.appendChild(virtualDom);
-//   const videoList = Array.from(virtualDom.getElementsByTagName("video"));
-
-//   const newHtml = await new Promise((resolve, rej) => {
-//     videoList.forEach(item => {
-//       console.log(item);
-//       item.setAttribute("controls", "controls");
-//     });
-//     setTimeout(() => {
-//       const newHtml = virtualDom.innerHTML;
-//       resolve(newHtml);
-//       document.body.removeChild(virtualDom);
-//     }, 5000);
-//   });
-//   return newHtml;
-// }
 
 // 获取方法参数名
 export function getParameterName(fn) {

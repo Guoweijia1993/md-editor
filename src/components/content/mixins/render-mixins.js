@@ -117,9 +117,14 @@ export default {
           return out;
         },
         link(href, title, text) {
+          if (!href && !title) return "";
           if (href === null) {
             return text;
           }
+          const linkTypeArr = href.split("::");
+          const linkType = linkTypeArr[1];
+          href = linkTypeArr[0];
+          text = text.split("::")[0];
           let invalidText = "";
           if (href === text) {
             const invalidRule = /[）】}\]]*$/;
@@ -133,6 +138,9 @@ export default {
           let out = '<a href="' + href + '"';
           if (title) {
             out += ' title="' + title + '"';
+          }
+          if (linkType) {
+            out += ' data-type="' + linkType + '"';
           }
           out += ">" + text + "</a>";
           if (invalidText) {

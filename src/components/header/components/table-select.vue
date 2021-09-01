@@ -46,7 +46,6 @@ export default {
   },
   created() {
     setTimeout(() => {
-      // this.dialogPositon = this.getDialogPosition();
       this.createBlockPoint();
     }, 0);
   },
@@ -69,25 +68,13 @@ export default {
       });
       return res;
     },
-    // getDialogPosition() {
-    //   const dialog = this.$refs.block_container.parentElement;
-    //   const transform = document.defaultView.getComputedStyle(dialog).transform;
-    //   const list = transform.split(",");
-    //   console.log(document.body);
-
-    //   return { y: parseInt(list.pop()), x: parseInt(list.pop()) };
-    // },
     createBlockPoint() {
       const list = this.$refs.block;
       this.list = this.list.map((item, index) => {
-        // item.x = list[index].offsetLeft;
         item.x = list[index].getBoundingClientRect().left;
-
-        // item.y = list[index].offsetTop;
         item.y = list[index].getBoundingClientRect().top;
         return item;
       });
-      // console.log(this.list);
     },
     getCursorPoint(e) {
       this.mousePoint = {

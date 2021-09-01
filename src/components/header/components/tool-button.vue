@@ -15,6 +15,7 @@
       <!-- <span :class="['icon loading iconfont', `icon-${info.icon}`]"> </span> -->
     </div>
   </transition-group>
+  <!-- 自定义的工具 -->
   <div
     class="tool_button"
     @click="info.click"
@@ -346,10 +347,6 @@ export default {
         color: var(--md-editor-border-color-active);
       }
     }
-    // &.loading {
-    //   animation: rotate 3s linear infinite;
-    //   color: var(--md-editor-border-color-active);
-    // }
     &.icon-quxiaoquanping_o {
       font-size: 24px;
       margin: 0 -4px;
@@ -364,7 +361,6 @@ export default {
     &.icon-lianjie {
       font-size: 16px;
     }
-    &.icon-help,
     &.icon-file {
       font-size: 19px;
     }

@@ -458,12 +458,10 @@ export default {
             const url = item.csdn
               ? "https://link.csdn.net/?target=" + item.url
               : item.url;
-            // linkEl.id = "md_link_card";
-            linkEl.className = "md_link_card";
+            // linkEl.className = "md_link_card";
             linkEl.setAttribute("target", "_blank");
             linkEl.setAttribute("href", url);
             const title = getLinkTitle(linkEl, item);
-
             linkEl.innerHTML = renderLinkCard(title, item);
           });
           _this.html = vDom.innerHTML;
