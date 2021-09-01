@@ -64,6 +64,7 @@
       :formatType="formatType"
       :userList="userList"
       :ref="'md_textarea' + id"
+      :renderLinks="renderLinks"
       @tab="$refs['md_header' + id].tab()"
       @submit="submit"
       @enter="handleEnter"
@@ -197,6 +198,10 @@ export default {
     filePathRule: {
       type: RegExp,
       default: () => {}
+    },
+    renderLinks: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

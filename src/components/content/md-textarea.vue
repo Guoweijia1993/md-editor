@@ -145,6 +145,10 @@ export default {
     userList: {
       type: [Boolean, Array],
       default: false
+    },
+    renderLinks: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -425,6 +429,7 @@ export default {
           break;
         }
         if (items[i].type.indexOf("text") !== -1) {
+          if (!this.renderLinks) return;
           items[i].getAsString(str => {
             if (
               !/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/.test(

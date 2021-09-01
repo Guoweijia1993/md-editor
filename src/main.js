@@ -62,6 +62,7 @@ function initMdEditor(obj) {
     zIndex,
     disabled,
     tabSize,
+    renderLinks: Boolean(renderLinks),
     registerTools,
     setPreview: false,
     setFullScreen: false,
