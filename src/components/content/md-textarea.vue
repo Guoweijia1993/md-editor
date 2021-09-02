@@ -437,6 +437,12 @@ export default {
               )
             )
               return;
+            const cursorPoint = getPosition(this.id);
+            const prefixStr = this.textContent.slice(
+              cursorPoint - str.length - 5,
+              cursorPoint - str.length
+            );
+            if (prefixStr.includes("src=")) return;
             this.createSelectLinkTypeDialog();
           });
 

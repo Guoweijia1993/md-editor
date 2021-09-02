@@ -453,6 +453,8 @@ export default {
     },
     renderLinksHtml({ vDom, links }) {
       const _this = this;
+      console.log(links);
+      
       this.$emit("renderLinks", {
         links,
         callback: function(list) {
@@ -464,6 +466,7 @@ export default {
               ? "https://link.csdn.net/?target=" + item.url
               : item.url;
             // linkEl.className = "md_link_card";
+            item.linkType = linkEl.getAttribute("data-type");
             linkEl.setAttribute("target", "_blank");
             linkEl.setAttribute("href", url);
             const title = getLinkTitle(linkEl, item);

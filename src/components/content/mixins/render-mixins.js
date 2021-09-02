@@ -3,7 +3,7 @@ import {
   getLinkTags,
   addLanguageClass,
   addLinkTarget,
-  renderVideo,
+  linkTypeSpiltStr,
   getfilesize
 } from "@/assets/js/utils";
 import marked from "marked";
@@ -121,10 +121,10 @@ export default {
           if (href === null) {
             return text;
           }
-          const linkTypeArr = href.split("::");
+          const linkTypeArr = href.split(linkTypeSpiltStr);
           const linkType = linkTypeArr[1];
           href = linkTypeArr[0];
-          text = text.split("::")[0];
+          text = text.split(linkTypeSpiltStr)[0];
           let invalidText = "";
           if (href === text) {
             const invalidRule = /[）】}\]]*$/;

@@ -1,4 +1,4 @@
-import { getPosition, formatText } from "@/assets/js/utils";
+import { getPosition, formatText, linkTypeSpiltStr } from "@/assets/js/utils";
 export default {
   methods: {
     handleSelectLinkType(index) {
@@ -11,10 +11,10 @@ export default {
         case 0:
           break;
         case 1:
-          typeStr = "::1";
+          typeStr = linkTypeSpiltStr + "1";
           break;
         case 2:
-          typeStr = "::2";
+          typeStr = linkTypeSpiltStr + "2";
           break;
         default:
           break;
@@ -71,23 +71,11 @@ export default {
           left:
             pEl.offsetLeft < frameWidth * (2 / 3)
               ? pEl.offsetLeft
-              : pEl.offsetLeft - 200,
+              : pEl.offsetLeft - 140,
           top: pEl.offsetTop - textEl.scrollTop
         };
         textEl.parentNode.removeChild(hideEl);
-        // this.queryInfo.startPosition = getPosition(this.id) + 1;
-        // this.queryInfo.endPosition = getPosition(this.id) + 1;
-        // if (type === "android") {
-        //   this.queryInfo.startPosition--;
-        //   this.queryInfo.endPosition--;
-        // }
-        // this.$emit("queryUserList", this.queryInfo.keyWord);
         this.$nextTick(() => {
-          // const userList = this.userList;
-          // if (userList === false) return;
-          // if (this.queryInfo.keyWord === "") {
-          //   this.allUserList = userList;
-          // }
           this.showSelectLinkType = true;
           this.$nextTick(() => {
             const list = textEl.parentNode.querySelector(".md_select_user");

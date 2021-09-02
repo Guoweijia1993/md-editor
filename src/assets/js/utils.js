@@ -369,11 +369,9 @@ export function getLinkTags(id, html) {
     virtualDom.querySelectorAll("a:not([download])")
   ).map((item, index) => {
     item.id = id + "_" + new Date().getTime() + "_" + index;
-    const linkType = item.getAttribute("data-type");
     return {
       id: item.id,
       title: item.innerText,
-      linkType,
       url: item.href
     };
   });
@@ -466,3 +464,5 @@ export function getfilesize(size) {
     return (size / Math.pow(num, 3)).toFixed(2) + "G"; //G
   return (size / Math.pow(num, 4)).toFixed(2) + "T"; //T
 }
+
+export const linkTypeSpiltStr = "/%ra";
