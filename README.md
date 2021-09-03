@@ -418,7 +418,7 @@ const myEditor = new MdEditor({
 myEditor.blur()
 ```
 
-#registertools
+# registertools
 
 注册工具栏按钮
 
