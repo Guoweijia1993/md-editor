@@ -2,7 +2,6 @@ import { getPosition, formatText, linkTypeSpiltStr } from "@/assets/js/utils";
 export default {
   methods: {
     handleSelectLinkType(index) {
-      console.log(index);
       const originalText = this.textContent;
       const queryInfo = this.queryInfo;
       const cursorPosition = getPosition(this.id);
@@ -71,7 +70,7 @@ export default {
           left:
             pEl.offsetLeft < frameWidth * (2 / 3)
               ? pEl.offsetLeft
-              : pEl.offsetLeft - 140,
+              : pEl.offsetLeft - 120,
           top: pEl.offsetTop - textEl.scrollTop
         };
         textEl.parentNode.removeChild(hideEl);

@@ -43,7 +43,7 @@ export default {
     position: {
       immediate: true,
       handler: function({ left, top }) {
-        this.left = left + 12;
+        this.left = left;
         this.top = top + 40;
       }
     }

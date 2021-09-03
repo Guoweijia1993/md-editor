@@ -306,6 +306,7 @@ export default {
       textLength: "",
       userList: false,
       callUserList: [],
+      linkList: [],
       selectionInfo: {
         selectorId: "",
         selectionStart: "",
@@ -452,13 +453,34 @@ export default {
       });
     },
     renderLinksHtml({ vDom, links }) {
-      const _this = this;
-      console.log(links);
-      
+      // 缓存里没有的链接，就发送请求获取信息
+      const emitList = links.filter(
+        item => !this.linkList.find(link => link && link.url === item.url)
+      );
+      console.log("emit", emitList);
       this.$emit("renderLinks", {
-        links,
-        callback: function(list) {
-          list.forEach(item => {
+        links: emitList,
+        callback: list => {
+          // 用原始数组做循环
+          links.forEach(item => {
+            const linkItem = this.linkList.find(
+              link => link && link.url === item.url
+            );
+            // 如果
+            if (!linkItem) {
+              const returnLink = list.find(
+                link => link && link.url === item.url
+              );
+              if (!returnLink) return;
+              item.title = returnLink.title;
+              item.description = returnLink.description;
+              item.icon = returnLink.icon;
+              this.linkList.push(returnLink);
+            } else {
+              item.title = linkItem.title;
+              item.description = linkItem.description;
+              item.icon = linkItem.icon;
+            }
             // item.csdn = true;
             const linkEl = vDom.querySelector("#" + item.id);
             if (!linkEl) return;
@@ -472,7 +494,8 @@ export default {
             const title = getLinkTitle(linkEl, item);
             linkEl.innerHTML = renderLinkCard(title, item);
           });
-          _this.html = vDom.innerHTML;
+
+          this.html = vDom.innerHTML;
         }
       });
     }

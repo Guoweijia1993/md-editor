@@ -395,7 +395,7 @@ export function renderLinkCard(title, item) {
   let content;
   switch (linkType) {
     case "1":
-      content = `<span class="md_link_url">${item.title}</span>`;
+      content = `<span class="md_link_url">${title || item.title || ""}</span>`;
       break;
     case "2":
       content = `<span class="md_link_url">${item.url}</span>`;
