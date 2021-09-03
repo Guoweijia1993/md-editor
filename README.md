@@ -5,6 +5,20 @@
 ## 更新记录
 
 
+### v0.8
+
+2021-09-03 v0.8更新，添加功能：
+
+- 支持注册自定义工具栏按钮[registerTools](#registertools)
+- 支持用户选择链接展示形式（默认卡片）
+- 添加标题快捷工具
+- 支持上传附件
+- 支持上传/插入视频
+- 上传图片支持设定尺寸/对齐
+- 优化首行缩进规则
+- **修改onUpload方法**[onUpload](#onupload)
+
+
 ### v0.7
 
 2021-08-05 v0.7更新，添加功能：
@@ -121,7 +135,7 @@ new MdEditor({
 | onFocus | 获取焦点事件 | Function | function(res) {} [示例](#onfocus)
 | onBlur | 失去焦点事件 | Function | function(res) {} [示例](#onblur)
 | onChange | 获取编辑器markdown及html内容 | Function | function(res) {} [示例](#onchange)
-| onUpload | 上传文件钩子函数 | Function | function(file, callback) {} [示例](#onupload)
+| onUpload | 上传文件钩子函数 | Function | function(file, type, callback) {} [示例](#onupload)
 | onsubmit | 快捷键函数 | Function | function(file, callback) {} [示例](#onsubmit)
 | queryUserList | @用户列表查询函数 | Function | function(keyword), callback) {} [示例](#queryuserlist)
 | renderLinks | 把链接渲染成卡片样式 | Function | function(list)), callback) {} [示例](#renderlinks)
@@ -267,7 +281,8 @@ new MdEditor({
 ```js
 new MdEditor({
     ...,
-    onUpload: function(file, callback) {
+    onUpload: function(file, type, callback) {
+        // type 返回 img/file/video
         // do something with file
         // ajax
         // ...
@@ -329,6 +344,7 @@ new MdEditor({
 ```js
 renderLinks: function(val, callback) {
           const newLinks = val.map(item => {
+            // 调用接口获取链接的信息
             item.title =
               "指定的可执行文件cmd.exe未能运行，某某函数不正确-后端-CSDN问答";
             item.icon = "https://g.csdnimg.cn/static/logo/favicon32.ico";
