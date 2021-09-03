@@ -149,6 +149,7 @@ new MdEditor({
 | getValue | 获取编辑器的内容 | Function | [getValue](#getvalue) |
 | setValue | 设置编辑器的内容 | Function | [setValue](#setvalue) |
 | toggleTab | 切换编辑和预览tab | Function | [toggleTab](#toggletab) |
+| registerTools | 注册工具栏按钮 | Function(Object | Array) | [registerTools](#registertools) |
 | toggleFullScreen | 切换编辑器全屏模式 | Function | [toggleFullScreen](#togglefullscreen) |
 
 # themeOptions
@@ -415,6 +416,30 @@ const myEditor = new MdEditor({
 })
 
 myEditor.blur()
+```
+
+#registertools
+
+注册工具栏按钮
+
+```js
+const myEditor = new MdEditor({
+    ...
+    }
+})
+
+myEditor.registerTools([
+  {
+    name: "test", // 
+    icon:
+      "https://img1.baidu.com/it/u=1522221441,2900868227&fm=26&fmt=auto&gp=0.jpg",
+    tip: "自定义的按钮",
+    click: function() {
+      // 点击按钮的事件
+    }
+  }
+]);
+
 ```
 
 # toggleTab
