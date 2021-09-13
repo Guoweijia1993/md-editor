@@ -235,6 +235,7 @@ export default {
         case "ul":
         case "task":
         case "table":
+        case "call":
           this.$emit("updateText", { startStr, endStr });
           break;
         case "format":
@@ -361,7 +362,8 @@ export default {
     &.icon-lianjie {
       font-size: 16px;
     }
-    &.icon-file {
+    &.icon-file,
+    &.icon-aite {
       font-size: 19px;
     }
   }

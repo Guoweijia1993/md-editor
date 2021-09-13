@@ -5,7 +5,7 @@
   >
     <markdown-header
       :id="textareaId"
-      :ref="'md_header' + id"
+      :ref="'md_header_' + id"
       :text.sync="text"
       :selectionInfo.sync="selectionInfo"
       :showPreview.sync="showPreview"
@@ -63,9 +63,9 @@
       :show-help="showHelp"
       :formatType="formatType"
       :userList="userList"
-      :ref="'md_textarea' + id"
+      :ref="'md_textarea_' + id"
       :renderLinks="renderLinks"
-      @tab="$refs['md_header' + id].tab()"
+      @tab="$refs['md_header_' + id].tab()"
       @submit="submit"
       @enter="handleEnter"
       @getFilteredTags="filteredTags = $event"
@@ -213,7 +213,7 @@ export default {
       return "textarea_" + this.id;
     },
     headId() {
-      return "md_header" + this.id;
+      return "md_header_" + this.id;
     },
     textareaHeight() {
       const height = this.height;
@@ -235,12 +235,12 @@ export default {
           _this.text = newText;
           _this.$refs.mdUploadFile.value = "";
           _this.uploadImgPercent = 100;
-          _this.$refs["md_textarea" + _this.id].waiting = false;
+          _this.$refs["md_textarea_" + _this.id].waiting = false;
         } else {
-          _this.$refs["md_textarea" + _this.id].waiting = true;
+          _this.$refs["md_textarea_" + _this.id].waiting = true;
           _this.uploadImgPercent = parseInt(url);
         }
-        _this.$refs["md_header" + _this.id].loading(
+        _this.$refs["md_header_" + _this.id].loading(
           "img",
           _this.uploadImgPercent
         );
@@ -279,7 +279,7 @@ export default {
         } else {
           _this.uploadVideoPercent = parseInt(url);
         }
-        _this.$refs["md_header" + _this.id].loading(
+        _this.$refs["md_header_" + _this.id].loading(
           "video",
           _this.uploadVideoPercent
         );

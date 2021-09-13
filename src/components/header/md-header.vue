@@ -181,6 +181,13 @@ export default {
       },
       toolButtonList: [
         {
+          name: "call",
+          icon: "aite",
+          tip: "@用户",
+          startStr: "@",
+          endStr: ""
+        },
+        {
           name: "headline",
           icon: "biaoti",
           tip: "添加标题",
@@ -399,6 +406,11 @@ export default {
         selectionInfo.selectionStart +
         startStr.length;
       this.updateText(newText, len);
+      if (startStr === "@") {
+        setTimeout(() => {
+          this.$parent.$refs["md_" + this.id].createSelectUserDialog('android');
+        }, 200);
+      }
     },
     updateText(val, len = 0) {
       const textEl = document.getElementById(this.id);
