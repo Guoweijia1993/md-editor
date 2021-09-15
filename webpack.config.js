@@ -8,11 +8,11 @@ module.exports = {
   },
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
-    host: 'live.csdn.net',
+    host: "live.csdn.net",
     open: true
   },
   resolve: {
-    extensions: [".js", ".vue", ".json"],
+    extensions: [".js", ".ts", ".vue", ".json"],
     alias: {
       "@": path.resolve(__dirname, "./src")
     }
@@ -31,6 +31,14 @@ module.exports = {
       {
         test: /\.(ttf|woff|png|svg)$/,
         loader: "url-loader"
+      },
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       }
     ]
   },

@@ -362,8 +362,7 @@ export default {
     &.icon-lianjie {
       font-size: 16px;
     }
-    &.icon-file,
-    &.icon-aite {
+    &.icon-file {
       font-size: 19px;
     }
   }

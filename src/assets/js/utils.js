@@ -400,6 +400,9 @@ export function renderLinkCard(title, item) {
     case "2":
       content = `<span class="md_link_url">${item.url}</span>`;
       break;
+    case "3":
+      content = `<span class="jupyter jupyterEl">${item.url}</span>`;
+      break;
     default:
       content = `<div class="md_link_card">
       ${

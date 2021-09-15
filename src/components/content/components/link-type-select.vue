@@ -67,7 +67,12 @@ export default {
           avatar: "",
           icon: "lianjie",
           nickname: "链接"
-        }
+        },
+        {
+          avatar: "",
+          icon: "kapian",
+          nickname: "NoteBook"
+        },
       ],
       selectDisable: false
     };

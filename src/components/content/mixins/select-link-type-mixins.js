@@ -15,6 +15,9 @@ export default {
         case 2:
           typeStr = linkTypeSpiltStr + "2";
           break;
+        case 3:
+          typeStr = linkTypeSpiltStr + "3";
+          break;
         default:
           break;
       }
