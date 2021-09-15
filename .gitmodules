@@ -1,0 +1,3 @@
+[submodule "src/components/jupyter-render"]
+	path = src/components/jupyter-render
+	url = https://codechina.csdn.net/codechina_dev/jupyter-render.git
