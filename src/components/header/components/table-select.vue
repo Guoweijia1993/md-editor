@@ -57,7 +57,6 @@ export default {
         " ------ |",
         col
       )}\n${this.createStr("|" + this.createStr(" 单元格 |", col) + "\n", row)}`;
-      console.log(str);
 
       this.$emit("select", str);
     },

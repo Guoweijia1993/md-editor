@@ -443,6 +443,25 @@ export default {
         html: this.html
       });
     },
+    getVideoList(callback) {
+      const virtualDom = document.createElement("div");
+      virtualDom.style.height = 0;
+      virtualDom.innerHTML = this.html;
+      document.body.appendChild(virtualDom);
+      const vEls = Array.from(virtualDom.getElementsByTagName("video"));
+      const list = vEls.map(item => {
+        item.preload = true;
+        return new Promise((res, rej) => {
+          item.oncanplay = function() {
+            res(item.duration);
+          };
+        });
+      });
+      document.body.removeChild(virtualDom);
+      Promise.all(list).then(res => {
+        callback(res);
+      });
+    },
     queryUserList(keyWord) {
       const _this = this;
       this.$emit("queryUserList", {
@@ -491,6 +510,9 @@ export default {
             item.linkType = linkEl.getAttribute("data-type");
             linkEl.setAttribute("target", "_blank");
             linkEl.setAttribute("href", url);
+            if (item.url.includes(".ipynb")) {
+              linkEl.className = "jupyterEl";
+            }
             const title = getLinkTitle(linkEl, item);
             linkEl.innerHTML = renderLinkCard(title, item);
           });

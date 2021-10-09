@@ -14,6 +14,7 @@ function initMdEditor(obj) {
     html: ""
   };
   this.vEl = "";
+  this.videoList = [];
   let {
     el,
     onLoad = () => {},
@@ -143,6 +144,10 @@ function initMdEditor(obj) {
         props: props
       })
   }).$mount(el);
+
+  this.getVideoList = function(callback) {
+    this.vEl.$children[0].getVideoList(callback);
+  };
 
   this.getValue = function(callback) {
     if (callback) {
