@@ -461,8 +461,9 @@ export default {
         });
       });
       document.body.removeChild(virtualDom);
-      Promise.all(list).then(res => {
-        callback(res);
+      return Promise.all(list).then(res => {
+        if (callback) callback(res);
+        return res;
       });
     },
     queryUserList(keyWord) {

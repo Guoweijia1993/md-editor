@@ -256,11 +256,16 @@
           click: function() {}
         }
       ]);
-      document.querySelector("#a").onclick = function() {
+      function test() {
+        return ee.getVideoList();
+      }
+      document.querySelector("#a").onclick = async function() {
+        console.log(await test());
+
         // ee.disable();
-        ee.getVideoList(list => {
-          console.log("list", list);
-        });
+        // ee.getVideoList(list => {
+        //   console.log("list", list);
+        // });
       };
       document.querySelector("#b").onclick = function() {
         ee.enable();

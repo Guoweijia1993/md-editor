@@ -146,7 +146,7 @@ function initMdEditor(obj) {
   }).$mount(el);
 
   this.getVideoList = function(callback) {
-    this.vEl.$children[0].getVideoList(callback);
+    return this.vEl.$children[0].getVideoList(callback);
   };
 
   this.getValue = function(callback) {
