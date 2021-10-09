@@ -453,7 +453,10 @@ export default {
         item.preload = true;
         return new Promise((res, rej) => {
           item.oncanplay = function() {
-            res(item.duration);
+            res({
+              src: item.src,
+              duration: item.duration
+            });
           };
         });
       });
