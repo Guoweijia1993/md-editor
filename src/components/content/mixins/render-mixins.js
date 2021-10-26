@@ -2,7 +2,7 @@ import {
   getFilteredTags,
   getLinkTags,
   addLanguageClass,
-  addLinkTarget,
+  formatElements,
   linkTypeSpiltStr,
   getfilesize
 } from "@/assets/js/utils";
@@ -38,7 +38,7 @@ export default {
       const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
       // 链接转换为卡片
       const { vDom, links } = getLinkTags(this.id, cleanHtml);
-      const { callUserList, userHtml } = addLinkTarget(cleanHtml);
+      const { callUserList, userHtml } = formatElements(cleanHtml);
       // const videoHtml = await renderVideo(this.id, userHtml);
       this.$emit("callUserList", callUserList);
       this.$emit("getFilteredTags", filteredTags);

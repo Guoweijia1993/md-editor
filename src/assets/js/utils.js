@@ -349,7 +349,7 @@ export function addLanguageClass(html) {
   });
   return virtualDom;
 }
-export function addLinkTarget(html) {
+export function formatElements(html) {
   const virtualDom = document.createElement("div");
   virtualDom.innerHTML = html;
   const userList = [];
@@ -358,6 +358,9 @@ export function addLinkTarget(html) {
     if (item.getAttribute("type") === "user") {
       userList.push(item.dataset.user);
     }
+  });
+  Array.from(virtualDom.querySelectorAll("img")).forEach(item => {
+    item.className = 'md_img'
   });
   const list = Array.from(new Set(userList)); // 去重
   return { callUserList: list, userHtml: virtualDom.innerHTML };
