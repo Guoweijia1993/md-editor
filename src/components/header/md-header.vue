@@ -17,7 +17,7 @@
         <span>预览</span>
       </div>
     </div>
-    <div :class="['header_tools', { disabled }]" v-if="!showPreview">
+    <div :class="['header_tools', { disabled }]">
       <tool-button
         :ref="item.name"
         :ulNum.sync="ulNum"
@@ -27,7 +27,7 @@
         @updateText="handleUpdateText"
         @upload="$emit('upload', $event)"
         @setFormatType="setFormatType"
-        @updateShowHelp="$emit('updateShowHelp', $event)"
+        @updateShowDoc="$emit('updateShowDoc', $event)"
         :class="{ active: item.name === 'format' && formatType }"
         v-for="(item, index) in toolsShow"
         :key="index"
@@ -47,7 +47,8 @@ import {
   getPosition,
   removeBlankLine,
   copyFormatRules,
-  checkBoswer
+  checkBoswer,
+  pick
 } from "@/assets/js/utils";
 import toolButton from "./components/tool-button";
 export default {
@@ -107,10 +108,18 @@ export default {
     }
   },
   computed: {
+    previewTools() {
+      const list = this.toolButtonList;
+      return [
+        this.dirBtn,
+        ...pick(list, "help", "fullScreen", "cancelFullScreen")
+      ];
+    },
     toolsShow() {
       const toolsList = this.toolButtonList;
       const toolsOptions = this.toolsOptions;
       if (!toolsOptions) return toolsList;
+      if (this.showPreview) return this.previewTools;
       return toolsList.filter(item => {
         return isNotFalse(toolsOptions[item.name]);
       });
@@ -178,6 +187,11 @@ export default {
         name: "fullScreen",
         icon: "fullScreen",
         tip: "全屏模式"
+      },
+      dirBtn: {
+        name: "dir",
+        icon: "dir",
+        tip: "目录"
       },
       toolButtonList: [
         {
@@ -298,6 +312,11 @@ export default {
             "\n\n| 表头 | 表头 |\n| ------ | ------ |\n| 单元格 | 单元格 |\n| 单元格 | 单元格 |\n\n",
           endStr: ""
         },
+        // {
+        //   name: "dir",
+        //   icon: "dir",
+        //   tip: "目录"
+        // },
         {
           name: "help",
           icon: "help",
@@ -408,7 +427,7 @@ export default {
       this.updateText(newText, len);
       if (startStr === "@") {
         setTimeout(() => {
-          this.$parent.$refs["md_" + this.id].createSelectUserDialog('android');
+          this.$parent.$refs["md_" + this.id].createSelectUserDialog("android");
         }, 200);
       }
     },

@@ -183,6 +183,13 @@ export function isNotFalse(val) {
   return val !== false;
 }
 
+export function pick(list, ...arg) {
+  if (!list.length || !arg?.length) return;
+  return list.filter(item => {
+    return arg.find(key => key === item.name);
+  });
+}
+
 export function checktUrl(val, rule) {
   if (!val || !rule) return;
   const hideEl = document.createElement("div");
@@ -360,7 +367,7 @@ export function formatElements(html) {
     }
   });
   Array.from(virtualDom.querySelectorAll("img")).forEach(item => {
-    item.className = 'md_img'
+    item.className = "md_img";
   });
   const list = Array.from(new Set(userList)); // 去重
   return { callUserList: list, userHtml: virtualDom.innerHTML };
@@ -368,6 +375,7 @@ export function formatElements(html) {
 export function getLinkTags(id, html) {
   const virtualDom = document.createElement("div");
   virtualDom.innerHTML = html;
+  // 获取所有a标签
   const links = Array.from(
     virtualDom.querySelectorAll("a:not([download])")
   ).map((item, index) => {
@@ -378,7 +386,18 @@ export function getLinkTags(id, html) {
       url: item.href
     };
   });
-  return { vDom: virtualDom, links };
+  // 获取所有标题
+  const dirTags = Array.from(
+    virtualDom.querySelectorAll("h1:not(.toc_title),h2,h3,h4,h5,h6")
+  ).map((item, index) => {
+    const dirItem = {
+      tag: item.tagName.toLowerCase(),
+      id: item.id,
+      text: item.innerText
+    };
+    return dirItem;
+  });
+  return { vDom: virtualDom, links, dirTags };
 }
 
 export function getLinkTitle(linkEl, item) {

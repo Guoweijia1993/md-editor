@@ -265,7 +265,10 @@ export default {
           this.$emit("setFullScreen", false);
           break;
         case "help":
-          this.$emit("updateShowHelp", true);
+          this.$emit("updateShowDoc", "help");
+          break;
+        case "dir":
+          this.$emit("updateShowDoc", "dir");
           break;
         default:
           break;

@@ -22,7 +22,7 @@
       :registerTools="registerTools"
       @upload="handleUpload"
       @getFormatType="formatType = $event"
-      @updateShowHelp="showHelp = $event"
+      @updateShowDoc="showHelp = $event"
       @renderLinks="$emit('renderLinks', $event)"
     />
     <input
@@ -41,6 +41,9 @@
       :height="textareaHeight"
       :html.sync="html"
       :htmlMinHeight="htmlMinHeight"
+      :show-help="showHelp"
+      :dirTags="dirTags"
+      @updateShowDoc="showHelp = $event"
       v-if="showPreview"
     />
 
@@ -69,8 +72,9 @@
       @submit="submit"
       @enter="handleEnter"
       @getFilteredTags="filteredTags = $event"
-      @updateShowHelp="showHelp = $event"
+      @updateShowDoc="showHelp = $event"
       @renderLinksHtml="renderLinksHtml"
+      @getDirTags="getDirTags"
       @queryUserList="queryUserList"
       @callUserList="callUserList = $event"
       v-else
@@ -304,6 +308,7 @@ export default {
       uploadFlePercent: 0,
       uploadVideoPercent: 0,
       textLength: "",
+      dirTags: [],
       userList: false,
       callUserList: [],
       linkList: [],
@@ -475,12 +480,36 @@ export default {
         }
       });
     },
+    getDirTags({ vDom, dirTags }) {
+      this.dirTags = dirTags;
+      const tocEls = Array.from(vDom.querySelectorAll(".tocEl"));
+
+      if (!tocEls.length) return;
+      tocEls.forEach(el => {
+        el.innerHTML = `<ul class="md_toc_list">${dirTags
+          .map(tag => {
+            return `<li class="md_toc_item" data-type="${tag.tag}" data-id="${tag.id}">${tag.text}</li>`;
+          })
+          .join("")}</ul>`;
+      });
+
+      this.html = vDom.innerHTML;
+      // console.log(document.querySelectorAll(".md_toc_list"));
+      document.querySelector("body").addEventListener("click", function(e) {
+        if (!e.target?.className.includes("md_toc_item")) return;
+        console.log(e.target.dataset.id);
+        const targetEl = document.getElementById(e.target?.dataset?.id);
+        if (!targetEl) return;
+        targetEl.scrollIntoView({
+          behavior: "smooth"
+        });
+      });
+    },
     renderLinksHtml({ vDom, links }) {
       // 缓存里没有的链接，就发送请求获取信息
       const emitList = links.filter(
         item => !this.linkList.find(link => link && link.url === item.url)
       );
-      console.log("emit", emitList);
       this.$emit("renderLinks", {
         links: emitList,
         callback: list => {

@@ -28,7 +28,10 @@
     <div id="app"></div>
     <!-- <textarea class="text" name="" id="" cols="30" rows="10"></textarea> -->
     <!-- <div contenteditable="true" class="text"></div> -->
-    <a href="https://codechina.csdn.net/xiongjiamu/jupyter-101/-/blob/master/002-demo.ipynb" class="jupyterEl"></a>
+    <a
+      href="https://codechina.csdn.net/xiongjiamu/jupyter-101/-/blob/master/002-demo.ipynb"
+      class="jupyterEl"
+    ></a>
     <button id="a">111111</button>
     <button id="b">2222222</button>
     <script src="./markdown-editor.js"></script>
@@ -261,7 +264,27 @@
         return ee.getVideoList();
       }
       document.querySelector("#a").onclick = async function() {
-        console.log(await test());
+        ee.setValue(`
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+#### 四级标题2四级标题2四级标题2四级标题2四级标题2四级标题2四级标题2四级标题2
+#### 四级标题3
+#### 四级标题4
+### 三级标题2
+### 三级标题3
+## 二级标题2
+## 二级标题3
+## 二级标题4
+## 二级标题5
+### 三级标题4
+
+
+[toc]
+        
+        
+        `);
 
         // ee.disable();
         // ee.getVideoList(list => {

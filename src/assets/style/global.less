@@ -86,6 +86,46 @@ textarea {
   }
 }
 
+.md_toc_list {
+  li.md_toc_item {
+    list-style-type: none;
+    cursor: pointer;
+    color: var(--md-editor-border-color-active);
+    position: relative;
+    margin: 12px 8px;
+    &::before {
+      content: "\·";
+      font-size: 20px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &[data-type="h1"] {
+      padding-left: 20px;
+    }
+    &[data-type="h2"] {
+      padding-left: 30px;
+    }
+    &[data-type="h3"] {
+      padding-left: 40px;
+    }
+    &[data-type="h4"] {
+      padding-left: 50px;
+    }
+    &[data-type="h5"] {
+      padding-left: 60px;
+    }
+    &[data-type="h6"] {
+      padding-left: 70px;
+    }
+  }
+}
+
+.relative {
+  position: relative;
+}
+
 a.md_call_user {
   color: var(--md-editor-text-color-active) !important;
   &[href] {

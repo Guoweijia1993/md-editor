@@ -37,13 +37,15 @@ export default {
       }); // 去除标签
       const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
       // 链接转换为卡片
-      const { vDom, links } = getLinkTags(this.id, cleanHtml);
+      // 获取标题列表
+      const { vDom, links, dirTags } = getLinkTags(this.id, cleanHtml);
       const { callUserList, userHtml } = formatElements(cleanHtml);
       // const videoHtml = await renderVideo(this.id, userHtml);
       this.$emit("callUserList", callUserList);
       this.$emit("getFilteredTags", filteredTags);
       this.$emit("update:html", userHtml);
       if (links.length) this.$emit("renderLinksHtml", { vDom, links });
+      if (dirTags.length) this.$emit("getDirTags", { vDom, dirTags });
     },
     rerender() {
       const _this = this;
@@ -79,6 +81,8 @@ export default {
                   src="${href}"
                    ></video></p>`;
           }
+          console.log("imgimgimg");
+
           // ![img](...)渲染图片
           let out =
             '<p class="md_img_container"><img src="' +
@@ -116,7 +120,37 @@ export default {
           out += "/></p>";
           return out;
         },
+        heading(text, level, raw, slugger) {
+          if (this.options.headerIds) {
+            return (
+              "<h" +
+              level +
+              ' id="' +
+              "h" +
+              level +
+              "_" +
+              this.options.headerPrefix +
+              slugger.slug(raw) +
+              "_" +
+              new Date().getTime() +
+              '">' +
+              text +
+              "</h" +
+              level +
+              ">\n"
+            );
+          }
+          // ignore IDs
+          return "<h" + level + ">" + text + "</h" + level + ">\n";
+        },
         link(href, title, text) {
+          console.log("linklink");
+          if (text?.toLowerCase() === "toc") {
+            return `
+            <h1 class="toc_title">${href}</h1>
+            <div class="tocEl"></div>`;
+          }
+
           if (!href && !title) return "";
           if (href === null) {
             return text;
@@ -155,9 +189,15 @@ export default {
               return `<a type="user" download data-user="${user &&
                 user.username}" href="${(user && user.url) || "javascript:void(0)"}" class="md_call_user">${val}</a>`;
             })
+            // tab缩进
             .replace(/^\s{2,3}(.+)/, function(val) {
               return `<span style="display:inline-block;text-indent:2em;">${val}</span>`;
-            });
+            })
+            .replace(
+              /\[TOC\]/i,
+              `<h1 class="toc_title">目录</h1><div class="tocEl"></div>`
+            );
+
           return newText;
         }
       };

@@ -1,21 +1,28 @@
 <template>
-  <docFrame @updateShowDoc="$emit('updateShowDoc', $event)">
-    <template #title> Markdown 语法 </template>
-    <template #content>
-      <ul>
+  <div class="doc_frame">
+    <div class="doc_container">
+      <h2>
+        <slot name="title" />
+        <span
+          @click="$emit('updateShowDoc', false)"
+          :class="['icon iconfont', `icon-guanbi`]"
+        ></span>
+      </h2>
+      <slot name="content" />
+      <!-- <ul class="list">
         <li v-for="(item, index) in list" :key="index">
           <span :class="['icon iconfont', `icon-${item.icon}`]"></span>
           <span>{{ item.title }}</span>
           <span class="doc">{{ item.doc }}</span>
         </li>
-      </ul>
-    </template>
-  </docFrame>
+      </ul> -->
+    </div>
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
 </template>
 <script>
-import docFrame from "./doc-frame.vue";
 export default {
-  components: { docFrame },
   props: {
     showHelp: {
       type: [Boolean, String],
@@ -120,3 +127,81 @@ export default {
   }
 };
 </script>
+<style lang="less" scoped>
+.doc_frame {
+  position: absolute;
+  // background: #fff;
+  background: var(--md-editor-content-bg-color);
+  height: calc(100% + 10px);
+  width: 260px;
+  top: 0;
+  right: -16px;
+  box-sizing: border-box;
+  border-left: 1px solid var(--md-editor-border-color);
+  padding: 14px;
+  padding-right: 0;
+  // border-radius: 4px;
+  z-index: 9;
+  .before {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      var(--md-editor-content-bg-color),
+      rgba(255, 255, 255, 0)
+    );
+  }
+  .after {
+    pointer-events: none;
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(
+      to top,
+      var(--md-editor-content-bg-color),
+      rgba(255, 255, 255, 0)
+    );
+  }
+  .doc_container {
+    overflow-y: auto;
+    padding-right: 14px;
+    height: 100%;
+    scrollbar-color: transparent transparent;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    h2 {
+      font-size: 16px;
+      color: var(--md-editor-text-color-active);
+      .icon {
+        float: right;
+        margin-top: 3px;
+        cursor: pointer;
+        font-weight: 400;
+      }
+    }
+    /deep/ul {
+      margin-top: 14px;
+      li {
+        font-size: 14px;
+        color: var(--md-editor-helpdoc-color);
+        margin-bottom: 10px;
+        .icon {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .doc {
+          float: right;
+        }
+      }
+    }
+  }
+}
+</style>

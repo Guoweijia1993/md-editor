@@ -39,8 +39,13 @@
     </textarea>
     <transition name="slide-fade">
       <helpDoc
-        v-if="showHelp"
-        @updateShowHelp="$emit('updateShowHelp', $event)"
+        v-if="showHelp === 'help'"
+        @updateShowDoc="$emit('updateShowDoc', $event)"
+        :showHelp.sync="showHelp"
+      />
+      <dirDoc
+        v-if="showHelp === 'dir'"
+        @updateShowDoc="$emit('updateShowDoc', $event)"
         :showHelp.sync="showHelp"
       />
     </transition>
@@ -73,11 +78,12 @@ import {
 import selectUser from "./components/user-select.vue";
 import selectLinkType from "./components/link-type-select.vue";
 import helpDoc from "./components/help-doc.vue";
+import dirDoc from "./components/toc-doc.vue";
 import renderMix from "./mixins/render-mixins";
 import selectUserMix from "./mixins/select-user-mixins";
 import selectLinkTypeMix from "./mixins/select-link-type-mixins";
 export default {
-  components: { helpDoc, selectUser, selectLinkType },
+  components: { helpDoc, dirDoc, selectUser, selectLinkType },
   mixins: [renderMix, selectUserMix, selectLinkTypeMix],
   props: {
     id: {
@@ -139,7 +145,7 @@ export default {
       default: ""
     },
     showHelp: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false
     },
     userList: {
