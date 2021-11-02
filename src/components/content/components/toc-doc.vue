@@ -72,10 +72,24 @@ export default {
     scrollToTitle(item) {
       const targetEl = document.getElementById(item.id);
       if (!targetEl) return;
-      const targetOffsetTop = targetEl.offsetTop;
-      document.querySelector(
+      const scrollEl = document.querySelector(
         ".md_preview .md_preview_scroll_container"
-      ).scrollTop = targetOffsetTop;
+      );
+      if (
+        scrollEl.scrollHeight > scrollEl.clientHeight ||
+        scrollEl.offsetHeight > scrollEl.clientHeight
+      ) {
+        const targetOffsetTop = targetEl.offsetTop;
+        scrollEl.scrollTop = targetOffsetTop;
+      } else {
+        targetEl.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+      // const targetOffsetTop = targetEl.offsetTop;
+      // document.querySelector(
+      //   ".md_preview .md_preview_scroll_container"
+      // ).scrollTop = targetOffsetTop;
     },
     dirItemActive(item) {
       const itemScrollTop = document.getElementById(item.id)?.offsetTop;

@@ -81,8 +81,6 @@ export default {
                   src="${href}"
                    ></video></p>`;
           }
-          console.log("imgimgimg");
-
           // ![img](...)渲染图片
           let out =
             '<p class="md_img_container"><img src="' +
@@ -144,7 +142,6 @@ export default {
           return "<h" + level + ">" + text + "</h" + level + ">\n";
         },
         link(href, title, text) {
-          console.log("linklink");
           if (text?.toLowerCase() === "toc") {
             return `
             <h1 class="toc_title">${href}</h1>
@@ -194,7 +191,7 @@ export default {
               return `<span style="display:inline-block;text-indent:2em;">${val}</span>`;
             })
             .replace(
-              /\[TOC\]/i,
+              /@?\[TOC\]/i,
               `<h1 class="toc_title">目录</h1><div class="tocEl"></div>`
             );
 

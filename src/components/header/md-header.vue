@@ -197,7 +197,7 @@ export default {
         {
           name: "call",
           icon: "aite",
-          tip: "@好友",
+          tip: "@关注的人",
           startStr: "@",
           endStr: ""
         },

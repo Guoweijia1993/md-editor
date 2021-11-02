@@ -61,6 +61,11 @@ export default {
           icon: "lianjie"
         },
         {
+          title: "目录",
+          doc: "[toc](目录)",
+          icon: "dir"
+        },
+        {
           title: "图片",
           doc: "![alt](url)",
           icon: "img"

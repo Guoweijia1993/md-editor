@@ -325,6 +325,7 @@ export default {
         text: this.text,
         html: this.html
       });
+      this.addTocClickToBody();
     }, 0);
   },
   watch: {
@@ -488,22 +489,13 @@ export default {
       tocEls.forEach(el => {
         el.innerHTML = `<ul class="md_toc_list">${dirTags
           .map(tag => {
-            return `<li class="md_toc_item" data-type="${tag.tag}" data-id="${tag.id}">${tag.text}</li>`;
+            return `<li class="md_toc_item type_${tag.tag}" href="${tag.id}">${tag.text}</li>`;
           })
           .join("")}</ul>`;
       });
 
       this.html = vDom.innerHTML;
       // console.log(document.querySelectorAll(".md_toc_list"));
-      document.querySelector("body").addEventListener("click", function(e) {
-        if (!e.target?.className.includes("md_toc_item")) return;
-        console.log(e.target.dataset.id);
-        const targetEl = document.getElementById(e.target?.dataset?.id);
-        if (!targetEl) return;
-        targetEl.scrollIntoView({
-          behavior: "smooth"
-        });
-      });
     },
     renderLinksHtml({ vDom, links }) {
       // 缓存里没有的链接，就发送请求获取信息
@@ -549,9 +541,20 @@ export default {
             const title = getLinkTitle(linkEl, item);
             linkEl.innerHTML = renderLinkCard(title, item);
           });
-
           this.html = vDom.innerHTML;
         }
+      });
+    },
+    addTocClickToBody() {
+      document.querySelector("body").addEventListener("click", function(e) {
+        if (!e.target?.className.includes("md_toc_item")) return;
+        const targetEl = document.getElementById(
+          e.target?.getAttribute("href")
+        );
+        if (!targetEl) return;
+        targetEl.scrollIntoView({
+          behavior: "smooth"
+        });
       });
     }
   }
