@@ -9,6 +9,7 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
     host: "0.0.0.0",
+    // port: 443,
     https: true,
     open: true
   },

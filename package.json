@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode=development",
     "build": "webpack --mode=production",
-    "p": "rm -rf dist/*.js && npm run build && ssh -t root@45.76.193.214 rm -rf /test/* exit && scp -r dist/* root@45.76.193.214:/test/"
+    "p": "rm -rf dist/*.js && npm run build && ssh -t lish@192.168.72.126 rm -rf /md-editor/* exit && scp -r dist/* lish@192.168.72.126:/md-editor"
   },
   "devDependencies": {
     "chalk": "^4.1.1",

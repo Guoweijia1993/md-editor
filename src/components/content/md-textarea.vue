@@ -198,7 +198,7 @@ export default {
           setTimeout(() => {
             this.showSelectUser = false;
             this.showSelectLinkType = false;
-          }, 200);
+          }, 100);
         }
       }
     },

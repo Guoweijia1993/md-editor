@@ -428,7 +428,7 @@ export default {
       if (startStr === "@") {
         setTimeout(() => {
           this.$parent.$refs["md_" + this.id].createSelectUserDialog("android");
-        }, 200);
+        }, 100);
       }
     },
     updateText(val, len = 0) {
