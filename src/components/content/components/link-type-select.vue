@@ -68,11 +68,11 @@ export default {
           icon: "lianjie",
           nickname: "链接"
         },
-        {
-          avatar: "",
-          icon: "kapian",
-          nickname: "NoteBook"
-        },
+        // {
+        //   avatar: "",
+        //   icon: "kapian",
+        //   nickname: "NoteBook"
+        // },
       ],
       selectDisable: false
     };
