@@ -547,9 +547,9 @@ export default {
     },
     addTocClickToBody() {
       document.querySelector("body").addEventListener("click", function(e) {
-        if (!e.target?.className.includes("md_toc_item")) return;
+        if (!e.target.className.includes("md_toc_item")) return;
         const targetEl = document.getElementById(
-          e.target?.getAttribute("href")
+          e.target.getAttribute("href")
         );
         if (!targetEl) return;
         targetEl.scrollIntoView({

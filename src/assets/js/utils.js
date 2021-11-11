@@ -184,7 +184,7 @@ export function isNotFalse(val) {
 }
 
 export function pick(list, ...arg) {
-  if (!list.length || !arg?.length) return;
+  if (!list.length || !(arg && arg.length)) return;
   return list.filter(item => {
     return arg.find(key => key === item.name);
   });

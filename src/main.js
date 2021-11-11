@@ -4,10 +4,6 @@ import Vtip from "vtip";
 import "vtip/lib/index.min.css";
 import { initStyle, setzIndex, isNotEmpty } from "@/assets/js/utils";
 import "@/assets/style/global.less";
-// import "@/assets/jupyter-render/dist/index.js";
-// import "@/assets/jupyter-render/dist/assets/index.css";
-
-
 Vue.use(Vtip.directive);
 
 function initMdEditor(obj) {

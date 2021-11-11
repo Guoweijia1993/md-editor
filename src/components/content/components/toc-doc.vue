@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     topList() {
-      return this.dirTags.map(item => Math.abs(item?.top));
+      return this.dirTags.map(item => Math.abs(item && item.top));
     }
   },
   created() {
@@ -92,7 +92,9 @@ export default {
       // ).scrollTop = targetOffsetTop;
     },
     dirItemActive(item) {
-      const itemScrollTop = document.getElementById(item.id)?.offsetTop;
+      const targetEl = document.getElementById(item.id);
+      if (!targetEl) return;
+      const itemScrollTop = targetEl.offsetTop;
       const top = this.scrollBarTop - itemScrollTop;
       this.$set(item, "top", top);
       return Math.abs(top) === Math.min(...this.topList);

@@ -142,7 +142,7 @@ export default {
           return "<h" + level + ">" + text + "</h" + level + ">\n";
         },
         link(href, title, text) {
-          if (text?.toLowerCase() === "toc") {
+          if (text && text.toLowerCase() === "toc") {
             return `
             <h1 class="toc_title">${href}</h1>
             <div class="tocEl"></div>`;
