@@ -174,6 +174,8 @@ new MdEditor({
 
 | 属性 | 说明 | 类型 | 默认值 | 说明 |
 | ------ | ------ | ------ | ------ | ------ |
+| call | @关注的人 | Boolean | true
+| headline | 标题 | Boolean | true
 | bold | 加粗 | Boolean | true
 | italic | 斜体 | Boolean | true
 | quote | 引用 | Boolean | true
@@ -184,7 +186,9 @@ new MdEditor({
 | ol | 有序列表 | Boolean | true
 | task | 任务列表 | Boolean | true
 | table | 表格 | Boolean | true
-| file | 上传文件 | Boolean | true
+| img | 图片 | Boolean | true
+| file | 附件 | Boolean | true
+| video | 视频 | Boolean | true
 | help | markdown语法 | Boolean | true
 | fullScreen | 全屏模式 | Boolean | true
 
