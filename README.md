@@ -1,6 +1,6 @@
 # Awesome-Markdown-Editor
 
-一款Markdown编辑器组件，支持使用markodwn语法来编写文档，同时支持图片上传等功能（当前版本仅支持单文件上传）
+一款Markdown编辑器组件，支持使用markodwn语法来编写文档，同时支持图片上传等功能
 
 ## 更新记录
 
