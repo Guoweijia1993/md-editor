@@ -83,7 +83,7 @@ export default {
           }
           // ![img](...)渲染图片
           let out =
-            '<p class="md_img_container"><img src="' +
+            '<p class="md_img_container"><img class="md_img" src="' +
             href +
             '" alt="' +
             text +

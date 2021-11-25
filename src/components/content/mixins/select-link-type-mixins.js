@@ -8,12 +8,13 @@ export default {
       let typeStr = "";
       switch (index) {
         case 0:
+          typeStr = linkTypeSpiltStr + "card";
           break;
         case 1:
-          typeStr = linkTypeSpiltStr + "1";
+          typeStr = linkTypeSpiltStr + "title";
           break;
         case 2:
-          typeStr = linkTypeSpiltStr + "2";
+          typeStr = linkTypeSpiltStr + "link";
           break;
         case 3:
           typeStr = linkTypeSpiltStr + "3";

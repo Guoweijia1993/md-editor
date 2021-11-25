@@ -28,14 +28,17 @@
     <div id="app"></div>
     <!-- <textarea class="text" name="" id="" cols="30" rows="10"></textarea> -->
     <!-- <div contenteditable="true" class="text"></div> -->
-    <a
-      href="https://codechina.csdn.net/xiongjiamu/jupyter-101/-/blob/master/002-demo.ipynb"
-      class="jupyterEl"
-    ></a>
     <button id="a">111111</button>
     <button id="b">2222222</button>
     <script src="./markdown-editor.js"></script>
     <script>
+      console.log("send");
+
+      ipcRenderer.send("token", 1);
+    </script>
+
+    <script>
+      // setTimeout(() => {
       try {
         const ee = new MdEditor({
           el: "#app", // required
@@ -105,23 +108,24 @@
           height: 400,
           // rows: 'auto',
           // height: 40,
-          toolsOptions: {
-            format: true,
-            bold: true,
-            italic: true,
-            quote: true,
-            code: true,
-            link: true,
-            ul: true,
-            ol: true,
-            task: true,
-            table: true,
-            img: true,
-            file: true,
-            test1: true,
-            // help: false,
-            fullScreen: true
-          },
+          // toolsOptions: {
+          //   // call: true,
+          //   format: true,
+          //   bold: true,
+          //   italic: true,
+          //   quote: true,
+          //   code: true,
+          //   link: true,
+          //   ul: true,
+          //   ol: true,
+          //   task: true,
+          //   table: true,
+          //   img: true,
+          //   file: true,
+          //   test1: true,
+          //   // help: false,
+          //   fullScreen: true
+          // },
           zIndex: 7000,
           // maxLength: 20000,
           showWordLimit: true,
@@ -252,9 +256,8 @@
             callback(list);
           }
         });
-      } catch (e) {
-        alert(e);
-      }
+      } catch (e) {}
+      // }, 3000);
       //       ee.registerTools([
       //         {
       //           name: "test",

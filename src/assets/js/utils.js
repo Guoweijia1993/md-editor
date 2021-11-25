@@ -366,9 +366,9 @@ export function formatElements(html) {
       userList.push(item.dataset.user);
     }
   });
-  Array.from(virtualDom.querySelectorAll("img")).forEach(item => {
-    item.className = "md_img";
-  });
+  // Array.from(virtualDom.querySelectorAll("img")).forEach(item => {
+  //   item.className = "md_img";
+  // });
   const list = Array.from(new Set(userList)); // 去重
   return { callUserList: list, userHtml: virtualDom.innerHTML };
 }
@@ -413,19 +413,20 @@ export function removeLinkHeadAndEnd(link) {
 }
 
 export function renderLinkCard(title, item) {
-  const linkType = item.linkType;
+  let linkType = item.linkType;
   let content;
   switch (linkType) {
-    case "1":
+    case "title":
       content = `<span class="md_link_url">${title || item.title || ""}</span>`;
       break;
-    case "2":
+    default:
+    case "link":
       content = `<span class="md_link_url">${item.url}</span>`;
       break;
-    case "3":
-      content = `<span class="">${item.url}</span>`;
-      break;
-    default:
+    // case "link":
+    //   content = `<span class="">${item.url}</span>`;
+    //   break;
+    case "card":
       content = `<div class="md_link_card">
       ${
         removeLinkHeadAndEnd(item.title) === removeLinkHeadAndEnd(item.url)
@@ -443,8 +444,8 @@ export function renderLinkCard(title, item) {
           ? `<img class="md_link_img" referrerpolicy="no-referrer" id="md_link_img" src="${item.icon}" />`
           : "<span class='md_link_img icon iconfont icon-lianjie'></span>"
       }
-        <span class="flex-1">
-          <span class="md_link_url">${item.url}</span>
+        <span class="flex-1 md_link_url">
+         ${item.url}
         </span>
       </span></div>`;
       break;
@@ -490,4 +491,4 @@ export function getfilesize(size) {
   return (size / Math.pow(num, 4)).toFixed(2) + "T"; //T
 }
 
-export const linkTypeSpiltStr = "/%ra";
+export const linkTypeSpiltStr = "?%ra=";

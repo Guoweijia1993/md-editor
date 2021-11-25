@@ -118,8 +118,8 @@ export default {
     toolsShow() {
       const toolsList = this.toolButtonList;
       const toolsOptions = this.toolsOptions;
-      if (!toolsOptions) return toolsList;
       if (this.showPreview) return this.previewTools;
+      if (!toolsOptions) return toolsList;
       return toolsList.filter(item => {
         return isNotFalse(toolsOptions[item.name]);
       });
@@ -199,7 +199,7 @@ export default {
           icon: "aite",
           tip: "@关注的人",
           startStr: "@",
-          endStr: ""
+          endStr: "",
         },
         {
           name: "headline",

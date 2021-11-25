@@ -292,7 +292,6 @@ export default {
   cursor: pointer;
   position: relative;
   line-height: 1;
-  overflow: hidden;
   &.active {
     .icon {
       color: var(--md-editor-border-color-active);
@@ -343,9 +342,9 @@ export default {
     color: var(--md-editor-text-color);
     display: inline-block;
     vertical-align: text-bottom;
-    @media screen and (max-width: 768px) {
-      vertical-align: text-top;
-    }
+    // @media screen and (max-width: 768px) {
+    //   vertical-align: text-top;
+    // }
     @media (any-hover: hover) {
       &:hover {
         color: var(--md-editor-border-color-active);
@@ -367,6 +366,12 @@ export default {
     }
     &.icon-file {
       font-size: 19px;
+    }
+    &.icon-help {
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        transform: translateY(-1px);
+      }
     }
   }
 }
