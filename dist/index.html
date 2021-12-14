@@ -32,12 +32,6 @@
     <button id="b">2222222</button>
     <script src="./markdown-editor.js"></script>
     <script>
-      console.log("send");
-
-      ipcRenderer.send("token", 1);
-    </script>
-
-    <script>
       // setTimeout(() => {
       try {
         const ee = new MdEditor({
@@ -108,24 +102,24 @@
           height: 400,
           // rows: 'auto',
           // height: 40,
-          // toolsOptions: {
-          //   // call: true,
-          //   format: true,
-          //   bold: true,
-          //   italic: true,
-          //   quote: true,
-          //   code: true,
-          //   link: true,
-          //   ul: true,
-          //   ol: true,
-          //   task: true,
-          //   table: true,
-          //   img: true,
-          //   file: true,
-          //   test1: true,
-          //   // help: false,
-          //   fullScreen: true
-          // },
+          toolsOptions: {
+            // call: true,
+            format: true,
+            bold: true,
+            italic: true,
+            quote: true,
+            code: true,
+            link: true,
+            ul: true,
+            ol: true,
+            task: true,
+            table: true,
+            img: false,
+            file: false,
+            test1: true,
+            // help: false,
+            fullScreen: true
+          },
           zIndex: 7000,
           // maxLength: 20000,
           showWordLimit: true,

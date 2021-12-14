@@ -419,7 +419,6 @@ export function renderLinkCard(title, item) {
     case "title":
       content = `<span class="md_link_url">${title || item.title || ""}</span>`;
       break;
-    default:
     case "link":
       content = `<span class="md_link_url">${item.url}</span>`;
       break;
@@ -449,6 +448,8 @@ export function renderLinkCard(title, item) {
         </span>
       </span></div>`;
       break;
+    default:
+      content = `<span class="md_link_url">${title || item.url}</span>`;
   }
   return content;
 }

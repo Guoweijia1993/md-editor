@@ -33,7 +33,8 @@ export default {
           "textarea",
           "form",
           "button"
-        ]
+        ],
+        FORBID_ATTR: ["style"]
       }); // 去除标签
       const filteredTags = getFilteredTags(html, cleanHtml); // 计算是否有标签被过滤
       // 链接转换为卡片
@@ -101,9 +102,9 @@ export default {
 
             if (reg_align.exec(title)) {
               var a = reg_align.exec(title)[2];
-              if (a === "center") {
-                out += 'style="display:inline-block;"';
-              }
+              // if (a === "center") {
+              //   out += 'style="display:inline-block;"';
+              // }
               out += ' align="' + a + '"';
             }
             if (reg_width.exec(title)) {
